@@ -1,0 +1,125 @@
+#cookies-tab .toolbar {
+  padding: 15px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+#cookies-tab .search-box {
+  width: 100%;
+}
+
+#cookies-tab .search-box input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+#cookies-tab .stats {
+  padding: 12px 15px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+#cookies-tab .table-container {
+  overflow-x: auto;
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+#cookies-tab table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#cookies-tab thead {
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-secondary);
+  z-index: 10;
+}
+
+#cookies-tab th {
+  padding: 12px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border-color);
+  white-space: nowrap;
+}
+
+#cookies-tab td {
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#cookies-tab tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+#cookies-tab tbody tr:hover {
+  background-color: var(--bg-hover);
+}
+
+#cookies-tab .empty-state {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 40px 20px !important;
+  font-size: 14px;
+}
+
+#cookies-tab .loading-indicator {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+#cookies-tab .loading-indicator.hidden {
+  display: none;
+}
+
+#cookies-tab .cookie-actions {
+  display: flex;
+  gap: 8px;
+}
+
+#cookies-tab .cookie-actions button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#cookies-tab .btn-delete {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+#cookies-tab .btn-delete:hover {
+  opacity: 0.8;
+}
+
+#cookies-tab .btn-edit {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#cookies-tab .btn-edit:hover {
+  opacity: 0.8;
+}

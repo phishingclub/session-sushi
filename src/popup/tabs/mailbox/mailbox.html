@@ -1,0 +1,70 @@
+<div class="tab-content" id="mailbox-tab">
+    <div class="mailbox-info-bar">
+        <button class="btn btn-sm btn-primary" id="composeEmailBtn">
+            ✉️ Compose
+        </button>
+        <button class="btn btn-sm" id="viewContactsBtn">
+            👤 View Contacts
+        </button>
+        <button class="btn btn-sm" id="viewMailRules">📋 Mail Rules</button>
+        <button class="btn btn-sm" id="viewMailboxSettings">⚙️ Settings</button>
+        <button class="btn btn-sm" id="viewAutoReply">📧 Auto Reply</button>
+    </div>
+    <div class="mailbox-container">
+        <div class="mailbox-sidebar">
+            <div class="mailbox-search">
+                <input
+                    type="text"
+                    id="mailboxSearch"
+                    placeholder="Search emails..."
+                />
+            </div>
+            <div class="mailbox-folders" id="mailboxFolders">
+                <div class="mailbox-folder-loading">No active session</div>
+            </div>
+            <div class="mailbox-folder-toolbar">
+                <button
+                    class="btn btn-sm btn-primary"
+                    id="addFolderBtn"
+                    title="Add new folder"
+                >
+                    New Folder
+                </button>
+                <button
+                    class="btn btn-sm btn-danger-outline"
+                    id="deleteFolderBtn"
+                    title="Delete selected folder"
+                    disabled
+                >
+                    Delete
+                </button>
+            </div>
+        </div>
+        <div class="mailbox-list">
+            <div class="mailbox-list-header">
+                <span class="mailbox-list-title">Inbox</span>
+                <div style="display: flex; align-items: center; gap: 8px">
+                    <span
+                        class="mailbox-list-count"
+                        id="mailboxListCount"
+                    ></span>
+                    <button
+                        class="btn btn-sm btn-primary"
+                        id="refreshMailbox"
+                        title="Refresh mailbox"
+                    >
+                        🔄
+                    </button>
+                </div>
+            </div>
+            <div class="mailbox-messages" id="mailboxMessages">
+                <div class="mailbox-empty">
+                    Select a folder to view messages
+                </div>
+            </div>
+        </div>
+        <div class="mailbox-detail" id="mailboxDetail">
+            <div class="mailbox-empty">Select a message to view</div>
+        </div>
+    </div>
+</div>

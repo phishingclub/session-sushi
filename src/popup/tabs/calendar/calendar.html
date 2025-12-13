@@ -1,0 +1,56 @@
+<div class="mailbox-info-bar">
+    <span id="calendarDateLabel" style="font-weight: 600"></span>
+    <div style="display: flex; gap: 8px">
+        <button class="btn btn-sm" id="calendarPrevDay" title="Previous Day">
+            Previous
+        </button>
+        <div style="position: relative; display: inline-block">
+            <input
+                type="date"
+                id="calendarDatePicker"
+                style="
+                    position: absolute;
+                    opacity: 0;
+                    pointer-events: none;
+                    width: 1px;
+                    height: 1px;
+                "
+            />
+            <button
+                class="btn btn-sm btn-primary"
+                id="calendarToday"
+                title="Pick a Date"
+            >
+                📅 Today
+            </button>
+        </div>
+        <button class="btn btn-sm" id="calendarNextDay" title="Next Day">
+            Next
+        </button>
+        <button class="btn btn-sm" id="refreshCalendar" title="Refresh">
+            🔄
+        </button>
+    </div>
+</div>
+
+<div style="display: flex; height: 100%; overflow: hidden">
+    <div
+        style="flex: 1; display: flex; flex-direction: column; overflow: hidden"
+    >
+        <div style="padding: 15px; flex: 1; overflow-y: auto">
+            <div style="margin-bottom: 15px">
+                <div class="mailbox-search" style="padding: 0; border: none">
+                    <input
+                        type="text"
+                        id="calendarSearch"
+                        placeholder="Search appointments..."
+                    />
+                </div>
+            </div>
+
+            <div id="calendarContainer">
+                <div class="mailbox-empty">No active session</div>
+            </div>
+        </div>
+    </div>
+</div>

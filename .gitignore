@@ -1,0 +1,6 @@
+.rules
+dist/
+build/
+*.crx
+*.pem
+*.zip

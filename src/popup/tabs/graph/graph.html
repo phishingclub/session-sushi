@@ -1,0 +1,298 @@
+<div class="padding-20">
+    <div id="querySection">
+        <div class="content-box">
+            <h3 class="section-title">Query Graph API</h3>
+            <div class="form-section">
+                <span class="label-inline">Quick Actions:</span>
+                <span class="qa-category" data-category="credentials">
+                    <span class="qa-label">Credentials</span>
+                    <span class="qa-buttons hidden">
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchPasswordEmails"
+                        >
+                            password emails
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchCredFiles"
+                        >
+                            credential files
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchAPIKeys"
+                        >
+                            API keys/tokens
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchSSHKeys"
+                        >
+                            SSH/PEM keys
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchVPNConfigs"
+                        >
+                            VPN configs
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchCertificates"
+                        >
+                            certificates
+                        </button>
+                    </span>
+                </span>
+                <span class="qa-divider">|</span>
+
+                <span class="qa-category" data-category="sensitive">
+                    <span class="qa-label">Files</span>
+                    <span class="qa-buttons hidden">
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchConfidential"
+                        >
+                            confidential docs
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchDatabaseFiles"
+                        >
+                            database files
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchBackupFiles"
+                        >
+                            backup files
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchConfigFiles"
+                        >
+                            config files
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchScripts"
+                        >
+                            scripts/code
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchCompressedFiles"
+                        >
+                            compressed files
+                        </button>
+                    </span>
+                </span>
+                <span class="qa-divider">|</span>
+
+                <span class="qa-category" data-category="financial">
+                    <span class="qa-label">Financial</span>
+                    <span class="qa-buttons hidden">
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchFinancial"
+                        >
+                            financial docs
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchPayroll"
+                        >
+                            payroll/salary
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchContracts"
+                        >
+                            contracts
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchPII"
+                        >
+                            PII data
+                        </button>
+                    </span>
+                </span>
+                <span class="qa-divider">|</span>
+
+                <span class="qa-category" data-category="recon">
+                    <span class="qa-label">Roles</span>
+                    <span class="qa-buttons hidden">
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="directoryRoles"
+                        >
+                            directory roles
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="privilegedRoleMembers"
+                        >
+                            privileged members
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="conditionalAccess"
+                        >
+                            conditional access
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="domainInfo"
+                        >
+                            domain info
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="tenantDetails"
+                        >
+                            tenant details
+                        </button>
+                    </span>
+                </span>
+                <span class="qa-divider">|</span>
+
+                <span class="qa-category" data-category="permissions">
+                    <span class="qa-label">Permissions</span>
+                    <span class="qa-buttons hidden">
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="oauth2Grants"
+                        >
+                            OAuth grants
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="appPermissions"
+                        >
+                            app permissions
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="delegatedPermissions"
+                        >
+                            delegated perms
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="mailboxDelegates"
+                        >
+                            mailbox delegates
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="forwardingRules"
+                        >
+                            forwarding rules
+                        </button>
+                    </span>
+                </span>
+                <span class="qa-divider">|</span>
+
+                <span class="qa-category" data-category="intelligence">
+                    <span class="qa-label">Intelligence</span>
+                    <span class="qa-buttons hidden">
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchMeetingNotes"
+                        >
+                            meeting notes
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchOneNoteSecrets"
+                        >
+                            onenote secrets
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchPlannerTasks"
+                        >
+                            planner tasks
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchIncidentEmails"
+                        >
+                            incident emails
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="searchProjectFiles"
+                        >
+                            project files
+                        </button>
+                    </span>
+                </span>
+                <span class="qa-divider">|</span>
+
+                <span class="qa-category" data-category="audit">
+                    <span class="qa-label">Logs</span>
+                    <span class="qa-buttons hidden">
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="signInLogs"
+                        >
+                            sign-in logs
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="auditLogs"
+                        >
+                            audit logs
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="riskDetections"
+                        >
+                            risk detections
+                        </button>
+                        <button
+                            class="btn btn-small quick-action-btn"
+                            data-query="riskyUsers"
+                        >
+                            risky users
+                        </button>
+                    </span>
+                </span>
+            </div>
+            <div class="form-section">
+                <label class="label-block">Custom Query:</label>
+                <div style="display: flex; gap: 10px">
+                    <input
+                        type="text"
+                        id="customGraphQuery"
+                        class="input"
+                        placeholder="/me/messages?$top=10"
+                        style="flex: 1"
+                    />
+                    <button class="btn btn-primary" id="executeGraphBtn">
+                        Execute
+                    </button>
+                </div>
+            </div>
+            <div class="form-section">
+                <div class="flex-between">
+                    <label class="label-block">Response:</label>
+                    <button class="btn btn-sm" id="copyGraphResponse">
+                        📋 Copy
+                    </button>
+                </div>
+                <textarea
+                    id="graphQueryResponse"
+                    class="textarea code-textarea"
+                    readonly
+                    rows="15"
+                >
+Execute a query to see results...</textarea
+                >
+            </div>
+        </div>
+    </div>
+</div>

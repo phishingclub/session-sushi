@@ -1,0 +1,108 @@
+<div class="tab-content" id="directory-tab">
+    <div class="mailbox-info-bar">
+        <span id="directoryTypeLabel" style="font-weight: 600"></span>
+        <div style="display: flex; gap: 8px">
+            <button class="btn btn-sm" id="refreshDirectoryBtn" title="Refresh">
+                🔄
+            </button>
+        </div>
+    </div>
+
+    <div style="display: flex; height: 100%; overflow: hidden">
+        <!-- Sidebar with directory types -->
+        <div
+            style="
+                width: 200px;
+                border-right: 1px solid var(--border-color);
+                background: var(--bg-secondary);
+                display: flex;
+                flex-direction: column;
+            "
+        >
+            <div style="padding: 15px">
+                <div
+                    style="
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: var(--text-secondary);
+                        margin-bottom: 10px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    "
+                >
+                    Browse
+                </div>
+                <div
+                    id="directoryTypesList"
+                    style="display: flex; flex-direction: column; gap: 4px"
+                >
+                    <button class="directory-type-btn" data-type="users">
+                        👤 Users
+                    </button>
+                    <button class="directory-type-btn" data-type="groups">
+                        👥 Groups
+                    </button>
+                    <button class="directory-type-btn" data-type="devices">
+                        💻 Devices
+                    </button>
+                    <button class="directory-type-btn" data-type="applications">
+                        📱 Applications
+                    </button>
+                    <button
+                        class="directory-type-btn"
+                        data-type="servicePrincipals"
+                    >
+                        🔑 Service Principals
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <div
+            style="
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            "
+        >
+            <div style="padding: 15px; flex: 1; overflow-y: auto">
+                <!-- Search bar -->
+                <div style="margin-bottom: 15px">
+                    <div
+                        class="mailbox-search"
+                        style="padding: 0; border: none"
+                    >
+                        <input
+                            type="text"
+                            id="directorySearch"
+                            placeholder="Search..."
+                        />
+                    </div>
+                </div>
+
+                <!-- Stats bar -->
+                <div
+                    id="directoryStatsBar"
+                    style="
+                        margin-bottom: 15px;
+                        padding: 8px 12px;
+                        background: var(--bg-secondary);
+                        border-radius: 4px;
+                        font-size: 13px;
+                        color: var(--text-secondary);
+                        display: none;
+                    "
+                >
+                    <span id="directoryStats"></span>
+                </div>
+
+                <!-- Items container -->
+                <div id="directoryContainer">
+                    <div class="mailbox-empty">No active session</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

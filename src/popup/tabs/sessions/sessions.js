@@ -1,0 +1,1321 @@
+const M365_PRESETS = {
+  "graph-powershell-user": {
+    clientId: "14d82eec-204b-4c2f-b7e8-296a70dab67e",
+    redirectUri: "https://login.microsoftonline.com/common/oauth2/nativeclient",
+    scope: "https://graph.microsoft.com/.default offline_access",
+    description: "Graph PowerShell",
+  },
+  "azure-cli": {
+    clientId: "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
+    redirectUri: "http://localhost",
+    scope: "https://graph.microsoft.com/.default offline_access",
+    description: "Azure CLI",
+  },
+  "azure-powershell": {
+    clientId: "1950a258-227b-4e31-a9cf-717495945fc2",
+    redirectUri: "urn:ietf:wg:oauth:2.0:oob",
+    scope: "https://graph.microsoft.com/.default offline_access",
+    description: "Azure PowerShell",
+  },
+  "ms-teams": {
+    clientId: "1fec8e78-bce4-4aaf-ab1b-5451cc387264",
+    redirectUri: "https://login.microsoftonline.com/common/oauth2/nativeclient",
+    scope: "https://graph.microsoft.com/.default offline_access",
+    description: "Microsoft Teams",
+  },
+  "graph-explorer": {
+    clientId: "de8bc8b5-d9f9-48b1-a8ad-b748da725064",
+    redirectUri: "https://developer.microsoft.com/en-us/graph/graph-explorer",
+    scope: "https://graph.microsoft.com/.default offline_access",
+    description: "Graph Explorer",
+  },
+  "graph-powershell-explicit": {
+    clientId: "14d82eec-204b-4c2f-b7e8-296a70dab67e",
+    redirectUri: "https://login.microsoftonline.com/common/oauth2/nativeclient",
+    scope: [
+      "https://graph.microsoft.com/User.Read",
+      "https://graph.microsoft.com/User.ReadWrite",
+      "https://graph.microsoft.com/User.ReadBasic.All",
+      "https://graph.microsoft.com/User.Read.All",
+      "https://graph.microsoft.com/User.ReadWrite.All",
+      "https://graph.microsoft.com/Directory.Read.All",
+      "https://graph.microsoft.com/Directory.ReadWrite.All",
+      "https://graph.microsoft.com/Directory.AccessAsUser.All",
+
+      "https://graph.microsoft.com/Mail.Read",
+      "https://graph.microsoft.com/Mail.ReadWrite",
+      "https://graph.microsoft.com/Mail.Send",
+      "https://graph.microsoft.com/Mail.Send.Shared",
+      "https://graph.microsoft.com/MailboxSettings.Read",
+      "https://graph.microsoft.com/MailboxSettings.ReadWrite",
+
+      "https://graph.microsoft.com/Calendars.Read",
+      "https://graph.microsoft.com/Calendars.ReadWrite",
+      "https://graph.microsoft.com/Calendars.Read.Shared",
+      "https://graph.microsoft.com/Calendars.ReadWrite.Shared",
+
+      "https://graph.microsoft.com/Contacts.Read",
+      "https://graph.microsoft.com/Contacts.ReadWrite",
+
+      "https://graph.microsoft.com/Files.Read",
+      "https://graph.microsoft.com/Files.ReadWrite",
+      "https://graph.microsoft.com/Files.Read.All",
+      "https://graph.microsoft.com/Files.ReadWrite.All",
+      "https://graph.microsoft.com/Sites.Read.All",
+      "https://graph.microsoft.com/Sites.ReadWrite.All",
+      "https://graph.microsoft.com/Sites.Manage.All",
+      "https://graph.microsoft.com/Sites.FullControl.All",
+
+      "https://graph.microsoft.com/Group.Read.All",
+      "https://graph.microsoft.com/Group.ReadWrite.All",
+      "https://graph.microsoft.com/GroupMember.Read.All",
+      "https://graph.microsoft.com/GroupMember.ReadWrite.All",
+      "https://graph.microsoft.com/Team.ReadBasic.All",
+      "https://graph.microsoft.com/TeamSettings.Read.All",
+      "https://graph.microsoft.com/TeamSettings.ReadWrite.All",
+
+      "https://graph.microsoft.com/Channel.ReadBasic.All",
+      "https://graph.microsoft.com/ChannelSettings.Read.All",
+      "https://graph.microsoft.com/ChannelSettings.ReadWrite.All",
+      "https://graph.microsoft.com/ChannelMessage.Send",
+      "https://graph.microsoft.com/ChannelMember.Read.All",
+      "https://graph.microsoft.com/ChannelMember.ReadWrite.All",
+
+      "https://graph.microsoft.com/Chat.Read",
+      "https://graph.microsoft.com/Chat.ReadWrite",
+      "https://graph.microsoft.com/ChatMessage.Read",
+      "https://graph.microsoft.com/ChannelMessage.Read.All",
+
+      "https://graph.microsoft.com/Notes.Read",
+      "https://graph.microsoft.com/Notes.ReadWrite",
+      "https://graph.microsoft.com/Notes.Read.All",
+      "https://graph.microsoft.com/Notes.ReadWrite.All",
+
+      "https://graph.microsoft.com/Tasks.Read",
+      "https://graph.microsoft.com/Tasks.ReadWrite",
+      "https://graph.microsoft.com/Tasks.Read.Shared",
+      "https://graph.microsoft.com/Tasks.ReadWrite.Shared",
+
+      "https://graph.microsoft.com/People.Read",
+      "https://graph.microsoft.com/People.Read.All",
+      "https://graph.microsoft.com/OrgContact.Read.All",
+
+      "https://graph.microsoft.com/Presence.Read",
+      "https://graph.microsoft.com/Presence.Read.All",
+      "https://graph.microsoft.com/Presence.ReadWrite",
+
+      "https://graph.microsoft.com/Device.Read.All",
+      "https://graph.microsoft.com/Device.ReadWrite.All",
+
+      "https://graph.microsoft.com/AccessReview.Read.All",
+      "https://graph.microsoft.com/AccessReview.ReadWrite.All",
+
+      "offline_access",
+      "openid",
+      "profile",
+      "email",
+    ].join(" "),
+    description: "Graph PowerShell (Explicit Scopes)",
+  },
+};
+
+const DEFAULT_PRESET = "ms-teams";
+
+function populatePresetDropdown() {
+  const presetSelector = document.getElementById("presetSelector");
+  if (!presetSelector) return;
+
+  presetSelector.innerHTML = "";
+
+  const customOption = document.createElement("option");
+  customOption.value = "custom";
+  customOption.textContent = "Custom Configuration";
+  presetSelector.appendChild(customOption);
+
+  Object.keys(M365_PRESETS).forEach((key) => {
+    const option = document.createElement("option");
+    option.value = key;
+
+    option.textContent = M365_PRESETS[key].description;
+
+    if (key === DEFAULT_PRESET) {
+      option.selected = true;
+    }
+
+    presetSelector.appendChild(option);
+  });
+}
+
+function applyPreset(preset) {
+  const clientIdInput = document.getElementById("clientIdInput");
+  const redirectUriInput = document.getElementById("redirectUriInput");
+  const scopeInput = document.getElementById("scopeInput");
+
+  if (preset === "custom") {
+    // Enable inputs for custom configuration
+    clientIdInput.readOnly = false;
+    redirectUriInput.readOnly = false;
+    scopeInput.readOnly = false;
+    // Set default values for custom configuration
+    clientIdInput.value = "";
+    redirectUriInput.value =
+      "https://login.microsoftonline.com/common/oauth2/nativeclient";
+    scopeInput.value = "https://graph.microsoft.com/.default offline_access";
+  } else if (M365_PRESETS[preset]) {
+    // Make inputs readonly and populate with preset values
+    clientIdInput.readOnly = true;
+    redirectUriInput.readOnly = true;
+    scopeInput.readOnly = true;
+    clientIdInput.value = M365_PRESETS[preset].clientId;
+    redirectUriInput.value = M365_PRESETS[preset].redirectUri;
+    scopeInput.value = M365_PRESETS[preset].scope;
+  }
+}
+
+async function getGraphToken() {
+  const getGraphTokenBtn = document.getElementById("getGraphToken");
+
+  if (isPopupMode && !isConvertingToWindow) {
+    isConvertingToWindow = true;
+
+    await chrome.storage.session.set({
+      pendingAction: "getGraphToken",
+      graphTokenConfig: {
+        clientId: document.getElementById("clientIdInput")?.value?.trim(),
+        redirectUri: document.getElementById("redirectUriInput")?.value?.trim(),
+        scope: document.getElementById("scopeInput")?.value?.trim(),
+      },
+    });
+
+    await openInWindow();
+    return;
+  }
+
+  getGraphTokenBtn.disabled = true;
+  getGraphTokenBtn.textContent = "⏳ Getting Token...";
+
+  try {
+    const clientId =
+      document.getElementById("clientIdInput")?.value?.trim() ||
+      "1b730954-1685-4b74-9bfd-dac224a7b894";
+    const redirectUri =
+      document.getElementById("redirectUriInput")?.value?.trim() ||
+      "https://login.microsoftonline.com/common/oauth2/nativeclient";
+    const scope =
+      document.getElementById("scopeInput")?.value?.trim() ||
+      "https://graph.microsoft.com/.default offline_access";
+
+    const presetSelector = document.getElementById("presetSelector");
+    const presetValue = presetSelector ? presetSelector.value : "custom";
+
+    let appName = "Custom App";
+    if (presetValue === "custom") {
+      appName = "Custom Configuration";
+    } else if (M365_PRESETS[presetValue]) {
+      appName = M365_PRESETS[presetValue].description;
+    }
+
+    const response = await chrome.runtime.sendMessage({
+      action: "getGraphToken",
+      clientId: clientId,
+      redirectUri: redirectUri,
+      scope: scope,
+    });
+
+    if (!response.success) {
+      throw new Error(response.error || "Failed to get token");
+    }
+
+    const tokenData = response.tokenData;
+
+    let userEmail = "Unknown";
+    try {
+      const payload = JSON.parse(atob(tokenData.access_token.split(".")[1]));
+      userEmail =
+        payload.upn || payload.unique_name || payload.email || "Unknown";
+    } catch (e) {
+      // Could not decode user from token
+    }
+
+    const newSession = {
+      name: `${userEmail} (${appName})`,
+      user: userEmail,
+      access_token: tokenData.access_token,
+      refresh_token: tokenData.refresh_token,
+      expires_at: Date.now() + tokenData.expires_in * 1000,
+      created_at: Date.now(),
+      client_id: clientId,
+      scope: scope,
+    };
+
+    if (!activeM365Session) {
+      activeM365Session = newSession;
+      displayActiveSession(activeM365Session);
+    }
+
+    await saveM365SessionToList(newSession);
+    await loadM365Sessions();
+
+    if (!activeM365Session || activeM365Session === newSession) {
+      saveUIState({ activeSessionIndex: m365Sessions.length - 1 });
+    }
+
+    showToast("✅ Successfully obtained Graph API tokens!");
+  } catch (error) {
+    if (error.message.includes("closed by user")) {
+      // Auth window closed by user
+      return;
+    }
+
+    console.error("Error getting Graph token:", error);
+
+    let errorMsg = error.message;
+    let troubleshooting = "";
+
+    if (error.message.includes("AADSTS65002")) {
+      errorMsg = "This client requires special authentication flow";
+      troubleshooting =
+        "💡 Try the 'Graph PowerShell - Read Only' preset instead.";
+    } else if (error.message.includes("AADSTS50011")) {
+      errorMsg = "Redirect URI mismatch";
+      troubleshooting =
+        "💡 Make sure redirect URI is: https://login.microsoftonline.com/common/oauth2/nativeclient";
+    } else if (
+      error.message.includes("AADSTS65001") ||
+      error.message.includes("consent")
+    ) {
+      errorMsg = "User consent required";
+    } else if (error.message.includes("AADSTS700016")) {
+      errorMsg = "Application not found in directory";
+      troubleshooting = "💡 The client ID may not be valid for your tenant.";
+    }
+
+    showToast(`Failed to get Graph token: ${errorMsg}`, "error");
+  } finally {
+    getGraphTokenBtn.disabled = false;
+    getGraphTokenBtn.textContent = "🔑 Get New Token";
+  }
+}
+
+async function checkCompletedAuth() {
+  try {
+    const result = await chrome.storage.local.get("lastTokenResult");
+    const lastResult = result.lastTokenResult;
+
+    if (!lastResult) return;
+
+    const age = Date.now() - lastResult.timestamp;
+    if (age > 30000) {
+      chrome.storage.local.remove("lastTokenResult");
+      return;
+    }
+
+    chrome.storage.local.remove("lastTokenResult");
+
+    if (!lastResult.success) {
+      console.error("Auth flow failed:", lastResult.error);
+      let errorMsg = lastResult.error || "Unknown error";
+
+      if (errorMsg.includes("AADSTS65002")) {
+        showToast(
+          `Error: ${errorMsg}. 💡 Try the 'Graph PowerShell - Read Only' preset instead.`,
+          "error",
+        );
+      } else if (errorMsg.includes("closed by user")) {
+        return;
+      } else {
+        showToast(`Error: ${errorMsg}`, "error");
+      }
+    }
+  } catch (error) {
+    console.error("Error checking completed auth:", error);
+  }
+}
+
+async function refreshActiveM365Session() {
+  if (!activeM365Session || !activeM365Session.refresh_token) {
+    showToast("No active session to refresh");
+    return;
+  }
+
+  const refreshBtn = document.getElementById("refreshActiveSession");
+  if (refreshBtn) {
+    refreshBtn.disabled = true;
+    refreshBtn.textContent = "⏳ Refreshing...";
+  }
+
+  try {
+    const clientId =
+      activeM365Session.client_id || "1b730954-1685-4b74-9bfd-dac224a7b894";
+    const scope =
+      activeM365Session.scope ||
+      "https://graph.microsoft.com/.default offline_access";
+
+    const tokenResponse = await fetch(
+      "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          client_id: clientId,
+          scope: scope,
+          refresh_token: activeM365Session.refresh_token,
+          grant_type: "refresh_token",
+        }),
+      },
+    );
+
+    if (!tokenResponse.ok) {
+      const errorData = await tokenResponse.json();
+      throw new Error(errorData.error_description || "Failed to refresh token");
+    }
+
+    const tokenData = await tokenResponse.json();
+
+    activeM365Session.access_token = tokenData.access_token;
+    activeM365Session.refresh_token = tokenData.refresh_token;
+    activeM365Session.expires_at = Date.now() + tokenData.expires_in * 1000;
+    activeM365Session.client_id = clientId;
+    activeM365Session.scope = scope;
+
+    await chrome.storage.local.set({ [TOKEN_STORAGE_KEY]: activeM365Session });
+
+    displayActiveSession(activeM365Session);
+
+    // Find if this session already exists in the saved sessions list
+    const sessionIndex = m365Sessions.findIndex(
+      (s) =>
+        s.user === activeM365Session.user &&
+        s.created_at === activeM365Session.created_at,
+    );
+
+    if (sessionIndex >= 0) {
+      // Update existing session in place
+      m365Sessions[sessionIndex] = activeM365Session;
+      await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+      renderM365Sessions();
+      saveUIState({ activeSessionIndex: sessionIndex });
+    } else {
+      // Session doesn't exist in list, add it
+      await saveM365SessionToList(activeM365Session);
+      await loadM365Sessions();
+      saveUIState({ activeSessionIndex: m365Sessions.length - 1 });
+    }
+
+    showToast("✅ Token refreshed successfully!");
+
+    const mailboxTab = document.getElementById("mailbox-tab");
+    if (mailboxTab && mailboxTab.classList.contains("active")) {
+      if (typeof initializeMailbox === "function") {
+        initializeMailbox();
+      }
+    }
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    showToast("Failed to refresh token: " + error.message, "error");
+  } finally {
+    if (refreshBtn) {
+      refreshBtn.disabled = false;
+      refreshBtn.textContent = "🔄 Refresh";
+    }
+  }
+}
+
+function displayActiveSession(session) {
+  const display = document.getElementById("activeSessionDisplay");
+  const noActiveMessage = document.getElementById("noActiveSessionMessage");
+  const nameEl = document.getElementById("activeSessionName");
+  const userEl = document.getElementById("activeSessionUser");
+  const expiryEl = document.getElementById("activeSessionExpiry");
+
+  if (!session || !session.name || session.name === "Unknown") {
+    display.classList.remove("visible");
+    if (noActiveMessage) noActiveMessage.classList.remove("hidden");
+    updateQuickActionButtons([]);
+    stopAutoRefreshTimer();
+    return;
+  }
+
+  display.classList.add("visible");
+  if (noActiveMessage) noActiveMessage.classList.add("hidden");
+  nameEl.textContent = session.name || "Unnamed Session";
+  userEl.textContent = session.user || "Unknown";
+
+  const expiryDate = new Date(session.expires_at);
+  const now = new Date();
+  const remainingMs = expiryDate - now;
+  const expiryMinutes = Math.floor(remainingMs / 1000 / 60);
+
+  // Check if auto-refresh is enabled
+  chrome.storage.local.get([AUTO_REFRESH_STORAGE_KEY]).then((result) => {
+    const autoRefreshEnabled = result[AUTO_REFRESH_STORAGE_KEY] === true;
+
+    if (remainingMs > 0) {
+      let expiryText = `${expiryMinutes} minutes (${expiryDate.toLocaleString()})`;
+      if (autoRefreshEnabled && expiryMinutes < 5) {
+        expiryText += " 🔄 Auto-refreshing...";
+        expiryEl.className = "color-warning";
+      } else if (autoRefreshEnabled) {
+        expiryText += " 🔄";
+        expiryEl.className = "";
+      } else {
+        expiryEl.className = "";
+      }
+      expiryEl.textContent = expiryText;
+    } else {
+      let expiryText = `Expired at ${expiryDate.toLocaleString()}`;
+      if (autoRefreshEnabled) {
+        expiryText += " 🔄 Auto-refresh will attempt...";
+      }
+      expiryEl.textContent = expiryText;
+      expiryEl.className = "color-danger";
+    }
+  });
+
+  let scopes = [];
+  try {
+    const tokenParts = session.access_token.split(".");
+    if (tokenParts.length === 3) {
+      const payload = JSON.parse(atob(tokenParts[1]));
+      const scopeString = payload.scp || payload.roles || "";
+      scopes = scopeString.split(" ").filter((s) => s.length > 0);
+    }
+  } catch (e) {
+    // Could not decode token
+  }
+
+  const toggleBtn = document.getElementById("toggleActiveScopes");
+  const scopesDisplay = document.getElementById("activeScopesDisplay");
+
+  if (toggleBtn && scopesDisplay) {
+    const newToggleBtn = toggleBtn.cloneNode(true);
+    toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
+
+    const scopeCount = scopes.length;
+    newToggleBtn.textContent = `${scopeCount} Scope${scopeCount !== 1 ? "s" : ""}`;
+
+    newToggleBtn.addEventListener("click", () => {
+      if (scopesDisplay.classList.contains("hidden")) {
+        scopesDisplay.classList.remove("hidden");
+        newToggleBtn.textContent = "Hide Scopes";
+
+        scopesDisplay.innerHTML = "";
+        if (scopes.length > 0) {
+          scopes.forEach((s) => {
+            const scopeDiv = document.createElement("div");
+            scopeDiv.className = "font-size-12 border-bottom";
+            scopeDiv.style.padding = "3px 0";
+            scopeDiv.textContent = s;
+            scopesDisplay.appendChild(scopeDiv);
+          });
+        } else {
+          const noScopesDiv = document.createElement("div");
+          noScopesDiv.className =
+            "color-text-secondary text-italic font-size-12";
+          noScopesDiv.textContent = "No scopes found in token";
+          scopesDisplay.appendChild(noScopesDiv);
+        }
+      } else {
+        scopesDisplay.classList.add("hidden");
+        newToggleBtn.textContent = `${scopeCount} Scope${scopeCount !== 1 ? "s" : ""}`;
+      }
+    });
+  }
+
+  updateQuickActionButtons(scopes);
+
+  // Update session status bar
+  updateSessionStatusBar(session);
+
+  // Start auto-refresh if globally enabled
+  loadAutoRefreshSetting();
+
+  // Also check immediately if session needs refresh
+  checkAndAutoRefresh();
+}
+
+function updateSessionStatusBar(session) {
+  const statusBar = document.getElementById("sessionStatusBar");
+  const statusText = document.getElementById("sessionStatusText");
+
+  if (!statusBar || !statusText) return;
+
+  if (!session || !session.name || session.name === "Unknown") {
+    statusBar.classList.add("hidden");
+    return;
+  }
+
+  const expiryDate = new Date(session.expires_at);
+  const now = new Date();
+  const remainingMs = expiryDate - now;
+  const remainingMinutes = Math.floor(remainingMs / 1000 / 60);
+  const remainingHours = Math.floor(remainingMinutes / 60);
+
+  statusText.textContent = `Active Session: ${session.name} (${session.user})`;
+  statusBar.className = "session-status-bar";
+  statusBar.classList.remove("hidden");
+}
+
+function updateQuickActionButtons(scopes) {
+  const buttons = document.querySelectorAll(".quick-action-btn");
+
+  buttons.forEach((btn) => {
+    btn.disabled = false;
+    btn.style.opacity = "1";
+    btn.style.cursor = "pointer";
+    btn.title = "";
+    btn.classList.remove("scope-warning");
+  });
+}
+
+async function saveTokens(tokenData) {
+  try {
+    const storageData = {
+      access_token: tokenData.access_token,
+      refresh_token: tokenData.refresh_token,
+      expires_at: Date.now() + tokenData.expires_in * 1000,
+      saved_at: Date.now(),
+    };
+
+    await chrome.storage.local.set({ [TOKEN_STORAGE_KEY]: storageData });
+  } catch (error) {
+    console.error("Failed to save tokens:", error);
+  }
+}
+
+async function loadSavedTokens() {
+  try {
+    const result = await chrome.storage.local.get(TOKEN_STORAGE_KEY);
+    const savedTokens = result[TOKEN_STORAGE_KEY];
+
+    if (savedTokens && savedTokens.access_token && savedTokens.refresh_token) {
+      m365TokenData = savedTokens;
+      activeM365Session = savedTokens;
+
+      // Display the active session in the UI
+      displayActiveSession(activeM365Session);
+
+      const now = Date.now();
+      if (savedTokens.expires_at && savedTokens.expires_at < now) {
+        const tokenError = document.getElementById("tokenError");
+        if (tokenError) {
+          tokenError.textContent =
+            '⚠️ Loaded saved token is expired. Click "Refresh Token" to get a new one.';
+          tokenError.style.display = "block";
+          tokenError.style.background = "var(--warning-bg, #fff3cd)";
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Failed to load saved tokens:", error);
+  }
+}
+
+async function clearActiveM365Session() {
+  if (
+    !confirm(
+      "Are you sure you want to clear the active session?\n\nThis will remove the active tokens but saved sessions will remain.",
+    )
+  ) {
+    return;
+  }
+
+  activeM365Session = null;
+  stopAutoRefreshTimer();
+  displayActiveSession(null);
+  await chrome.storage.local.remove(TOKEN_STORAGE_KEY);
+
+  saveUIState({ activeSessionIndex: null });
+
+  // Hide session status bar
+  const statusBar = document.getElementById("sessionStatusBar");
+  if (statusBar) {
+    statusBar.style.display = "none";
+  }
+
+  showToast("Active session cleared");
+
+  // Clear mailbox if on mailbox tab
+  const mailboxTab = document.getElementById("mailbox-tab");
+  if (mailboxTab && mailboxTab.classList.contains("active")) {
+    if (typeof showMailboxNoSession === "function") {
+      showMailboxNoSession();
+    }
+  }
+}
+
+async function loadM365Sessions() {
+  try {
+    const result = await chrome.storage.local.get(SESSIONS_STORAGE_KEY);
+    m365Sessions = result[SESSIONS_STORAGE_KEY] || [];
+    renderM365Sessions();
+  } catch (error) {
+    console.error("Failed to load M365 sessions:", error);
+  }
+}
+
+async function saveM365SessionToList(session) {
+  try {
+    m365Sessions.push(session);
+    await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+    renderM365Sessions();
+    showToast("✅ Session saved");
+  } catch (error) {
+    console.error("Failed to save session:", error);
+    showToast("Failed to save session: " + error.message, "error");
+  }
+}
+
+function renderM365Sessions() {
+  const container = document.getElementById("m365SessionsContainer");
+  if (!container) return;
+
+  if (m365Sessions.length === 0) {
+    container.innerHTML =
+      '<div class="empty-state-centered">No saved sessions</div>';
+    return;
+  }
+
+  container.innerHTML = "";
+
+  m365Sessions.forEach((session, index) => {
+    const expiryDate = new Date(session.expires_at);
+    const isExpired = expiryDate < new Date();
+    const now = new Date();
+    const remainingMs = expiryDate - now;
+    const remainingMinutes = Math.floor(remainingMs / 1000 / 60);
+
+    let scopes = [];
+    try {
+      const tokenParts = session.access_token.split(".");
+      if (tokenParts.length === 3) {
+        const payload = JSON.parse(atob(tokenParts[1]));
+        const scopeString = payload.scp || payload.roles || "";
+        scopes = scopeString.split(" ").filter((s) => s.length > 0);
+      }
+    } catch (e) {
+      // Could not decode token for session
+    }
+
+    const scopeCount = scopes.length;
+
+    // Create card
+    const card = document.createElement("div");
+    card.className = "session-card";
+    card.style.background = "var(--card-bg)";
+    card.style.padding = "12px";
+    card.style.marginBottom = "8px";
+    card.style.borderRadius = "6px";
+    card.style.border = "1px solid var(--border-color)";
+    card.style.transition = "all 0.2s";
+
+    // Header with name and user
+    const headerDiv = document.createElement("div");
+    headerDiv.style.marginBottom = "8px";
+
+    const nameStrong = document.createElement("strong");
+    nameStrong.style.fontSize = "13px";
+    nameStrong.style.color = "var(--text-color)";
+    nameStrong.style.display = "block";
+    nameStrong.style.marginBottom = "4px";
+    nameStrong.style.wordBreak = "break-word";
+    nameStrong.textContent = session.name;
+
+    const userSmall = document.createElement("small");
+    userSmall.style.color = "var(--text-secondary)";
+    userSmall.style.fontSize = "11px";
+    userSmall.textContent = session.user;
+
+    headerDiv.appendChild(nameStrong);
+    headerDiv.appendChild(userSmall);
+
+    // Status
+    const statusDiv = document.createElement("div");
+    statusDiv.style.marginBottom = "10px";
+    statusDiv.style.fontSize = "11px";
+
+    const statusSpan = document.createElement("span");
+    statusSpan.style.color = isExpired
+      ? "var(--danger-color)"
+      : "var(--text-color)";
+    statusSpan.style.fontWeight = "500";
+    statusSpan.textContent = isExpired
+      ? "⚠️ Expired"
+      : `✓ ${remainingMinutes}m left`;
+    statusDiv.appendChild(statusSpan);
+
+    // Scopes section
+    const scopesSection = document.createElement("div");
+    scopesSection.style.marginBottom = "10px";
+
+    const scopesToggleBtn = document.createElement("button");
+    scopesToggleBtn.className = "toggle-session-scopes-btn";
+    scopesToggleBtn.setAttribute("data-index", index);
+    scopesToggleBtn.style.background = "none";
+    scopesToggleBtn.style.border = "none";
+    scopesToggleBtn.style.padding = "0";
+    scopesToggleBtn.style.color = "var(--text-color)";
+    scopesToggleBtn.style.cursor = "pointer";
+    scopesToggleBtn.style.fontSize = "11px";
+    scopesToggleBtn.style.textDecoration = "underline";
+    scopesToggleBtn.textContent = `${scopeCount} Scope${scopeCount !== 1 ? "s" : ""}`;
+
+    const scopesDisplay = document.createElement("div");
+    scopesDisplay.className = "session-scopes-display";
+    scopesDisplay.setAttribute("data-index", index);
+    scopesDisplay.style.display = "none";
+    scopesDisplay.style.marginTop = "8px";
+    scopesDisplay.style.padding = "8px";
+    scopesDisplay.style.background = "var(--bg-secondary)";
+    scopesDisplay.style.border = "1px solid var(--border-color)";
+    scopesDisplay.style.borderRadius = "6px";
+    scopesDisplay.style.maxHeight = "120px";
+    scopesDisplay.style.overflowY = "auto";
+
+    if (scopes.length > 0) {
+      scopes.forEach((s) => {
+        const scopeDiv = document.createElement("div");
+        scopeDiv.style.padding = "3px 0";
+        scopeDiv.style.borderBottom = "1px solid var(--border-color)";
+        scopeDiv.style.fontSize = "12px";
+        scopeDiv.textContent = s;
+        scopesDisplay.appendChild(scopeDiv);
+      });
+    } else {
+      const noScopesDiv = document.createElement("div");
+      noScopesDiv.style.color = "var(--text-secondary)";
+      noScopesDiv.style.fontStyle = "italic";
+      noScopesDiv.style.fontSize = "12px";
+      noScopesDiv.textContent = "No scopes found";
+      scopesDisplay.appendChild(noScopesDiv);
+    }
+
+    scopesSection.appendChild(scopesToggleBtn);
+    scopesSection.appendChild(scopesDisplay);
+
+    // Action buttons
+    const actionsDiv = document.createElement("div");
+    actionsDiv.style.display = "flex";
+    actionsDiv.style.gap = "6px";
+
+    const loadBtn = document.createElement("button");
+    loadBtn.className = "btn btn-primary btn-small load-session-btn";
+    loadBtn.setAttribute("data-index", index);
+    loadBtn.style.fontSize = "11px";
+    loadBtn.style.padding = "6px 10px";
+    loadBtn.textContent = "📥 Load";
+
+    const exportBtn = document.createElement("button");
+    exportBtn.className = "btn btn-secondary btn-small export-session-btn";
+    exportBtn.setAttribute("data-index", index);
+    exportBtn.style.fontSize = "11px";
+    exportBtn.style.padding = "6px 10px";
+    exportBtn.textContent = "📤 Export";
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn btn-danger-outline btn-small delete-session-btn";
+    deleteBtn.setAttribute("data-index", index);
+    deleteBtn.style.fontSize = "11px";
+    deleteBtn.style.padding = "6px 10px";
+    deleteBtn.textContent = "❌ Delete";
+
+    actionsDiv.appendChild(loadBtn);
+    actionsDiv.appendChild(exportBtn);
+    actionsDiv.appendChild(deleteBtn);
+
+    // Assemble card
+    card.appendChild(headerDiv);
+    card.appendChild(statusDiv);
+    card.appendChild(scopesSection);
+    card.appendChild(actionsDiv);
+
+    container.appendChild(card);
+  });
+
+  container.querySelectorAll(".load-session-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = parseInt(e.target.getAttribute("data-index"));
+      loadM365Session(index);
+    });
+  });
+
+  container.querySelectorAll(".export-session-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = parseInt(e.target.getAttribute("data-index"));
+      exportSingleM365Session(index);
+    });
+  });
+
+  container.querySelectorAll(".delete-session-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = parseInt(e.target.getAttribute("data-index"));
+      deleteM365Session(index);
+    });
+  });
+
+  container.querySelectorAll(".toggle-session-scopes-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = parseInt(e.target.getAttribute("data-index"));
+      const scopesDisplay = container.querySelector(
+        `.session-scopes-display[data-index="${index}"]`,
+      );
+
+      if (scopesDisplay) {
+        if (scopesDisplay.style.display === "none") {
+          scopesDisplay.style.display = "block";
+          btn.innerHTML = "Hide Scopes";
+        } else {
+          scopesDisplay.style.display = "none";
+          const scopeCount = scopesDisplay.querySelectorAll("div").length;
+          btn.innerHTML = `${scopeCount} Scope${scopeCount !== 1 ? "s" : ""}`;
+        }
+      }
+    });
+  });
+}
+
+function loadM365Session(index) {
+  activeM365Session = m365Sessions[index];
+  m365TokenData = activeM365Session;
+
+  chrome.storage.local.set({ [TOKEN_STORAGE_KEY]: m365TokenData });
+  displayActiveSession(activeM365Session);
+
+  if (!window._restoringSession) {
+    showToast(`✓ Loaded session: ${activeM365Session.name}`);
+  }
+
+  saveUIState({ activeSessionIndex: index });
+
+  // Initialize mailbox if on mailbox tab
+  const mailboxTab = document.getElementById("mailbox-tab");
+  if (mailboxTab && mailboxTab.classList.contains("active")) {
+    if (typeof initializeMailbox === "function") {
+      initializeMailbox();
+    }
+  }
+}
+
+async function deleteM365Session(index) {
+  if (confirm(`Delete session "${m365Sessions[index].name}"?`)) {
+    const sessionToDelete = m365Sessions[index];
+
+    // If deleting the active session, clear it
+    if (
+      activeM365Session &&
+      activeM365Session.access_token === sessionToDelete.access_token
+    ) {
+      activeM365Session = null;
+      m365TokenData = null;
+      await chrome.storage.local.remove(TOKEN_STORAGE_KEY);
+      displayActiveSession(null);
+      saveUIState({ activeSessionIndex: -1 });
+    }
+
+    m365Sessions.splice(index, 1);
+    await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+    renderM365Sessions();
+    showToast("Session deleted");
+  }
+}
+
+function showSaveM365SessionModal() {
+  if (!activeM365Session) {
+    showToast("No active session to rename");
+    return;
+  }
+  document.getElementById("m365SessionName").value =
+    activeM365Session.name || "";
+  document.getElementById("saveM365SessionModal").style.display = "flex";
+}
+
+function closeSaveM365SessionModal() {
+  document.getElementById("saveM365SessionModal").style.display = "none";
+}
+
+async function confirmSaveM365Session() {
+  const name = document.getElementById("m365SessionName").value.trim();
+  if (!name) {
+    showToast("Please enter a session name");
+    return;
+  }
+
+  activeM365Session.name = name;
+
+  const sessionIndex = m365Sessions.findIndex(
+    (s) =>
+      s.user === activeM365Session.user &&
+      s.created_at === activeM365Session.created_at,
+  );
+
+  if (sessionIndex >= 0) {
+    m365Sessions[sessionIndex].name = name;
+    await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+  } else {
+    await saveM365SessionToList(activeM365Session);
+  }
+
+  await loadM365Sessions();
+  displayActiveSession(activeM365Session);
+  closeSaveM365SessionModal();
+  showToast("Session renamed");
+}
+
+function showImportM365SessionModal() {
+  document.getElementById("importM365SessionModal").style.display = "flex";
+}
+
+function closeImportM365SessionModal() {
+  document.getElementById("importM365SessionModal").style.display = "none";
+  document.getElementById("importM365SessionData").value = "";
+}
+
+function handleM365SessionFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    document.getElementById("importM365SessionData").value =
+      event.target.result;
+  };
+  reader.readAsText(file);
+}
+
+async function confirmImportM365Session() {
+  const data = document.getElementById("importM365SessionData").value.trim();
+  if (!data) {
+    showToast("Please paste session data");
+    return;
+  }
+
+  try {
+    const sessions = JSON.parse(data);
+    const sessionArray = Array.isArray(sessions) ? sessions : [sessions];
+
+    for (const session of sessionArray) {
+      if (session.access_token && session.refresh_token) {
+        await saveM365SessionToList(session);
+      }
+    }
+
+    closeImportM365SessionModal();
+    showToast(`✅ Imported ${sessionArray.length} session(s)`);
+  } catch (error) {
+    console.error("Import error:", error);
+    showToast("Failed to import: " + error.message, "error");
+  }
+}
+
+async function exportM365Sessions() {
+  if (m365Sessions.length === 0) {
+    showToast("No sessions to export");
+    return;
+  }
+
+  const json = JSON.stringify(m365Sessions, null, 2);
+  const filename = `sushi_sessions_${new Date().toISOString().split("T")[0]}.json`;
+  downloadFile(json, filename, "application/json");
+  showToast(`✅ Exported ${m365Sessions.length} session(s)`);
+}
+
+async function exportSingleM365Session(index) {
+  if (index < 0 || index >= m365Sessions.length) {
+    showToast("❌ Invalid session");
+    return;
+  }
+
+  const session = m365Sessions[index];
+  const json = JSON.stringify([session], null, 2);
+  const safeName = session.name.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+  const filename = `sushi_session_${safeName}_${new Date().toISOString().split("T")[0]}.json`;
+  downloadFile(json, filename, "application/json");
+  showToast(`✓ Exported session: ${session.name}`);
+}
+
+function showClearAllM365Modal() {
+  const totalSessions = m365Sessions.length;
+  const hasActiveSession = activeM365Session !== null;
+
+  if (totalSessions === 0 && !hasActiveSession) {
+    showToast("No M365 sessions to clear", "warning");
+    return;
+  }
+
+  const modal = document.getElementById("clearAllM365Modal");
+  const confirmText = document.getElementById("clearAllM365ConfirmText");
+  const confirmBtn = document.getElementById("confirmClearAllM365");
+
+  confirmText.value = "";
+  confirmBtn.disabled = true;
+
+  const warningText = modal.querySelector("p");
+  let message = "This will <strong>permanently delete ";
+
+  if (hasActiveSession && totalSessions > 0) {
+    message += `the active session and all ${totalSessions} saved session(s)</strong>`;
+  } else if (hasActiveSession) {
+    message += "the active session</strong>";
+  } else {
+    message += `all ${totalSessions} saved session(s)</strong>`;
+  }
+
+  message += ". This action cannot be undone.";
+  warningText.innerHTML = message;
+
+  modal.style.display = "flex";
+
+  setTimeout(() => confirmText.focus(), 100);
+}
+
+function closeClearAllM365Modal() {
+  const modal = document.getElementById("clearAllM365Modal");
+  const confirmText = document.getElementById("clearAllM365ConfirmText");
+  const confirmBtn = document.getElementById("confirmClearAllM365");
+
+  modal.style.display = "none";
+  confirmText.value = "";
+  confirmBtn.disabled = true;
+}
+
+// Auto-refresh functionality
+function startAutoRefreshTimer() {
+  stopAutoRefreshTimer();
+
+  autoRefreshTimer = setInterval(() => {
+    checkAndAutoRefresh();
+    // Update UI display to show current expiration status for active session only
+    if (activeM365Session) {
+      updateSessionStatusBar(activeM365Session);
+    }
+  }, 30000); // Check every 30 seconds
+
+  // Also check immediately
+  checkAndAutoRefresh();
+}
+
+function stopAutoRefreshTimer() {
+  if (autoRefreshTimer) {
+    clearInterval(autoRefreshTimer);
+    autoRefreshTimer = null;
+  }
+}
+
+async function checkAndAutoRefresh() {
+  // Check if auto-refresh is globally enabled
+  const result = await chrome.storage.local.get([AUTO_REFRESH_STORAGE_KEY]);
+  const autoRefreshEnabled = result[AUTO_REFRESH_STORAGE_KEY] === true;
+
+  if (!autoRefreshEnabled) {
+    return;
+  }
+
+  const now = new Date();
+  let refreshedAny = false;
+  let hasActiveSession = false;
+
+  // Check all saved sessions
+  for (let i = 0; i < m365Sessions.length; i++) {
+    const session = m365Sessions[i];
+
+    if (!session || !session.refresh_token) {
+      continue;
+    }
+
+    const expiryDate = new Date(session.expires_at);
+    const remainingMs = expiryDate - now;
+    const remainingMinutes = Math.floor(remainingMs / 1000 / 60);
+
+    const isActiveSession =
+      activeM365Session &&
+      session.name === activeM365Session.name &&
+      session.user === activeM365Session.user;
+
+    if (isActiveSession) {
+      hasActiveSession = true;
+    }
+
+    // Auto-refresh if less than 5 minutes remaining OR already expired
+    // The refresh token can get a new access token regardless of how long the access token has been expired
+    if (remainingMinutes < 5) {
+      try {
+        const clientId =
+          session.client_id || "1b730954-1685-4b74-9bfd-dac224a7b894";
+        const scope =
+          session.scope ||
+          "https://graph.microsoft.com/.default offline_access";
+
+        const tokenResponse = await fetch(
+          "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+              client_id: clientId,
+              scope: scope,
+              refresh_token: session.refresh_token,
+              grant_type: "refresh_token",
+            }),
+          },
+        );
+
+        if (!tokenResponse.ok) {
+          const errorData = await tokenResponse.json();
+          throw new Error(
+            errorData.error_description || "Failed to refresh token",
+          );
+        }
+
+        const tokenData = await tokenResponse.json();
+
+        // Update the session with new tokens
+        session.access_token = tokenData.access_token;
+        session.refresh_token = tokenData.refresh_token;
+        session.expires_at = Date.now() + tokenData.expires_in * 1000;
+
+        // Update in saved sessions array
+        m365Sessions[i] = session;
+
+        // If this is the active session, update it too
+        if (isActiveSession) {
+          activeM365Session = session;
+          await chrome.storage.local.set({
+            [TOKEN_STORAGE_KEY]: activeM365Session,
+          });
+          displayActiveSession(activeM365Session);
+          updateSessionStatusBar(activeM365Session);
+        }
+
+        refreshedAny = true;
+      } catch (error) {
+        console.error(
+          `[Auto-refresh] Failed to refresh session "${session.name}":`,
+          error,
+        );
+        // Continue trying other sessions even if one fails
+      }
+    }
+  }
+
+  // Save all updated sessions if any were refreshed
+  if (refreshedAny) {
+    await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+    renderM365Sessions();
+
+    // Count how many sessions were refreshed
+    const refreshedCount = m365Sessions.filter((s) => {
+      const expiryDate = new Date(s.expires_at);
+      const remainingMs = expiryDate - now;
+      const remainingMinutes = Math.floor(remainingMs / 1000 / 60);
+      return remainingMinutes >= 55; // Recently refreshed (tokens usually last ~60 minutes)
+    }).length;
+
+    if (refreshedCount > 1) {
+      showToast(`✅ Auto-refreshed ${refreshedCount} sessions`);
+    } else if (refreshedCount === 1) {
+      showToast(`✅ Auto-refreshed session`);
+    }
+  }
+
+  // If no sessions were found at all, stop the timer
+  if (m365Sessions.length === 0 && !hasActiveSession) {
+    stopAutoRefreshTimer();
+  }
+}
+
+async function toggleAutoRefresh() {
+  const autoRefreshCheckbox = document.getElementById("autoRefreshCheckbox");
+
+  if (!autoRefreshCheckbox) {
+    return;
+  }
+
+  const isEnabled = autoRefreshCheckbox.checked;
+
+  // Save the global auto-refresh setting
+  await chrome.storage.local.set({
+    [AUTO_REFRESH_STORAGE_KEY]: isEnabled,
+  });
+
+  if (isEnabled) {
+    showToast("✅ Auto-refresh enabled for all sessions");
+    if (activeM365Session || m365Sessions.length > 0) {
+      startAutoRefreshTimer();
+    }
+  } else {
+    showToast("Auto-refresh disabled");
+    stopAutoRefreshTimer();
+  }
+}
+
+async function loadAutoRefreshSetting() {
+  const autoRefreshCheckbox = document.getElementById("autoRefreshCheckbox");
+  if (!autoRefreshCheckbox) {
+    return;
+  }
+
+  const result = await chrome.storage.local.get([AUTO_REFRESH_STORAGE_KEY]);
+  const autoRefreshEnabled = result[AUTO_REFRESH_STORAGE_KEY] === true;
+
+  autoRefreshCheckbox.checked = autoRefreshEnabled;
+
+  // Start timer if enabled and there are any sessions (active or saved)
+  if (autoRefreshEnabled && (activeM365Session || m365Sessions.length > 0)) {
+    startAutoRefreshTimer();
+  } else if (autoRefreshEnabled) {
+  }
+}
+
+async function clearAllM365Sessions() {
+  try {
+    showToast("Clearing M365 sessions...", "info");
+    closeClearAllM365Modal();
+
+    // Clear active session
+    if (activeM365Session !== null) {
+      activeM365Session = null;
+      stopAutoRefreshTimer();
+      displayActiveSession(null);
+      await chrome.storage.local.remove(TOKEN_STORAGE_KEY);
+
+      // Hide session status bar
+      const statusBar = document.getElementById("sessionStatusBar");
+      if (statusBar) {
+        statusBar.style.display = "none";
+      }
+    }
+
+    // Clear all saved sessions
+    const sessionCount = m365Sessions.length;
+    m365Sessions = [];
+    await chrome.storage.local.remove(SESSIONS_STORAGE_KEY);
+    renderM365Sessions();
+
+    // Clear UI state
+    saveUIState({ activeSessionIndex: null });
+
+    // Clear mailbox if on mailbox tab
+    const mailboxTab = document.getElementById("mailbox-tab");
+    if (mailboxTab && mailboxTab.classList.contains("active")) {
+      if (typeof showMailboxNoSession === "function") {
+        showMailboxNoSession();
+      }
+    }
+
+    showToast(
+      `Cleared ${sessionCount} session(s) and active session`,
+      "success",
+    );
+  } catch (error) {
+    console.error("Error clearing M365 sessions:", error);
+    showToast("Failed to clear M365 sessions", "error");
+  }
+}

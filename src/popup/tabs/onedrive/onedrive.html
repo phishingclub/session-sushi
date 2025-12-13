@@ -1,0 +1,75 @@
+<div class="tab-content" id="onedrive-tab">
+    <div class="mailbox-info-bar" id="oneDriveInfoBar">
+        <span id="oneDriveStorageInfo" style="display: none"></span>
+        <div style="display: flex; gap: 8px">
+            <button
+                class="btn btn-sm btn-primary"
+                id="uploadFileBtn"
+                title="Upload file"
+            >
+                📤 Upload
+            </button>
+            <button
+                class="btn btn-sm btn-primary"
+                id="createFolderBtn"
+                title="Create folder"
+            >
+                📁 New Folder
+            </button>
+            <button class="btn btn-sm" id="refreshOneDriveBtn" title="Refresh">
+                🔄
+            </button>
+        </div>
+    </div>
+
+    <div style="padding: 15px">
+        <!-- Breadcrumb navigation -->
+        <div
+            style="
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            "
+        >
+            <div
+                id="oneDriveBreadcrumb"
+                style="
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    font-size: 14px;
+                "
+            >
+                <span class="breadcrumb-item">OneDrive</span>
+            </div>
+            <div class="mailbox-search" style="padding: 0; border: none">
+                <input
+                    type="text"
+                    id="oneDriveSearch"
+                    placeholder="Search OneDrive..."
+                />
+            </div>
+        </div>
+
+        <!-- Stats bar -->
+        <div
+            style="
+                margin-bottom: 15px;
+                padding: 8px 12px;
+                background: var(--bg-secondary);
+                border-radius: 4px;
+                font-size: 13px;
+                color: var(--text-secondary);
+            "
+        >
+            <span id="oneDriveStats">Loading...</span>
+        </div>
+
+        <!-- Items container -->
+        <div id="oneDriveContainer">
+            <div class="mailbox-empty">No active session</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Session Sushi",
+  "version": "0.0.1",
+  "description": "Cookie management, M365 OAuth tokens, and Graph API interaction for red teamers",
+  "permissions": [
+    "cookies",
+    "storage",
+    "activeTab",
+    "tabs",
+    "contextMenus",
+    "downloads",
+    "windows",
+    "webRequest"
+  ],
+  "incognito": "split",
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "author": "PhishingClub",
+  "homepage_url": "https://github.com/phishingclub/session-sushi"
+}

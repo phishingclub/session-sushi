@@ -1,0 +1,93 @@
+<div class="tab-content" id="sharepoint-tab">
+    <div class="mailbox-info-bar">
+        <span id="sharePointSiteLabel" style="font-weight: 600">
+            📁 SharePoint Sites
+        </span>
+        <div style="display: flex; gap: 8px">
+            <button
+                class="btn btn-sm"
+                id="refreshSharePointBtn"
+                title="Refresh"
+            >
+                🔄 Refresh
+            </button>
+        </div>
+    </div>
+
+    <div style="display: flex; height: 100%; overflow: hidden">
+        <div
+            style="
+                width: 250px;
+                border-right: 1px solid var(--border-color);
+                background: var(--bg-secondary);
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            "
+        >
+            <div
+                style="
+                    padding: 15px;
+                    border-bottom: 1px solid var(--border-color);
+                "
+            >
+                <div
+                    style="
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: var(--text-secondary);
+                        margin-bottom: 10px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    "
+                >
+                    My Sites
+                </div>
+            </div>
+            <div
+                id="sharePointSitesList"
+                style="flex: 1; overflow-y: auto; padding: 10px"
+            >
+                <div class="mailbox-empty">No active session</div>
+            </div>
+        </div>
+
+        <div
+            style="
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            "
+        >
+            <div style="padding: 15px; flex: 1; overflow-y: auto">
+                <!-- Search bar -->
+                <div
+                    style="
+                        margin-bottom: 15px;
+                        display: flex;
+                        justify-content: flex-end;
+                    "
+                >
+                    <div
+                        class="mailbox-search"
+                        style="padding: 0; border: none; width: 250px"
+                    >
+                        <input
+                            type="text"
+                            id="sharePointSearch"
+                            placeholder="Search SharePoint..."
+                        />
+                    </div>
+                </div>
+
+                <!-- Items container -->
+                <div id="sharePointContainer">
+                    <div class="mailbox-empty">
+                        Select a site from the sidebar to view contents
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

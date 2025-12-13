@@ -1,0 +1,33 @@
+{
+  "name": "session-sushi",
+  "version": "0.0.1",
+  "description": "Cookie management, M365 OAuth tokens, and Graph API interaction for red teamers",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "echo \"Linting not yet configured\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phishingclub/session-sushi.git"
+  },
+  "keywords": [
+    "cookies",
+    "oauth",
+    "microsoft365",
+    "graph-api",
+    "red-team",
+    "session-management"
+  ],
+  "author": "PhishingClub <ronni@phishingclub.org>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/phishingclub/session-sushi/issues"
+  },
+  "homepage": "https://github.com/phishingclub/session-sushi#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

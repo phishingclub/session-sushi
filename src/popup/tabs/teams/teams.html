@@ -1,0 +1,26 @@
+<div class="mailbox-info-bar">
+    <div style="display: flex; gap: 8px">
+        <button class="btn btn-sm" id="viewTeamsBtn" title="View Teams">
+            Teams
+        </button>
+        <button class="btn btn-sm" id="viewChatsBtn" title="View Chats">
+            Chats
+        </button>
+        <button class="btn btn-sm" id="refreshTeamsBtn" title="Refresh">
+            🔄
+        </button>
+    </div>
+</div>
+
+<div style="display: flex; height: 100%; overflow: hidden">
+    <!-- Main content area -->
+    <div
+        style="flex: 1; display: flex; flex-direction: column; overflow: hidden"
+    >
+        <div style="padding: 15px; flex: 1; overflow-y: auto">
+            <div id="teamsContainer">
+                <div class="mailbox-empty">No active session</div>
+            </div>
+        </div>
+    </div>
+</div>

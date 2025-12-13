@@ -1,0 +1,33 @@
+<div class="toolbar">
+    <div class="search-box">
+        <input
+            type="text"
+            id="cookieSearch"
+            placeholder="Search cookies by name, domain, or value..."
+        />
+    </div>
+</div>
+
+<div class="stats" id="cookieStats">Total: 0 cookies</div>
+
+<div class="table-container">
+    <table id="cookiesTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Domain</th>
+                <th>Value</th>
+                <th>Path</th>
+                <th>Expires</th>
+                <th>Flags</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="cookiesTableBody">
+            <tr>
+                <td colspan="7" class="empty-state">Loading...</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="loadingIndicator" class="loading-indicator hidden">Loading...</div>
+</div>

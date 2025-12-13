@@ -1,0 +1,230 @@
+#sessions-tab .padding-20 {
+  padding: 20px;
+}
+
+#sessions-tab .grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+#sessions-tab .card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+#sessions-tab .card-min-height {
+  min-height: 400px;
+}
+
+#sessions-tab .section-title {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+#sessions-tab .form-section {
+  margin-bottom: 16px;
+}
+
+#sessions-tab .form-field {
+  margin-bottom: 12px;
+}
+
+#sessions-tab .form-field-small {
+  margin-bottom: 10px;
+}
+
+#sessions-tab .form-field-last {
+  margin-bottom: 0;
+}
+
+#sessions-tab .label-block {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+#sessions-tab .label-small {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+#sessions-tab .select-full,
+#sessions-tab .input-full {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+#sessions-tab .text-mono {
+  font-family: monospace;
+}
+
+#sessions-tab .text-sm {
+  font-size: 12px;
+}
+
+#sessions-tab .flex-gap {
+  display: flex;
+  gap: 8px;
+}
+
+#sessions-tab .scrollable-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+#sessions-tab .active-session-box {
+  display: none;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+#sessions-tab .active-session-box.active {
+  display: block;
+}
+
+#sessions-tab .session-info-field {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#sessions-tab .session-info-field-last {
+  margin-bottom: 12px;
+}
+
+#sessions-tab .session-info-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+#sessions-tab .session-info-value {
+  font-size: 13px;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+#sessions-tab .toggle-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+#sessions-tab .toggle-btn:hover {
+  background-color: var(--bg-hover);
+}
+
+#sessions-tab .scopes-display {
+  display: none;
+  margin-top: 8px;
+  padding: 8px;
+  background-color: var(--bg-secondary);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+#sessions-tab .scopes-display.visible {
+  display: block;
+}
+
+#sessions-tab .action-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#sessions-tab .no-session-message {
+  display: block;
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+#sessions-tab .no-session-message.hidden {
+  display: none;
+}
+
+#sessions-tab .session-item {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#sessions-tab .session-item:hover {
+  border-color: var(--primary-color);
+  background-color: var(--bg-hover);
+}
+
+#sessions-tab .session-item.active {
+  border-color: var(--primary-color);
+  background-color: var(--bg-hover);
+}
+
+#sessions-tab .session-item-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+#sessions-tab .session-item-user {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+#sessions-tab .session-item-expiry {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+#sessions-tab .session-item-expiry.expiring-soon {
+  color: var(--warning-color);
+  font-weight: 600;
+}
+
+#sessions-tab .session-item-expiry.expired {
+  color: var(--danger-color);
+  font-weight: 600;
+}
+
+@media (max-width: 1200px) {
+  #sessions-tab .grid-3col {
+    grid-template-columns: 1fr;
+  }
+}
