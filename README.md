@@ -34,7 +34,7 @@
 
 ### Browser Extension Stores
 
-**TODO**
+**Waiting for verification - Do not download from any extensions stores!**
 
 ### Manual Installation
 
