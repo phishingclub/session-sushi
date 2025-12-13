@@ -30,6 +30,11 @@
 - **Calendar** - Access calendar events
 - **Directory** - Query users and groups
 
+## Usage
+
+Use this extension in a isolated browser that does not interfer with your normal session.
+Preferly open a incognito/private window to fully isolate the sessions. 
+
 ## Installation
 
 ### Browser Extension Stores
