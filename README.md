@@ -23,7 +23,7 @@
 
 ### M365 Data Browsers
 - **Grapth** - Execute Graph API queries and useful quick action queries
-- **Mailbox** - Browse folders, read emails, search messages
+- **Mailbox** - Browse folders, read emails, send emails, search messages
 - **OneDrive** - Navigate folders, search files, view file metadata
 - **SharePoint** - Access sites and documents
 - **Teams** - View teams and channels
@@ -39,18 +39,27 @@
 ### Manual Installation
 
 A manual installation, where you sideload the extension is the most secure way you can use this 
-extensions as it will NOT auto update. 
+extension as it will NOT auto update.
+
+**Option 1: Clone with Git**
 
 ```bash
 git clone https://github.com/phishingclub/session-sushi.git
-cd session-sushi
 ```
 
-Load in Chrome/Edge:
+**Option 2: Download ZIP**
+
+1. Go to [https://github.com/phishingclub/session-sushi](https://github.com/phishingclub/session-sushi)
+2. Click the "Code" button
+3. Select "Download ZIP"
+4. Extract the ZIP file to a location of your choice
+
+**Load in Chrome/Edge:**
+
 1. Navigate to `chrome://extensions/` or `edge://extensions/`
 2. Enable "Developer mode"
 3. Click "Load unpacked"
-4. Select the `session-sushi` directory
+4. Select the `session-sushi` directory (or the extracted folder if you downloaded the ZIP)
 
 ## Development
 
