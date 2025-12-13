@@ -4,7 +4,7 @@
 
 **Session Sushi** is a zero dependency browser extension for handling cookies, Microsoft 365 OAuth tokens, and Graph API interactions. Build for security professionals.
 
-![Phishing Club Dashboard](https://phishing.club/img/session-sushi/animated.gif)
+![Session Sushi](https://phishing.club/img/session-sushi/animated.gif)
 
 ## Features
 
