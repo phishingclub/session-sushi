@@ -1,6 +1,6 @@
 .rules
-dist/
 build/
+dist/
 *.crx
 *.pem
 *.zip
