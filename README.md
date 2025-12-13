@@ -2,9 +2,9 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-**Session Sushi** is a zero dependency browser extension for handling cookies, Microsoft 365 OAuth tokens, and Graph API interactions. 
+**Session Sushi** is a zero dependency browser extension for handling cookies, Microsoft 365 OAuth tokens, and Graph API interactions. Build for security professionals.
 
-Build for security professionals.
+![Phishing Club Dashboard](https://phishing.club/img/session-sushi/animated.gif)
 
 ## Features
 
