@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="icons/icon128.png" alt="Session Sushi" width="128">
+</div>
+
 # Session Sushi
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
