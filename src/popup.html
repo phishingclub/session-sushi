@@ -283,11 +283,11 @@
             </div>
         </div>
 
-        <div id="saveM365SessionModal" class="modal">
+        <div id="editM365SessionModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>Save M365 Session</h2>
-                    <button class="modal-close" id="closeSaveM365SessionModal">
+                    <h2>Edit Session</h2>
+                    <button class="modal-close" id="closeEditM365SessionModal">
                         ✕
                     </button>
                 </div>
@@ -296,22 +296,68 @@
                         <label>Session Name:</label>
                         <input
                             type="text"
-                            id="m365SessionName"
+                            id="editM365SessionName"
                             placeholder="e.g., admin@company.com"
                         />
+                        <small>Required field</small>
+                    </div>
+                    <div class="form-group">
+                        <label>User:</label>
+                        <input
+                            type="text"
+                            id="editM365SessionUser"
+                            placeholder="e.g., admin@company.com"
+                        />
+
+                    </div>
+                    <div class="form-group">
+                        <label>Client ID:</label>
+                        <input
+                            type="text"
+                            id="editM365SessionClientId"
+                            placeholder="Azure App Client ID"
+                        />
+
+                    </div>
+                    <div class="form-group">
+                        <label>Scope:</label>
+                        <input
+                            type="text"
+                            id="editM365SessionScope"
+                            placeholder="Space-separated scopes"
+                        />
+
+                    </div>
+                    <div class="form-group">
+                        <label>Auth URL:</label>
+                        <input
+                            type="text"
+                            id="editM365SessionAuthUrl"
+                            placeholder="Authorization endpoint"
+                        />
+
+                    </div>
+                    <div class="form-group">
+                        <label>Token URL:</label>
+                        <input
+                            type="text"
+                            id="editM365SessionTokenUrl"
+                            placeholder="Token endpoint"
+                        />
+
                     </div>
                     <div class="modal-footer">
                         <button
-                            class="btn btn-primary"
-                            id="confirmSaveM365Session"
-                        >
-                            Save
-                        </button>
-                        <button
-                            class="btn btn-secondary"
-                            id="cancelSaveM365Session"
+                            class="btn btn-danger-outline"
+                            id="cancelEditM365Session"
                         >
                             Cancel
+                        </button>
+                        <button
+                            class="btn btn-primary"
+                            id="confirmEditM365Session"
+                        >
+                            Save
                         </button>
                     </div>
                 </div>

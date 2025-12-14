@@ -868,6 +868,7 @@ function renderM365Sessions() {
     // Action buttons
     const actionsDiv = document.createElement("div");
     actionsDiv.style.display = "flex";
+    actionsDiv.style.flexWrap = "wrap";
     actionsDiv.style.gap = "6px";
 
     const loadBtn = document.createElement("button");
@@ -876,6 +877,13 @@ function renderM365Sessions() {
     loadBtn.style.fontSize = "11px";
     loadBtn.style.padding = "6px 10px";
     loadBtn.textContent = "📥 Load";
+
+    const editBtn = document.createElement("button");
+    editBtn.className = "btn btn-secondary btn-small edit-session-btn";
+    editBtn.setAttribute("data-index", index);
+    editBtn.style.fontSize = "11px";
+    editBtn.style.padding = "6px 10px";
+    editBtn.textContent = "✏️ Edit";
 
     const exportBtn = document.createElement("button");
     exportBtn.className = "btn btn-secondary btn-small export-session-btn";
@@ -892,6 +900,7 @@ function renderM365Sessions() {
     deleteBtn.textContent = "❌ Delete";
 
     actionsDiv.appendChild(loadBtn);
+    actionsDiv.appendChild(editBtn);
     actionsDiv.appendChild(exportBtn);
     actionsDiv.appendChild(deleteBtn);
 
@@ -909,6 +918,14 @@ function renderM365Sessions() {
       e.stopPropagation();
       const index = parseInt(e.target.getAttribute("data-index"));
       loadM365Session(index);
+    });
+  });
+
+  container.querySelectorAll(".edit-session-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = parseInt(e.target.getAttribute("data-index"));
+      editM365Session(index);
     });
   });
 
@@ -995,46 +1012,149 @@ async function deleteM365Session(index) {
   }
 }
 
-function showSaveM365SessionModal() {
-  if (!activeM365Session) {
-    showToast("No active session to rename");
+function editM365Session(index) {
+  const session = m365Sessions[index];
+  if (!session) {
+    showToast("Session not found");
     return;
   }
-  document.getElementById("m365SessionName").value =
+
+  // Store the index for later use
+  window._editingSessionIndex = index;
+
+  document.getElementById("editM365SessionName").value = session.name || "";
+  document.getElementById("editM365SessionUser").value = session.user || "";
+  document.getElementById("editM365SessionClientId").value =
+    session.client_id || "";
+  document.getElementById("editM365SessionScope").value = session.scope || "";
+  document.getElementById("editM365SessionAuthUrl").value =
+    session.auth_url || "";
+  document.getElementById("editM365SessionTokenUrl").value =
+    session.token_url || "";
+
+  document.getElementById("editM365SessionModal").style.display = "flex";
+}
+
+function showEditM365SessionModal() {
+  if (!activeM365Session) {
+    showToast("No active session to edit");
+    return;
+  }
+
+  // Clear the editing index to indicate we're editing the active session
+  window._editingSessionIndex = null;
+
+  document.getElementById("editM365SessionName").value =
     activeM365Session.name || "";
-  document.getElementById("saveM365SessionModal").style.display = "flex";
+  document.getElementById("editM365SessionUser").value =
+    activeM365Session.user || "";
+  document.getElementById("editM365SessionClientId").value =
+    activeM365Session.client_id || "";
+  document.getElementById("editM365SessionScope").value =
+    activeM365Session.scope || "";
+  document.getElementById("editM365SessionAuthUrl").value =
+    activeM365Session.auth_url || "";
+  document.getElementById("editM365SessionTokenUrl").value =
+    activeM365Session.token_url || "";
+
+  document.getElementById("editM365SessionModal").style.display = "flex";
 }
 
-function closeSaveM365SessionModal() {
-  document.getElementById("saveM365SessionModal").style.display = "none";
+function closeEditM365SessionModal() {
+  document.getElementById("editM365SessionModal").style.display = "none";
 }
 
-async function confirmSaveM365Session() {
-  const name = document.getElementById("m365SessionName").value.trim();
+async function confirmEditM365Session() {
+  const name = document.getElementById("editM365SessionName").value.trim();
+  const user = document.getElementById("editM365SessionUser").value.trim();
+  const clientId = document
+    .getElementById("editM365SessionClientId")
+    .value.trim();
+  const scope = document.getElementById("editM365SessionScope").value.trim();
+  const authUrl = document
+    .getElementById("editM365SessionAuthUrl")
+    .value.trim();
+  const tokenUrl = document
+    .getElementById("editM365SessionTokenUrl")
+    .value.trim();
+
   if (!name) {
     showToast("Please enter a session name");
     return;
   }
 
-  activeM365Session.name = name;
+  // Check if we're editing a saved session or the active session
+  if (
+    window._editingSessionIndex !== null &&
+    window._editingSessionIndex !== undefined
+  ) {
+    // Editing a saved session
+    const sessionIndex = window._editingSessionIndex;
+    const session = m365Sessions[sessionIndex];
 
-  const sessionIndex = m365Sessions.findIndex(
-    (s) =>
-      s.user === activeM365Session.user &&
-      s.created_at === activeM365Session.created_at,
-  );
+    if (session) {
+      session.name = name;
+      session.user = user || session.user;
+      session.client_id = clientId || session.client_id;
+      session.scope = scope || session.scope;
+      session.auth_url = authUrl || session.auth_url;
+      session.token_url = tokenUrl || session.token_url;
 
-  if (sessionIndex >= 0) {
-    m365Sessions[sessionIndex].name = name;
-    await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+      m365Sessions[sessionIndex] = session;
+      await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+
+      // If this is also the active session, update it
+      if (
+        activeM365Session &&
+        activeM365Session.created_at === session.created_at
+      ) {
+        activeM365Session = session;
+        await chrome.storage.local.set({
+          [TOKEN_STORAGE_KEY]: activeM365Session,
+        });
+        displayActiveSession(activeM365Session);
+      }
+
+      await loadM365Sessions();
+      closeEditM365SessionModal();
+      showToast("✅ Session updated");
+      window._editingSessionIndex = null;
+    }
   } else {
-    await saveM365SessionToList(activeM365Session);
-  }
+    // Editing the active session
+    if (!activeM365Session) {
+      showToast("No active session to edit");
+      return;
+    }
 
-  await loadM365Sessions();
-  displayActiveSession(activeM365Session);
-  closeSaveM365SessionModal();
-  showToast("Session renamed");
+    // Find session index before updating user field
+    const sessionIndex = m365Sessions.findIndex(
+      (s) =>
+        s.user === activeM365Session.user &&
+        s.created_at === activeM365Session.created_at,
+    );
+
+    // Update session fields
+    activeM365Session.name = name;
+    activeM365Session.user = user || activeM365Session.user;
+    activeM365Session.client_id = clientId || activeM365Session.client_id;
+    activeM365Session.scope = scope || activeM365Session.scope;
+    activeM365Session.auth_url = authUrl || activeM365Session.auth_url;
+    activeM365Session.token_url = tokenUrl || activeM365Session.token_url;
+
+    if (sessionIndex >= 0) {
+      m365Sessions[sessionIndex] = activeM365Session;
+      await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+    } else {
+      await saveM365SessionToList(activeM365Session);
+    }
+
+    await chrome.storage.local.set({ [TOKEN_STORAGE_KEY]: activeM365Session });
+    await loadM365Sessions();
+    displayActiveSession(activeM365Session);
+    closeEditM365SessionModal();
+    showToast("✅ Session updated");
+  }
 }
 
 function showImportM365SessionModal() {
