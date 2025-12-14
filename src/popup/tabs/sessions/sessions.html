@@ -4,20 +4,13 @@
             <h3 class="section-title">OAuth</h3>
             <div class="form-section">
                 <div class="form-field">
-                    <label class="label-block">
-                        Preset Apps
-                    </label>
-                    <select
-                        id="presetSelector"
-                        class="select-full"
-                    ></select>
+                    <label class="label-block"> Preset Apps </label>
+                    <select id="presetSelector" class="select-full"></select>
                 </div>
 
                 <div style="margin-top: 12px">
                     <div class="form-field-small">
-                        <label class="label-small">
-                            Client ID:
-                        </label>
+                        <label class="label-small"> Client ID: </label>
                         <input
                             type="text"
                             id="clientIdInput"
@@ -28,9 +21,7 @@
                     </div>
 
                     <div class="form-field-small">
-                        <label class="label-small">
-                            Redirect URI:
-                        </label>
+                        <label class="label-small"> Redirect URI: </label>
                         <input
                             type="text"
                             id="redirectUriInput"
@@ -40,10 +31,8 @@
                         />
                     </div>
 
-                    <div class="form-field-last">
-                        <label class="label-small">
-                            Scope:
-                        </label>
+                    <div class="form-field-small">
+                        <label class="label-small"> Scope: </label>
                         <input
                             type="text"
                             id="scopeInput"
@@ -52,14 +41,33 @@
                             class="input-full text-mono text-sm"
                         />
                     </div>
+
+                    <div class="form-field-small">
+                        <label class="label-small"> Auth URL: </label>
+                        <input
+                            type="text"
+                            id="authUrlInput"
+                            value="https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
+                            placeholder="Authorization endpoint"
+                            class="input-full text-mono text-sm"
+                        />
+                    </div>
+
+                    <div class="form-field-last">
+                        <label class="label-small"> Token URL: </label>
+                        <input
+                            type="text"
+                            id="tokenUrlInput"
+                            value="https://login.microsoftonline.com/common/oauth2/v2.0/token"
+                            placeholder="Token endpoint"
+                            class="input-full text-mono text-sm"
+                        />
+                    </div>
                 </div>
             </div>
 
             <div class="flex-gap">
-                <button
-                    class="btn btn-primary"
-                    id="getGraphToken"
-                >
+                <button class="btn btn-primary" id="getGraphToken">
                     🔑 Get New Token
                 </button>
             </div>
@@ -91,63 +99,82 @@
                         style="cursor: pointer"
                     />
                     <span style="font-size: 13px"
-                        >Auto-refresh sessions when &lt; 5
-                        min to expiration</span
+                        >Auto-refresh sessions when &lt; 5 min to
+                        expiration</span
                     >
                 </label>
             </div>
 
-            <div
-                id="m365SessionsContainer"
-                class="scrollable-container"
-            ></div>
+            <div id="m365SessionsContainer" class="scrollable-container"></div>
         </div>
 
         <div class="card">
             <h3 class="section-title">Active Session</h3>
 
-            <div
-                id="activeSessionDisplay"
-                class="active-session-box"
-            >
+            <div id="activeSessionDisplay" class="active-session-box">
                 <div class="session-info-field">
-                    <strong class="session-info-label"
-                        >Session</strong
-                    >
+                    <strong class="session-info-label">Session</strong>
                     <div
                         id="activeSessionName"
                         class="session-info-value"
                     ></div>
                 </div>
                 <div class="session-info-field">
-                    <strong class="session-info-label"
-                        >User</strong
-                    >
+                    <strong class="session-info-label">User</strong>
                     <div
                         id="activeSessionUser"
                         class="session-info-value"
                     ></div>
                 </div>
-                <div class="session-info-field-last">
-                    <strong class="session-info-label"
-                        >Expires</strong
-                    >
+                <div class="session-info-field">
+                    <strong class="session-info-label">Expires</strong>
                     <div
                         id="activeSessionExpiry"
                         class="session-info-value"
                     ></div>
                 </div>
                 <div class="session-info-field">
-                    <button
-                        id="toggleActiveScopes"
-                        class="toggle-btn"
+                    <strong class="session-info-label">Created At</strong>
+                    <div
+                        id="activeSessionCreatedAt"
+                        class="session-info-value"
+                    ></div>
+                </div>
+                <div class="session-info-field">
+                    <strong class="session-info-label">Client ID</strong>
+                    <div
+                        id="activeSessionClientId"
+                        class="session-info-value"
+                    ></div>
+                </div>
+                <div class="session-info-field">
+                    <strong class="session-info-label"
+                        >Scopes (Requested)</strong
                     >
+                    <div
+                        id="activeSessionRequestedScopes"
+                        class="session-info-value"
+                    ></div>
+                </div>
+                <div class="session-info-field">
+                    <strong class="session-info-label">Auth URL</strong>
+                    <div
+                        id="activeSessionAuthUrl"
+                        class="session-info-value"
+                    ></div>
+                </div>
+                <div class="session-info-field">
+                    <strong class="session-info-label">Token URL</strong>
+                    <div
+                        id="activeSessionTokenUrl"
+                        class="session-info-value"
+                    ></div>
+                </div>
+                <div class="session-info-field">
+                    <button id="toggleActiveScopes" class="toggle-btn">
                         View Scopes
                     </button>
-                    <div
-                        id="activeScopesDisplay"
-                        class="scopes-display"
-                    ></div>
+                    <div id="activeScopesDisplay" class="scopes-display"></div>
                 </div>
 
                 <div class="action-row">
@@ -172,10 +199,7 @@
                 </div>
             </div>
 
-            <div
-                id="noActiveSessionMessage"
-                class="no-session-message"
-            >
+            <div id="noActiveSessionMessage" class="no-session-message">
                 No active session
             </div>
         </div>
