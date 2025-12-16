@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Session Sushi",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Cookie management, M365 OAuth tokens, and Graph API interaction for red teamers",
   "permissions": [
     "cookies",
