@@ -57,10 +57,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         clientId: request.clientId,
         redirectUri: request.redirectUri,
         scope: request.scope,
+        authUrl: request.authUrl,
+        tokenUrl: request.tokenUrl,
         timestamp: Date.now(),
       };
 
-      handleGraphTokenFlow(request.clientId, request.redirectUri, request.scope)
+      handleGraphTokenFlow(
+        request.clientId,
+        request.redirectUri,
+        request.scope,
+        request.authUrl,
+        request.tokenUrl,
+      )
         .then((result) => {
           pendingAuthFlow = null;
           sendResponse(result);
@@ -173,7 +181,13 @@ function base64UrlEncode(array) {
   return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 
-async function handleGraphTokenFlow(clientId, redirectUri, scope) {
+async function handleGraphTokenFlow(
+  clientId,
+  redirectUri,
+  scope,
+  authUrl,
+  tokenUrl,
+) {
   return new Promise(async (resolve, reject) => {
     let authWindowId = null;
     let authTabId = null;
@@ -207,20 +221,21 @@ async function handleGraphTokenFlow(clientId, redirectUri, scope) {
       }
     };
 
-    const authUrl = new URL(
-      "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    const authUrlObj = new URL(
+      authUrl ||
+        "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     );
-    authUrl.searchParams.set("client_id", clientId);
-    authUrl.searchParams.set("response_type", "code");
-    authUrl.searchParams.set("redirect_uri", redirectUri);
-    authUrl.searchParams.set("scope", scope);
-    authUrl.searchParams.set("response_mode", "query");
-    authUrl.searchParams.set("code_challenge", codeChallenge);
-    authUrl.searchParams.set("code_challenge_method", "S256");
+    authUrlObj.searchParams.set("client_id", clientId);
+    authUrlObj.searchParams.set("response_type", "code");
+    authUrlObj.searchParams.set("redirect_uri", redirectUri);
+    authUrlObj.searchParams.set("scope", scope);
+    authUrlObj.searchParams.set("response_mode", "query");
+    authUrlObj.searchParams.set("code_challenge", codeChallenge);
+    authUrlObj.searchParams.set("code_challenge_method", "S256");
 
     chrome.windows.create(
       {
-        url: authUrl.toString(),
+        url: authUrlObj.toString(),
         type: "popup",
         width: 500,
         height: 600,
@@ -270,6 +285,7 @@ async function handleGraphTokenFlow(clientId, redirectUri, scope) {
                 scope,
                 code,
                 codeVerifier,
+                tokenUrl,
               )
                 .then((tokenData) => {
                   chrome.storage.local.set({
@@ -329,6 +345,7 @@ async function exchangeCodeForToken(
   scope,
   code,
   codeVerifier,
+  tokenUrl,
 ) {
   const params = {
     client_id: clientId,
@@ -340,7 +357,7 @@ async function exchangeCodeForToken(
   };
 
   const tokenResponse = await fetch(
-    "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+    tokenUrl || "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     {
       method: "POST",
       headers: {

@@ -332,7 +332,7 @@ function setupEventListeners() {
   const refreshActiveSessionBtn = document.getElementById(
     "refreshActiveSession",
   );
-  const saveActiveSessionBtn = document.getElementById("saveActiveSession");
+  const editActiveSessionBtn = document.getElementById("editActiveSession");
   const clearActiveSessionBtn = document.getElementById("clearActiveSession");
 
   const presetSelector = document.getElementById("presetSelector");
@@ -354,9 +354,9 @@ function setupEventListeners() {
     });
   }
 
-  if (saveActiveSessionBtn) {
-    saveActiveSessionBtn.addEventListener("click", () => {
-      showSaveM365SessionModal();
+  if (editActiveSessionBtn) {
+    editActiveSessionBtn.addEventListener("click", () => {
+      showEditM365SessionModal();
     });
   }
 
@@ -445,14 +445,14 @@ function setupEventListeners() {
   setupFolderManagementListeners();
 
   document
-    .getElementById("closeSaveM365SessionModal")
-    ?.addEventListener("click", closeSaveM365SessionModal);
+    .getElementById("closeEditM365SessionModal")
+    ?.addEventListener("click", closeEditM365SessionModal);
   document
-    .getElementById("cancelSaveM365Session")
-    ?.addEventListener("click", closeSaveM365SessionModal);
+    .getElementById("cancelEditM365Session")
+    ?.addEventListener("click", closeEditM365SessionModal);
   document
-    .getElementById("confirmSaveM365Session")
-    ?.addEventListener("click", confirmSaveM365Session);
+    .getElementById("confirmEditM365Session")
+    ?.addEventListener("click", confirmEditM365Session);
 
   document
     .getElementById("closeImportM365SessionModal")
@@ -489,6 +489,28 @@ function setupEventListeners() {
         closeComposeEmailModal();
       }
     });
+
+  // Global Escape key handler to close modals
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      // Find any open modal and close it
+      const allModals = document.querySelectorAll(".modal");
+
+      for (const modal of allModals) {
+        if (
+          modal.style.display === "flex" ||
+          modal.classList.contains("active")
+        ) {
+          // Find the close button in this modal
+          const closeButton = modal.querySelector(".modal-close");
+          if (closeButton) {
+            closeButton.click();
+            break; // Only close the first open modal
+          }
+        }
+      }
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", initialize);

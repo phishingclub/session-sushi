@@ -3,30 +3,40 @@ const M365_PRESETS = {
     clientId: "14d82eec-204b-4c2f-b7e8-296a70dab67e",
     redirectUri: "https://login.microsoftonline.com/common/oauth2/nativeclient",
     scope: "https://graph.microsoft.com/.default offline_access",
+    auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     description: "Graph PowerShell",
   },
   "azure-cli": {
     clientId: "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
     redirectUri: "http://localhost",
     scope: "https://graph.microsoft.com/.default offline_access",
+    auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     description: "Azure CLI",
   },
   "azure-powershell": {
     clientId: "1950a258-227b-4e31-a9cf-717495945fc2",
     redirectUri: "urn:ietf:wg:oauth:2.0:oob",
     scope: "https://graph.microsoft.com/.default offline_access",
+    auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     description: "Azure PowerShell",
   },
   "ms-teams": {
     clientId: "1fec8e78-bce4-4aaf-ab1b-5451cc387264",
     redirectUri: "https://login.microsoftonline.com/common/oauth2/nativeclient",
     scope: "https://graph.microsoft.com/.default offline_access",
+    auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     description: "Microsoft Teams",
   },
   "graph-explorer": {
     clientId: "de8bc8b5-d9f9-48b1-a8ad-b748da725064",
     redirectUri: "https://developer.microsoft.com/en-us/graph/graph-explorer",
     scope: "https://graph.microsoft.com/.default offline_access",
+    auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     description: "Graph Explorer",
   },
   "graph-powershell-explicit": {
@@ -115,6 +125,8 @@ const M365_PRESETS = {
       "profile",
       "email",
     ].join(" "),
+    auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     description: "Graph PowerShell (Explicit Scopes)",
   },
 };
@@ -150,25 +162,37 @@ function applyPreset(preset) {
   const clientIdInput = document.getElementById("clientIdInput");
   const redirectUriInput = document.getElementById("redirectUriInput");
   const scopeInput = document.getElementById("scopeInput");
+  const authUrlInput = document.getElementById("authUrlInput");
+  const tokenUrlInput = document.getElementById("tokenUrlInput");
 
   if (preset === "custom") {
     // Enable inputs for custom configuration
     clientIdInput.readOnly = false;
     redirectUriInput.readOnly = false;
     scopeInput.readOnly = false;
+    authUrlInput.readOnly = false;
+    tokenUrlInput.readOnly = false;
     // Set default values for custom configuration
     clientIdInput.value = "";
     redirectUriInput.value =
       "https://login.microsoftonline.com/common/oauth2/nativeclient";
     scopeInput.value = "https://graph.microsoft.com/.default offline_access";
+    authUrlInput.value =
+      "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+    tokenUrlInput.value =
+      "https://login.microsoftonline.com/common/oauth2/v2.0/token";
   } else if (M365_PRESETS[preset]) {
     // Make inputs readonly and populate with preset values
     clientIdInput.readOnly = true;
     redirectUriInput.readOnly = true;
     scopeInput.readOnly = true;
+    authUrlInput.readOnly = true;
+    tokenUrlInput.readOnly = true;
     clientIdInput.value = M365_PRESETS[preset].clientId;
     redirectUriInput.value = M365_PRESETS[preset].redirectUri;
     scopeInput.value = M365_PRESETS[preset].scope;
+    authUrlInput.value = M365_PRESETS[preset].auth_url;
+    tokenUrlInput.value = M365_PRESETS[preset].token_url;
   }
 }
 
@@ -184,6 +208,8 @@ async function getGraphToken() {
         clientId: document.getElementById("clientIdInput")?.value?.trim(),
         redirectUri: document.getElementById("redirectUriInput")?.value?.trim(),
         scope: document.getElementById("scopeInput")?.value?.trim(),
+        authUrl: document.getElementById("authUrlInput")?.value?.trim(),
+        tokenUrl: document.getElementById("tokenUrlInput")?.value?.trim(),
       },
     });
 
@@ -204,6 +230,12 @@ async function getGraphToken() {
     const scope =
       document.getElementById("scopeInput")?.value?.trim() ||
       "https://graph.microsoft.com/.default offline_access";
+    const authUrl =
+      document.getElementById("authUrlInput")?.value?.trim() ||
+      "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+    const tokenUrl =
+      document.getElementById("tokenUrlInput")?.value?.trim() ||
+      "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
     const presetSelector = document.getElementById("presetSelector");
     const presetValue = presetSelector ? presetSelector.value : "custom";
@@ -220,6 +252,8 @@ async function getGraphToken() {
       clientId: clientId,
       redirectUri: redirectUri,
       scope: scope,
+      authUrl: authUrl,
+      tokenUrl: tokenUrl,
     });
 
     if (!response.success) {
@@ -246,6 +280,8 @@ async function getGraphToken() {
       created_at: Date.now(),
       client_id: clientId,
       scope: scope,
+      auth_url: authUrl,
+      token_url: tokenUrl,
     };
 
     if (!activeM365Session) {
@@ -351,21 +387,22 @@ async function refreshActiveM365Session() {
       activeM365Session.scope ||
       "https://graph.microsoft.com/.default offline_access";
 
-    const tokenResponse = await fetch(
-      "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          client_id: clientId,
-          scope: scope,
-          refresh_token: activeM365Session.refresh_token,
-          grant_type: "refresh_token",
-        }),
+    const tokenUrl =
+      activeM365Session.token_url ||
+      "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+
+    const tokenResponse = await fetch(tokenUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-    );
+      body: new URLSearchParams({
+        client_id: clientId,
+        scope: scope,
+        refresh_token: activeM365Session.refresh_token,
+        grant_type: "refresh_token",
+      }),
+    });
 
     if (!tokenResponse.ok) {
       const errorData = await tokenResponse.json();
@@ -377,8 +414,6 @@ async function refreshActiveM365Session() {
     activeM365Session.access_token = tokenData.access_token;
     activeM365Session.refresh_token = tokenData.refresh_token;
     activeM365Session.expires_at = Date.now() + tokenData.expires_in * 1000;
-    activeM365Session.client_id = clientId;
-    activeM365Session.scope = scope;
 
     await chrome.storage.local.set({ [TOKEN_STORAGE_KEY]: activeM365Session });
 
@@ -429,6 +464,13 @@ function displayActiveSession(session) {
   const nameEl = document.getElementById("activeSessionName");
   const userEl = document.getElementById("activeSessionUser");
   const expiryEl = document.getElementById("activeSessionExpiry");
+  const createdAtEl = document.getElementById("activeSessionCreatedAt");
+  const clientIdEl = document.getElementById("activeSessionClientId");
+  const requestedScopesEl = document.getElementById(
+    "activeSessionRequestedScopes",
+  );
+  const authUrlEl = document.getElementById("activeSessionAuthUrl");
+  const tokenUrlEl = document.getElementById("activeSessionTokenUrl");
 
   if (!session || !session.name || session.name === "Unknown") {
     display.classList.remove("visible");
@@ -442,6 +484,34 @@ function displayActiveSession(session) {
   if (noActiveMessage) noActiveMessage.classList.add("hidden");
   nameEl.textContent = session.name || "Unnamed Session";
   userEl.textContent = session.user || "Unknown";
+
+  // Display created_at timestamp
+  if (session.created_at) {
+    const createdDate = new Date(session.created_at);
+    createdAtEl.textContent = createdDate.toLocaleString();
+  } else {
+    createdAtEl.textContent = "Not stored";
+  }
+
+  // Display client_id
+  clientIdEl.textContent = session.client_id || "Not stored";
+
+  // Display requested scopes
+  if (session.scope) {
+    const scopeArray = session.scope.split(" ").filter((s) => s.length > 0);
+    requestedScopesEl.textContent = `${scopeArray.length} scope${scopeArray.length !== 1 ? "s" : ""}`;
+    requestedScopesEl.title = session.scope;
+  } else {
+    requestedScopesEl.textContent = "Not stored";
+  }
+
+  // Display auth_url
+  authUrlEl.textContent = session.auth_url || "Not stored";
+  authUrlEl.style.wordBreak = "break-all";
+
+  // Display token_url
+  tokenUrlEl.textContent = session.token_url || "Not stored";
+  tokenUrlEl.style.wordBreak = "break-all";
 
   const expiryDate = new Date(session.expires_at);
   const now = new Date();
@@ -798,6 +868,7 @@ function renderM365Sessions() {
     // Action buttons
     const actionsDiv = document.createElement("div");
     actionsDiv.style.display = "flex";
+    actionsDiv.style.flexWrap = "wrap";
     actionsDiv.style.gap = "6px";
 
     const loadBtn = document.createElement("button");
@@ -806,6 +877,13 @@ function renderM365Sessions() {
     loadBtn.style.fontSize = "11px";
     loadBtn.style.padding = "6px 10px";
     loadBtn.textContent = "📥 Load";
+
+    const editBtn = document.createElement("button");
+    editBtn.className = "btn btn-secondary btn-small edit-session-btn";
+    editBtn.setAttribute("data-index", index);
+    editBtn.style.fontSize = "11px";
+    editBtn.style.padding = "6px 10px";
+    editBtn.textContent = "✏️ Edit";
 
     const exportBtn = document.createElement("button");
     exportBtn.className = "btn btn-secondary btn-small export-session-btn";
@@ -822,6 +900,7 @@ function renderM365Sessions() {
     deleteBtn.textContent = "❌ Delete";
 
     actionsDiv.appendChild(loadBtn);
+    actionsDiv.appendChild(editBtn);
     actionsDiv.appendChild(exportBtn);
     actionsDiv.appendChild(deleteBtn);
 
@@ -839,6 +918,14 @@ function renderM365Sessions() {
       e.stopPropagation();
       const index = parseInt(e.target.getAttribute("data-index"));
       loadM365Session(index);
+    });
+  });
+
+  container.querySelectorAll(".edit-session-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = parseInt(e.target.getAttribute("data-index"));
+      editM365Session(index);
     });
   });
 
@@ -925,46 +1012,149 @@ async function deleteM365Session(index) {
   }
 }
 
-function showSaveM365SessionModal() {
-  if (!activeM365Session) {
-    showToast("No active session to rename");
+function editM365Session(index) {
+  const session = m365Sessions[index];
+  if (!session) {
+    showToast("Session not found");
     return;
   }
-  document.getElementById("m365SessionName").value =
+
+  // Store the index for later use
+  window._editingSessionIndex = index;
+
+  document.getElementById("editM365SessionName").value = session.name || "";
+  document.getElementById("editM365SessionUser").value = session.user || "";
+  document.getElementById("editM365SessionClientId").value =
+    session.client_id || "";
+  document.getElementById("editM365SessionScope").value = session.scope || "";
+  document.getElementById("editM365SessionAuthUrl").value =
+    session.auth_url || "";
+  document.getElementById("editM365SessionTokenUrl").value =
+    session.token_url || "";
+
+  document.getElementById("editM365SessionModal").style.display = "flex";
+}
+
+function showEditM365SessionModal() {
+  if (!activeM365Session) {
+    showToast("No active session to edit");
+    return;
+  }
+
+  // Clear the editing index to indicate we're editing the active session
+  window._editingSessionIndex = null;
+
+  document.getElementById("editM365SessionName").value =
     activeM365Session.name || "";
-  document.getElementById("saveM365SessionModal").style.display = "flex";
+  document.getElementById("editM365SessionUser").value =
+    activeM365Session.user || "";
+  document.getElementById("editM365SessionClientId").value =
+    activeM365Session.client_id || "";
+  document.getElementById("editM365SessionScope").value =
+    activeM365Session.scope || "";
+  document.getElementById("editM365SessionAuthUrl").value =
+    activeM365Session.auth_url || "";
+  document.getElementById("editM365SessionTokenUrl").value =
+    activeM365Session.token_url || "";
+
+  document.getElementById("editM365SessionModal").style.display = "flex";
 }
 
-function closeSaveM365SessionModal() {
-  document.getElementById("saveM365SessionModal").style.display = "none";
+function closeEditM365SessionModal() {
+  document.getElementById("editM365SessionModal").style.display = "none";
 }
 
-async function confirmSaveM365Session() {
-  const name = document.getElementById("m365SessionName").value.trim();
+async function confirmEditM365Session() {
+  const name = document.getElementById("editM365SessionName").value.trim();
+  const user = document.getElementById("editM365SessionUser").value.trim();
+  const clientId = document
+    .getElementById("editM365SessionClientId")
+    .value.trim();
+  const scope = document.getElementById("editM365SessionScope").value.trim();
+  const authUrl = document
+    .getElementById("editM365SessionAuthUrl")
+    .value.trim();
+  const tokenUrl = document
+    .getElementById("editM365SessionTokenUrl")
+    .value.trim();
+
   if (!name) {
     showToast("Please enter a session name");
     return;
   }
 
-  activeM365Session.name = name;
+  // Check if we're editing a saved session or the active session
+  if (
+    window._editingSessionIndex !== null &&
+    window._editingSessionIndex !== undefined
+  ) {
+    // Editing a saved session
+    const sessionIndex = window._editingSessionIndex;
+    const session = m365Sessions[sessionIndex];
 
-  const sessionIndex = m365Sessions.findIndex(
-    (s) =>
-      s.user === activeM365Session.user &&
-      s.created_at === activeM365Session.created_at,
-  );
+    if (session) {
+      session.name = name;
+      session.user = user || session.user;
+      session.client_id = clientId || session.client_id;
+      session.scope = scope || session.scope;
+      session.auth_url = authUrl || session.auth_url;
+      session.token_url = tokenUrl || session.token_url;
 
-  if (sessionIndex >= 0) {
-    m365Sessions[sessionIndex].name = name;
-    await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+      m365Sessions[sessionIndex] = session;
+      await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+
+      // If this is also the active session, update it
+      if (
+        activeM365Session &&
+        activeM365Session.created_at === session.created_at
+      ) {
+        activeM365Session = session;
+        await chrome.storage.local.set({
+          [TOKEN_STORAGE_KEY]: activeM365Session,
+        });
+        displayActiveSession(activeM365Session);
+      }
+
+      await loadM365Sessions();
+      closeEditM365SessionModal();
+      showToast("✅ Session updated");
+      window._editingSessionIndex = null;
+    }
   } else {
-    await saveM365SessionToList(activeM365Session);
-  }
+    // Editing the active session
+    if (!activeM365Session) {
+      showToast("No active session to edit");
+      return;
+    }
 
-  await loadM365Sessions();
-  displayActiveSession(activeM365Session);
-  closeSaveM365SessionModal();
-  showToast("Session renamed");
+    // Find session index before updating user field
+    const sessionIndex = m365Sessions.findIndex(
+      (s) =>
+        s.user === activeM365Session.user &&
+        s.created_at === activeM365Session.created_at,
+    );
+
+    // Update session fields
+    activeM365Session.name = name;
+    activeM365Session.user = user || activeM365Session.user;
+    activeM365Session.client_id = clientId || activeM365Session.client_id;
+    activeM365Session.scope = scope || activeM365Session.scope;
+    activeM365Session.auth_url = authUrl || activeM365Session.auth_url;
+    activeM365Session.token_url = tokenUrl || activeM365Session.token_url;
+
+    if (sessionIndex >= 0) {
+      m365Sessions[sessionIndex] = activeM365Session;
+      await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+    } else {
+      await saveM365SessionToList(activeM365Session);
+    }
+
+    await chrome.storage.local.set({ [TOKEN_STORAGE_KEY]: activeM365Session });
+    await loadM365Sessions();
+    displayActiveSession(activeM365Session);
+    closeEditM365SessionModal();
+    showToast("✅ Session updated");
+  }
 }
 
 function showImportM365SessionModal() {
@@ -1001,6 +1191,25 @@ async function confirmImportM365Session() {
 
     for (const session of sessionArray) {
       if (session.access_token && session.refresh_token) {
+        // Add default values for missing fields when importing old sessions
+        if (!session.created_at) {
+          session.created_at = Date.now();
+        }
+        if (!session.client_id) {
+          session.client_id = "1b730954-1685-4b74-9bfd-dac224a7b894";
+        }
+        if (!session.scope) {
+          session.scope = "https://graph.microsoft.com/.default offline_access";
+        }
+        if (!session.auth_url) {
+          session.auth_url =
+            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+        }
+        if (!session.token_url) {
+          session.token_url =
+            "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+        }
+
         await saveM365SessionToList(session);
       }
     }
@@ -1151,21 +1360,22 @@ async function checkAndAutoRefresh() {
           session.scope ||
           "https://graph.microsoft.com/.default offline_access";
 
-        const tokenResponse = await fetch(
-          "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({
-              client_id: clientId,
-              scope: scope,
-              refresh_token: session.refresh_token,
-              grant_type: "refresh_token",
-            }),
+        const tokenUrl =
+          session.token_url ||
+          "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+
+        const tokenResponse = await fetch(tokenUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
           },
-        );
+          body: new URLSearchParams({
+            client_id: clientId,
+            scope: scope,
+            refresh_token: session.refresh_token,
+            grant_type: "refresh_token",
+          }),
+        });
 
         if (!tokenResponse.ok) {
           const errorData = await tokenResponse.json();
