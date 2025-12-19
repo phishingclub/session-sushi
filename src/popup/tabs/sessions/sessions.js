@@ -198,15 +198,11 @@ async function getGraphToken() {
       expires_at: Date.now() + tokenData.expires_in * 1000,
       created_at: Date.now(),
       client_id: clientId,
+      redirect_uri: redirectUri,
       scope: scope,
       auth_url: authUrl,
       token_url: tokenUrl,
     };
-
-    if (!activeM365Session) {
-      activeM365Session = newSession;
-      displayActiveSession(activeM365Session);
-    }
 
     await saveM365SessionToList(newSession);
     await loadM365Sessions();
@@ -385,6 +381,7 @@ function displayActiveSession(session) {
   const expiryEl = document.getElementById("activeSessionExpiry");
   const createdAtEl = document.getElementById("activeSessionCreatedAt");
   const clientIdEl = document.getElementById("activeSessionClientId");
+  const redirectUriEl = document.getElementById("activeSessionRedirectUri");
   const requestedScopesEl = document.getElementById(
     "activeSessionRequestedScopes",
   );
@@ -414,6 +411,10 @@ function displayActiveSession(session) {
 
   // Display client_id
   clientIdEl.textContent = session.client_id || "Not stored";
+
+  // Display redirect_uri
+  redirectUriEl.textContent = session.redirect_uri || "Not stored";
+  redirectUriEl.style.wordBreak = "break-all";
 
   // Display requested scopes
   if (session.scope) {
@@ -948,6 +949,8 @@ function editM365Session(index) {
   document.getElementById("editM365SessionUser").value = session.user || "";
   document.getElementById("editM365SessionClientId").value =
     session.client_id || "";
+  document.getElementById("editM365SessionRedirectUri").value =
+    session.redirect_uri || "";
   document.getElementById("editM365SessionScope").value = session.scope || "";
   document.getElementById("editM365SessionAuthUrl").value =
     session.auth_url || "";
@@ -972,6 +975,8 @@ function showEditM365SessionModal() {
     activeM365Session.user || "";
   document.getElementById("editM365SessionClientId").value =
     activeM365Session.client_id || "";
+  document.getElementById("editM365SessionRedirectUri").value =
+    activeM365Session.redirect_uri || "";
   document.getElementById("editM365SessionScope").value =
     activeM365Session.scope || "";
   document.getElementById("editM365SessionAuthUrl").value =
@@ -991,6 +996,9 @@ async function confirmEditM365Session() {
   const user = document.getElementById("editM365SessionUser").value.trim();
   const clientId = document
     .getElementById("editM365SessionClientId")
+    .value.trim();
+  const redirectUri = document
+    .getElementById("editM365SessionRedirectUri")
     .value.trim();
   const scope = document.getElementById("editM365SessionScope").value.trim();
   const authUrl = document
@@ -1018,6 +1026,7 @@ async function confirmEditM365Session() {
       session.name = name;
       session.user = user || session.user;
       session.client_id = clientId || session.client_id;
+      session.redirect_uri = redirectUri || session.redirect_uri;
       session.scope = scope || session.scope;
       session.auth_url = authUrl || session.auth_url;
       session.token_url = tokenUrl || session.token_url;
@@ -1060,6 +1069,8 @@ async function confirmEditM365Session() {
     activeM365Session.name = name;
     activeM365Session.user = user || activeM365Session.user;
     activeM365Session.client_id = clientId || activeM365Session.client_id;
+    activeM365Session.redirect_uri =
+      redirectUri || activeM365Session.redirect_uri;
     activeM365Session.scope = scope || activeM365Session.scope;
     activeM365Session.auth_url = authUrl || activeM365Session.auth_url;
     activeM365Session.token_url = tokenUrl || activeM365Session.token_url;
@@ -1222,6 +1233,10 @@ async function confirmImportM365Session() {
       if (!session.token_url) {
         session.token_url =
           "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+      }
+      if (!session.redirect_uri) {
+        session.redirect_uri =
+          "https://login.microsoftonline.com/common/oauth2/nativeclient";
       }
       if (!session.expires_at && session.access_token) {
         session.expires_at = Date.now() + 3600 * 1000;
