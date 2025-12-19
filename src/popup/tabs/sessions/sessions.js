@@ -5,7 +5,7 @@ const M365_PRESETS = {
     scope: "https://graph.microsoft.com/.default offline_access",
     auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-    description: "Graph PowerShell",
+    description: "Graph PowerShell (FOCI)",
   },
   "azure-cli": {
     clientId: "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
@@ -13,7 +13,7 @@ const M365_PRESETS = {
     scope: "https://graph.microsoft.com/.default offline_access",
     auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-    description: "Azure CLI",
+    description: "Azure CLI (FOCI)",
   },
   "azure-powershell": {
     clientId: "1950a258-227b-4e31-a9cf-717495945fc2",
@@ -21,7 +21,7 @@ const M365_PRESETS = {
     scope: "https://graph.microsoft.com/.default offline_access",
     auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-    description: "Azure PowerShell",
+    description: "Azure PowerShell (FOCI)",
   },
   "ms-teams": {
     clientId: "1fec8e78-bce4-4aaf-ab1b-5451cc387264",
@@ -29,7 +29,7 @@ const M365_PRESETS = {
     scope: "https://graph.microsoft.com/.default offline_access",
     auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-    description: "Microsoft Teams",
+    description: "Microsoft Teams (FOCI)",
   },
   "graph-explorer": {
     clientId: "de8bc8b5-d9f9-48b1-a8ad-b748da725064",
@@ -38,6 +38,15 @@ const M365_PRESETS = {
     auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     description: "Graph Explorer",
+  },
+  intune: {
+    clientId: "9ba1a5c7-f17a-4de9-a1f1-6178c8d51223",
+    redirectUri:
+      "ms-appx-web://Microsoft.AAD.BrokerPlugin/S-1-15-2-2666988183-1750391847-2906264630-3525785777-2857982319-3063633125-1907478113",
+    scope: "openid offline_access https://graph.microsoft.com/.default",
+    auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+    description: "Intune (FOCI)",
   },
   "graph-powershell-explicit": {
     clientId: "14d82eec-204b-4c2f-b7e8-296a70dab67e",
@@ -127,7 +136,7 @@ const M365_PRESETS = {
     ].join(" "),
     auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-    description: "Graph PowerShell (Explicit Scopes)",
+    description: "Graph PowerShell - Explicit Scopes (FOCI)",
   },
 };
 

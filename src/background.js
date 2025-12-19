@@ -256,7 +256,9 @@ async function handleGraphTokenFlow(
 
           if (
             details.redirectUrl &&
-            details.redirectUrl.startsWith(redirectUri)
+            details.redirectUrl
+              .toLowerCase()
+              .startsWith(redirectUri.toLowerCase())
           ) {
             let code, error, errorDesc;
 
