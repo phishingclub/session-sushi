@@ -115,6 +115,63 @@ function applyPreset(preset) {
   }
 }
 
+async function copyAuthUrl() {
+  try {
+    const clientId =
+      document.getElementById("clientIdInput")?.value?.trim() ||
+      "1b730954-1685-4b74-9bfd-dac224a7b894";
+    const redirectUri =
+      document.getElementById("redirectUriInput")?.value?.trim() ||
+      "https://login.microsoftonline.com/common/oauth2/nativeclient";
+    const scope =
+      document.getElementById("scopeInput")?.value?.trim() ||
+      "https://graph.microsoft.com/.default offline_access";
+    const authUrl =
+      document.getElementById("authUrlInput")?.value?.trim() ||
+      "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+
+    const codeVerifier = generateCodeVerifier();
+    const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+    const authUrlObj = new URL(authUrl);
+    authUrlObj.searchParams.set("client_id", clientId);
+    authUrlObj.searchParams.set("response_type", "code");
+    authUrlObj.searchParams.set("redirect_uri", redirectUri);
+    authUrlObj.searchParams.set("scope", scope);
+    authUrlObj.searchParams.set("response_mode", "query");
+    authUrlObj.searchParams.set("code_challenge", codeChallenge);
+    authUrlObj.searchParams.set("code_challenge_method", "S256");
+
+    const fullAuthUrl = authUrlObj.toString();
+    await navigator.clipboard.writeText(fullAuthUrl);
+    showToast("Authorization URL copied to clipboard!", "success");
+  } catch (error) {
+    console.error("Error copying auth URL:", error);
+    showToast("Failed to copy authorization URL", "error");
+  }
+}
+
+function generateCodeVerifier() {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return base64UrlEncode(array);
+}
+
+async function generateCodeChallenge(verifier) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(verifier);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return base64UrlEncode(new Uint8Array(hash));
+}
+
+function base64UrlEncode(array) {
+  let binary = "";
+  for (let i = 0; i < array.length; i++) {
+    binary += String.fromCharCode(array[i]);
+  }
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+}
+
 async function getGraphToken() {
   const getGraphTokenBtn = document.getElementById("getGraphToken");
 

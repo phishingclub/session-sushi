@@ -348,6 +348,13 @@ function setupEventListeners() {
     });
   }
 
+  const copyAuthUrlBtn = document.getElementById("copyAuthUrl");
+  if (copyAuthUrlBtn) {
+    copyAuthUrlBtn.addEventListener("click", async () => {
+      await copyAuthUrl();
+    });
+  }
+
   if (refreshActiveSessionBtn) {
     refreshActiveSessionBtn.addEventListener("click", async () => {
       await refreshActiveM365Session();
