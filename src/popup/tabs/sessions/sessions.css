@@ -126,6 +126,17 @@
     word-break: break-word;
 }
 
+#sessions-tab .client-id-selector {
+    width: 100%;
+    padding: 4px 8px;
+    font-size: 13px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
 #sessions-tab .toggle-btn {
     padding: 6px 12px;
     font-size: 12px;

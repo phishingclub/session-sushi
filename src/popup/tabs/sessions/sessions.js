@@ -1,3 +1,14 @@
+// Highly confident FOCI (Family of Client IDs) clients only
+// These are well-documented Microsoft first-party clients that share refresh tokens
+const FOCI_CLIENTS = {
+  "872cd9fa-d31f-45e0-9eab-6e460a02d1f1": "Visual Studio",
+  "1fec8e78-bce4-4aaf-ab1b-5451cc387264": "Microsoft Teams",
+  "d3590ed6-52b3-4102-aeff-aad2292ab01c": "Microsoft Office",
+  "ab9b8c07-8f02-4f72-87fa-80105867a763": "OneDrive Sync Client",
+  "27922004-5251-4030-b22d-91ecd9a37ea4": "Outlook Mobile",
+  "4813382a-8fa7-425e-ab75-3b753aab3abb": "Microsoft Authenticator",
+};
+
 const M365_PRESETS = {
   "graph-powershell-user": {
     clientId: "14d82eec-204b-4c2f-b7e8-296a70dab67e",
@@ -438,9 +449,6 @@ function displayActiveSession(session) {
   const createdAtEl = document.getElementById("activeSessionCreatedAt");
   const clientIdEl = document.getElementById("activeSessionClientId");
   const redirectUriEl = document.getElementById("activeSessionRedirectUri");
-  const requestedScopesEl = document.getElementById(
-    "activeSessionRequestedScopes",
-  );
   const authUrlEl = document.getElementById("activeSessionAuthUrl");
   const tokenUrlEl = document.getElementById("activeSessionTokenUrl");
 
@@ -465,21 +473,41 @@ function displayActiveSession(session) {
     createdAtEl.textContent = "Not stored";
   }
 
-  // Display client_id
-  clientIdEl.textContent = session.client_id || "Not stored";
+  // Display client_id with dropdown for FOCI switching
+  if (session.client_id) {
+    clientIdEl.innerHTML = "";
+    const select = document.createElement("select");
+    select.className = "client-id-selector";
+
+    // Get FOCI clients in original object order
+    const fociClientEntries = Object.entries(FOCI_CLIENTS);
+
+    // Add all FOCI clients in original order
+    fociClientEntries.forEach(([clientId, name]) => {
+      const option = document.createElement("option");
+      option.value = clientId;
+      option.textContent = `${name} (${clientId.substring(0, 8)}...)`;
+      if (clientId === session.client_id) {
+        option.selected = true;
+      }
+      select.appendChild(option);
+    });
+
+    select.addEventListener("change", async (e) => {
+      const newClientId = e.target.value;
+      if (newClientId !== session.client_id) {
+        await switchActiveSessionClientId(newClientId);
+      }
+    });
+
+    clientIdEl.appendChild(select);
+  } else {
+    clientIdEl.textContent = "Not stored";
+  }
 
   // Display redirect_uri
   redirectUriEl.textContent = session.redirect_uri || "Not stored";
   redirectUriEl.style.wordBreak = "break-all";
-
-  // Display requested scopes
-  if (session.scope) {
-    const scopeArray = session.scope.split(" ").filter((s) => s.length > 0);
-    requestedScopesEl.textContent = `${scopeArray.length} scope${scopeArray.length !== 1 ? "s" : ""}`;
-    requestedScopesEl.title = session.scope;
-  } else {
-    requestedScopesEl.textContent = "Not stored";
-  }
 
   // Display auth_url
   authUrlEl.textContent = session.auth_url || "Not stored";
@@ -536,11 +564,42 @@ function displayActiveSession(session) {
   const scopesDisplay = document.getElementById("activeScopesDisplay");
 
   if (toggleBtn && scopesDisplay) {
+    // Check if scopes were already expanded
+    const wasExpanded = scopesDisplay.style.display === "block";
+
     const newToggleBtn = toggleBtn.cloneNode(true);
     toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
 
     const scopeCount = scopes.length;
-    newToggleBtn.textContent = `${scopeCount} Scope${scopeCount !== 1 ? "s" : ""}`;
+
+    // Update scopes display content
+    const updateScopesContent = () => {
+      scopesDisplay.innerHTML = "";
+      if (scopes.length > 0) {
+        scopes.forEach((s) => {
+          const scopeDiv = document.createElement("div");
+          scopeDiv.className = "font-size-12 border-bottom";
+          scopeDiv.style.padding = "3px 0";
+          scopeDiv.textContent = s;
+          scopesDisplay.appendChild(scopeDiv);
+        });
+      } else {
+        const noScopesDiv = document.createElement("div");
+        noScopesDiv.className = "color-text-secondary text-italic font-size-12";
+        noScopesDiv.textContent = "No scopes found in token";
+        scopesDisplay.appendChild(noScopesDiv);
+      }
+    };
+
+    // If scopes were expanded, keep them expanded and update content
+    if (wasExpanded) {
+      scopesDisplay.style.display = "block";
+      newToggleBtn.textContent = "Hide Scopes";
+      updateScopesContent();
+    } else {
+      scopesDisplay.style.display = "none";
+      newToggleBtn.textContent = `${scopeCount} Scope${scopeCount !== 1 ? "s" : ""}`;
+    }
 
     newToggleBtn.addEventListener("click", () => {
       if (
@@ -549,23 +608,7 @@ function displayActiveSession(session) {
       ) {
         scopesDisplay.style.display = "block";
         newToggleBtn.textContent = "Hide Scopes";
-
-        scopesDisplay.innerHTML = "";
-        if (scopes.length > 0) {
-          scopes.forEach((s) => {
-            const scopeDiv = document.createElement("div");
-            scopeDiv.className = "font-size-12 border-bottom";
-            scopeDiv.style.padding = "3px 0";
-            scopeDiv.textContent = s;
-            scopesDisplay.appendChild(scopeDiv);
-          });
-        } else {
-          const noScopesDiv = document.createElement("div");
-          noScopesDiv.className =
-            "color-text-secondary text-italic font-size-12";
-          noScopesDiv.textContent = "No scopes found in token";
-          scopesDisplay.appendChild(noScopesDiv);
-        }
+        updateScopesContent();
       } else {
         scopesDisplay.style.display = "none";
         newToggleBtn.textContent = `${scopeCount} Scope${scopeCount !== 1 ? "s" : ""}`;
@@ -1625,6 +1668,39 @@ async function loadAutoRefreshSetting() {
   if (autoRefreshEnabled && (activeM365Session || m365Sessions.length > 0)) {
     startAutoRefreshTimer();
   } else if (autoRefreshEnabled) {
+  }
+}
+
+async function switchActiveSessionClientId(newClientId) {
+  try {
+    const session = activeM365Session;
+    if (!session) {
+      showToast("No active session to switch client ID", "error");
+      return;
+    }
+
+    session.client_id = newClientId;
+
+    await chrome.storage.local.set({ [TOKEN_STORAGE_KEY]: session });
+
+    const sessionIndex = m365Sessions.findIndex(
+      (s) => s.user === session.user && s.created_at === session.created_at,
+    );
+
+    if (sessionIndex >= 0) {
+      m365Sessions[sessionIndex] = session;
+      await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
+      renderM365Sessions();
+    }
+
+    displayActiveSession(session);
+
+    const clientName = FOCI_CLIENTS[newClientId] || "Custom Client";
+    showToast(`Client ID switched to ${clientName}`);
+  } catch (error) {
+    console.error("Error switching client ID:", error);
+    showToast("Failed to switch client ID: " + error.message, "error");
+    displayActiveSession(activeM365Session);
   }
 }
 
