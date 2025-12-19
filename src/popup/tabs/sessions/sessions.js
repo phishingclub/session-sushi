@@ -814,6 +814,13 @@ function renderM365Sessions() {
     exportBtn.style.padding = "6px 10px";
     exportBtn.textContent = "📤 Export";
 
+    const copyBtn = document.createElement("button");
+    copyBtn.className = "btn btn-secondary btn-small copy-session-btn";
+    copyBtn.setAttribute("data-index", index);
+    copyBtn.style.fontSize = "11px";
+    copyBtn.style.padding = "6px 10px";
+    copyBtn.textContent = "📋 Copy";
+
     const deleteBtn = document.createElement("button");
     deleteBtn.className = "btn btn-danger-outline btn-small delete-session-btn";
     deleteBtn.setAttribute("data-index", index);
@@ -824,6 +831,7 @@ function renderM365Sessions() {
     actionsDiv.appendChild(loadBtn);
     actionsDiv.appendChild(editBtn);
     actionsDiv.appendChild(exportBtn);
+    actionsDiv.appendChild(copyBtn);
     actionsDiv.appendChild(deleteBtn);
 
     // Assemble card
@@ -856,6 +864,14 @@ function renderM365Sessions() {
       e.stopPropagation();
       const index = parseInt(e.target.getAttribute("data-index"));
       exportSingleM365Session(index);
+    });
+  });
+
+  container.querySelectorAll(".copy-session-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const index = parseInt(e.target.getAttribute("data-index"));
+      copyM365Session(index);
     });
   });
 
@@ -911,9 +927,28 @@ function loadM365Session(index) {
   }
 }
 
-async function deleteM365Session(index) {
-  if (confirm(`Delete session "${m365Sessions[index].name}"?`)) {
-    const sessionToDelete = m365Sessions[index];
+async function copyM365Session(sessionIndex) {
+  const originalSession = m365Sessions[sessionIndex];
+  if (!originalSession) return;
+
+  const copiedSession = {
+    ...originalSession,
+    name: `${originalSession.name} (Copy)`,
+    created_at: new Date().toISOString(),
+  };
+
+  m365Sessions.push(copiedSession);
+  await chrome.storage.local.set({
+    [SESSIONS_STORAGE_KEY]: m365Sessions,
+  });
+
+  renderM365Sessions();
+  showToast("Session copied successfully", "success");
+}
+
+async function deleteM365Session(sessionIndex) {
+  if (confirm(`Delete session "${m365Sessions[sessionIndex].name}"?`)) {
+    const sessionToDelete = m365Sessions[sessionIndex];
 
     // If deleting the active session, clear it
     if (
@@ -927,7 +962,7 @@ async function deleteM365Session(index) {
       saveUIState({ activeSessionIndex: -1 });
     }
 
-    m365Sessions.splice(index, 1);
+    m365Sessions.splice(sessionIndex, 1);
     await chrome.storage.local.set({ [SESSIONS_STORAGE_KEY]: m365Sessions });
     renderM365Sessions();
     showToast("Session deleted");
