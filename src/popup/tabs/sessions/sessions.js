@@ -1198,33 +1198,149 @@ async function confirmImportM365Session() {
     const sessions = JSON.parse(data);
     const sessionArray = Array.isArray(sessions) ? sessions : [sessions];
 
-    for (const session of sessionArray) {
-      if (session.access_token && session.refresh_token) {
-        // Add default values for missing fields when importing old sessions
-        if (!session.created_at) {
-          session.created_at = Date.now();
-        }
-        if (!session.client_id) {
-          session.client_id = "1b730954-1685-4b74-9bfd-dac224a7b894";
-        }
-        if (!session.scope) {
-          session.scope = "https://graph.microsoft.com/.default offline_access";
-        }
-        if (!session.auth_url) {
-          session.auth_url =
-            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
-        }
-        if (!session.token_url) {
-          session.token_url =
-            "https://login.microsoftonline.com/common/oauth2/v2.0/token";
-        }
+    let imported = 0;
+    let skipped = 0;
+    let fetched = 0;
+    const errors = [];
 
-        await saveM365SessionToList(session);
+    for (let i = 0; i < sessionArray.length; i++) {
+      const session = sessionArray[i];
+      const missing = [];
+
+      if (!session.refresh_token) {
+        missing.push("refresh_token");
       }
+
+      if (missing.length > 0) {
+        skipped++;
+        errors.push(`Session ${i + 1}: Missing ${missing.join(", ")}`);
+        continue;
+      }
+
+      // If access_token is missing, try to fetch it using refresh_token
+      if (!session.access_token) {
+        try {
+          const clientId =
+            session.client_id || "1b730954-1685-4b74-9bfd-dac224a7b894";
+          const tokenUrl =
+            session.token_url ||
+            "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+
+          const params = {
+            client_id: clientId,
+            refresh_token: session.refresh_token,
+            grant_type: "refresh_token",
+          };
+
+          if (session.client_secret) {
+            params.client_secret = session.client_secret;
+          }
+
+          if (session.scope) {
+            params.scope = session.scope;
+          }
+
+          const tokenResponse = await fetch(tokenUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams(params),
+          });
+
+          if (!tokenResponse.ok) {
+            const errorData = await tokenResponse.json();
+            const errorMsg =
+              errorData.error_description ||
+              errorData.error ||
+              "Failed to get access token";
+            throw new Error(errorMsg);
+          }
+
+          const tokenData = await tokenResponse.json();
+          session.access_token = tokenData.access_token;
+          if (tokenData.refresh_token) {
+            session.refresh_token = tokenData.refresh_token;
+          }
+          session.expires_at =
+            Date.now() + (tokenData.expires_in || 3600) * 1000;
+          fetched++;
+        } catch (error) {
+          skipped++;
+          errors.push(
+            `Session ${i + 1}: Failed to fetch access token - ${error.message}`,
+          );
+          continue;
+        }
+      }
+
+      // Add default values for missing fields when importing old sessions
+      if (!session.created_at) {
+        session.created_at = Date.now();
+      }
+      if (!session.name) {
+        const randomStr = Math.random().toString(36).substring(2, 10);
+        session.name = `Session-${randomStr}`;
+      }
+      if (!session.user) {
+        try {
+          const tokenParts = session.access_token.split(".");
+          if (tokenParts.length === 3) {
+            const payload = JSON.parse(atob(tokenParts[1]));
+            session.user =
+              payload.upn ||
+              payload.unique_name ||
+              payload.email ||
+              "Unknown User";
+          } else {
+            session.user = "Unknown User";
+          }
+        } catch (e) {
+          session.user = "Unknown User";
+        }
+      }
+      if (!session.client_id) {
+        session.client_id = "1b730954-1685-4b74-9bfd-dac224a7b894";
+      }
+      if (!session.scope) {
+        session.scope = "https://graph.microsoft.com/.default offline_access";
+      }
+
+      if (!session.token_url) {
+        session.token_url =
+          "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+      }
+      if (!session.expires_at && session.access_token) {
+        session.expires_at = Date.now() + 3600 * 1000;
+      }
+
+      await saveM365SessionToList(session);
+      imported++;
     }
 
     closeImportM365SessionModal();
-    showToast(`✅ Imported ${sessionArray.length} session(s)`);
+
+    if (imported === 0 && skipped > 0) {
+      const errorMsg = errors.length > 0 ? `\n${errors[0]}` : "";
+      showToast(
+        `❌ No sessions imported. ${skipped} skipped.${errorMsg}`,
+        "error",
+      );
+    } else if (imported > 0 && skipped > 0) {
+      let message = `⚠️ Imported ${imported} session(s), skipped ${skipped}`;
+      if (fetched > 0) {
+        message += ` (${fetched} fetched new tokens)`;
+      }
+      showToast(message);
+    } else if (imported > 0) {
+      let message = `✅ Imported ${imported} session(s)`;
+      if (fetched > 0) {
+        message += ` (${fetched} fetched new tokens)`;
+      }
+      showToast(message);
+    } else {
+      showToast("No valid sessions found to import", "error");
+    }
   } catch (error) {
     console.error("Import error:", error);
     showToast("Failed to import: " + error.message, "error");
