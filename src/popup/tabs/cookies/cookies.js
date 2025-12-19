@@ -571,3 +571,19 @@ async function deleteCookie(index) {
     showToast("Failed to delete cookie", "error");
   }
 }
+
+let cookieChangeTimeout = null;
+
+chrome.cookies.onChanged.addListener((changeInfo) => {
+  if (cookieChangeTimeout) {
+    clearTimeout(cookieChangeTimeout);
+  }
+
+  cookieChangeTimeout = setTimeout(async () => {
+    try {
+      await loadAllCookies();
+    } catch (error) {
+      console.error("Error reloading cookies after change:", error);
+    }
+  }, 500);
+});
