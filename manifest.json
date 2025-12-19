@@ -10,7 +10,8 @@
     "tabs",
     "downloads",
     "windows",
-    "webRequest"
+    "webRequest",
+    "declarativeNetRequest"
   ],
   "incognito": "split",
   "host_permissions": ["<all_urls>"],

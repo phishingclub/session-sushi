@@ -1,6 +1,25 @@
 let pendingAuthFlow = null;
 let extensionWindowId = null;
 
+// Remove Origin header from token requests to avoid chrome-extension:// origin issues
+chrome.declarativeNetRequest.updateDynamicRules({
+  removeRuleIds: [1],
+  addRules: [
+    {
+      id: 1,
+      priority: 1,
+      action: {
+        type: "modifyHeaders",
+        requestHeaders: [{ header: "Origin", operation: "remove" }],
+      },
+      condition: {
+        urlFilter: "login.microsoftonline.com/*/oauth2/*/token",
+        resourceTypes: ["xmlhttprequest"],
+      },
+    },
+  ],
+});
+
 chrome.windows.onRemoved.addListener((windowId) => {
   if (windowId === extensionWindowId) {
     extensionWindowId = null;
@@ -84,6 +103,29 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         pending: pendingAuthFlow !== null,
         info: pendingAuthFlow,
       });
+      return true;
+
+    case "fetchWithoutOrigin":
+      fetch(request.url, {
+        method: request.method || "POST",
+        headers: request.headers || {},
+        body: request.body,
+      })
+        .then(async (response) => {
+          const text = await response.text();
+          sendResponse({
+            ok: response.ok,
+            status: response.status,
+            statusText: response.statusText,
+            body: text,
+          });
+        })
+        .catch((error) => {
+          sendResponse({
+            ok: false,
+            error: error.message,
+          });
+        });
       return true;
 
     default:

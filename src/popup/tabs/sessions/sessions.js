@@ -1,51 +1,49 @@
 // Known FOCI (Family of Client IDs) clients from Secureworks research
 // Source: https://github.com/secureworks/family-of-client-ids-research
 const FOCI_CLIENTS = {
-  "00b41c95-dab0-4487-9791-b9d2c32c80f2": "Office 365 Management",
+  "14638111-3389-403d-b206-a6a71d9f8f16": "Copilot App",
+  "598ab7bb-a59c-4d31-ba84-ded22c220dbd": "Designer App",
+  "cde6adac-58fd-4b78-8d6d-9beaf1b0d668": "Global Secure Access Client",
+  "0922ef46-e1b9-4f7e-9134-9ad00547eb41": "Loop",
+  "eb20f3e3-3dce-4d2c-b721-ebb8d4414067": "Managed Meeting Rooms",
+  "4813382a-8fa7-425e-ab75-3b753aab3abb": "Microsoft Authenticator App",
   "04b07795-8ddb-461a-bbee-02f9e1bf7b46": "Microsoft Azure CLI",
   "1950a258-227b-4e31-a9cf-717495945fc2": "Microsoft Azure PowerShell",
-  "1fec8e78-bce4-4aaf-ab1b-5451cc387264": "Microsoft Teams",
-  "26a7ee05-5602-4d76-a7ba-eae8b7b67941": "Windows Search",
-  "27922004-5251-4030-b22d-91ecd9a37ea4": "Outlook Mobile",
-  "4813382a-8fa7-425e-ab75-3b753aab3abb": "Microsoft Authenticator App",
-  "ab9b8c07-8f02-4f72-87fa-80105867a763": "OneDrive SyncEngine",
-  "d3590ed6-52b3-4102-aeff-aad2292ab01c": "Microsoft Office",
-  "872cd9fa-d31f-45e0-9eab-6e460a02d1f1": "Visual Studio",
-  "af124e86-4e96-495a-b70a-90f90ab96707": "OneDrive iOS App",
   "cf36b471-5b44-428c-9ce7-313bf84528de": "Microsoft Bing Search",
-  "0ec893e0-5785-4de6-99da-4ed124e5296c": "Office UWP PWA",
-  "22098786-6e16-43cc-a27d-191a01a1e3b5": "Microsoft To-Do client",
-  "4e291c71-d680-4d0e-9640-0a3358e31177": "PowerApps",
-  "57336123-6e14-4acc-8dcf-287b6088aa28": "Microsoft Whiteboard Client",
-  "57fcbcfa-7cee-4eb1-8b25-12d2030b4ee0": "Microsoft Flow",
-  "66375f6b-983f-4c2c-9701-d680650f588f": "Microsoft Planner",
-  "9ba1a5c7-f17a-4de9-a1f1-6178c8d51223": "Microsoft Intune Company Portal",
-  "a569458c-7f2b-45cb-bab9-b7dee514d112": "Yammer iPhone",
-  "b26aadf8-566f-4478-926f-589f601d9c74": "OneDrive",
-  "c0d2a505-13b8-4ae0-aa9e-cddd5eab0b12": "Microsoft Power BI",
-  "d326c1ce-6cc6-4de2-bebc-4591e5e13ef0": "SharePoint",
+  "dd47d17a-3194-4d86-bfd5-c6ae6f5651e3": "Microsoft Defender for Mobile",
   "e9c51622-460d-4d3d-952d-966a5b1da34c": "Microsoft Edge",
   "ecd6b820-32c2-49b6-98a6-444530e5a77a": "Microsoft Edge (2)",
-  "f05ff7c9-f75a-4acd-a3b5-f4b6a870245d": "SharePoint Android",
   "f44b1140-bc5e-48c6-8dc0-5cf5a53c0e34": "Microsoft Edge (3)",
   "d7b530a4-7680-4c23-a8bf-c52c121d2e87":
     "Microsoft Edge Enterprise New Tab Page",
-  "dd47d17a-3194-4d86-bfd5-c6ae6f5651e3": "Microsoft Defender for Mobile",
-  "eb20f3e3-3dce-4d2c-b721-ebb8d4414067": "Managed Meeting Rooms",
-  "038ddad9-5bbe-4f64-b0cd-12434d1e633b": "ZTNA Network Access Client",
-  "0922ef46-e1b9-4f7e-9134-9ad00547eb41": "Loop",
-  "14638111-3389-403d-b206-a6a71d9f8f16": "Copilot App",
+  "82864fa0-ed49-4711-8395-a0e6003dca1f": "Microsoft Edge MSAv2",
+  "57fcbcfa-7cee-4eb1-8b25-12d2030b4ee0": "Microsoft Flow",
+  "9ba1a5c7-f17a-4de9-a1f1-6178c8d51223": "Microsoft Intune Company Portal",
+  "a670efe7-64b6-454f-9ae9-4f1cf27aba58": "Microsoft Lists App on Android",
+  "d3590ed6-52b3-4102-aeff-aad2292ab01c": "Microsoft Office",
+  "66375f6b-983f-4c2c-9701-d680650f588f": "Microsoft Planner",
+  "c0d2a505-13b8-4ae0-aa9e-cddd5eab0b12": "Microsoft Power BI",
+  "1fec8e78-bce4-4aaf-ab1b-5451cc387264": "Microsoft Teams",
+  "8ec6bc83-69c8-4392-8f08-b3c986009232": "Microsoft Teams-T4L",
+  "22098786-6e16-43cc-a27d-191a01a1e3b5": "Microsoft To-Do client",
+  "57336123-6e14-4acc-8dcf-287b6088aa28": "Microsoft Whiteboard Client",
   "540d4ff4-b4c0-44c1-bd06-cab1782d582a": "ODSP Mobile Lists App",
-  "598ab7bb-a59c-4d31-ba84-ded22c220dbd": "Designer App",
+  "00b41c95-dab0-4487-9791-b9d2c32c80f2": "Office 365 Management",
+  "0ec893e0-5785-4de6-99da-4ed124e5296c": "Office UWP PWA",
+  "b26aadf8-566f-4478-926f-589f601d9c74": "OneDrive",
+  "af124e86-4e96-495a-b70a-90f90ab96707": "OneDrive iOS App",
+  "ab9b8c07-8f02-4f72-87fa-80105867a763": "OneDrive SyncEngine",
+  "27922004-5251-4030-b22d-91ecd9a37ea4": "Outlook Mobile",
+  "4e291c71-d680-4d0e-9640-0a3358e31177": "PowerApps",
+  "d326c1ce-6cc6-4de2-bebc-4591e5e13ef0": "SharePoint",
+  "f05ff7c9-f75a-4acd-a3b5-f4b6a870245d": "SharePoint Android",
+  "872cd9fa-d31f-45e0-9eab-6e460a02d1f1": "Visual Studio",
+  "26a7ee05-5602-4d76-a7ba-eae8b7b67941": "Windows Search",
+  "a569458c-7f2b-45cb-bab9-b7dee514d112": "Yammer iPhone",
+  "038ddad9-5bbe-4f64-b0cd-12434d1e633b": "ZTNA Network Access Client",
+  "d5e23a82-d7e1-4886-af25-27037a0fdc2a": "ZTNA Network Access Client -- M365",
   "760282b4-0cfc-4952-b467-c8e0298fee16":
     "ZTNA Network Access Client -- Private",
-  "82864fa0-ed49-4711-8395-a0e6003dca1f": "Microsoft Edge MSAv2",
-  "8ec6bc83-69c8-4392-8f08-b3c986009232": "Microsoft Teams-T4L",
-  "a670efe7-64b6-454f-9ae9-4f1cf27aba58": "Microsoft Lists App on Android",
-  "b87b6fc6-536c-411d-9005-110ee6db77dc": "Yammer iPad",
-  "cde6adac-58fd-4b78-8d6d-9beaf1b0d668": "Global Secure Access Client",
-  "d5e23a82-d7e1-4886-af25-27037a0fdc2a": "ZTNA Network Access Client -- M365",
-  "e9cee14e-f26a-4349-886f-10048e3ef4b8": "Yammer Android",
 };
 
 const M365_PRESETS = {
@@ -412,7 +410,9 @@ async function refreshActiveM365Session() {
       activeM365Session.token_url ||
       "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
-    const tokenResponse = await fetch(tokenUrl, {
+    const response = await chrome.runtime.sendMessage({
+      action: "fetchWithoutOrigin",
+      url: tokenUrl,
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -422,15 +422,15 @@ async function refreshActiveM365Session() {
         scope: scope,
         refresh_token: activeM365Session.refresh_token,
         grant_type: "refresh_token",
-      }),
+      }).toString(),
     });
 
-    if (!tokenResponse.ok) {
-      const errorData = await tokenResponse.json();
+    if (!response.ok) {
+      const errorData = JSON.parse(response.body);
       throw new Error(errorData.error_description || "Failed to refresh token");
     }
 
-    const tokenData = await tokenResponse.json();
+    const tokenData = JSON.parse(response.body);
 
     activeM365Session.access_token = tokenData.access_token;
     activeM365Session.refresh_token = tokenData.refresh_token;
@@ -1337,16 +1337,18 @@ async function confirmImportM365Session() {
             params.scope = session.scope;
           }
 
-          const tokenResponse = await fetch(tokenUrl, {
+          const response = await chrome.runtime.sendMessage({
+            action: "fetchWithoutOrigin",
+            url: tokenUrl,
             method: "POST",
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: new URLSearchParams(params),
+            body: new URLSearchParams(params).toString(),
           });
 
-          if (!tokenResponse.ok) {
-            const errorData = await tokenResponse.json();
+          if (!response.ok) {
+            const errorData = JSON.parse(response.body);
             const errorMsg =
               errorData.error_description ||
               errorData.error ||
@@ -1354,7 +1356,7 @@ async function confirmImportM365Session() {
             throw new Error(errorMsg);
           }
 
-          const tokenData = await tokenResponse.json();
+          const tokenData = JSON.parse(response.body);
           session.access_token = tokenData.access_token;
           if (tokenData.refresh_token) {
             session.refresh_token = tokenData.refresh_token;
@@ -1590,7 +1592,9 @@ async function checkAndAutoRefresh() {
           session.token_url ||
           "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
-        const tokenResponse = await fetch(tokenUrl, {
+        const response = await chrome.runtime.sendMessage({
+          action: "fetchWithoutOrigin",
+          url: tokenUrl,
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -1600,17 +1604,17 @@ async function checkAndAutoRefresh() {
             scope: scope,
             refresh_token: session.refresh_token,
             grant_type: "refresh_token",
-          }),
+          }).toString(),
         });
 
-        if (!tokenResponse.ok) {
-          const errorData = await tokenResponse.json();
+        if (!response.ok) {
+          const errorData = JSON.parse(response.body);
           throw new Error(
             errorData.error_description || "Failed to refresh token",
           );
         }
 
-        const tokenData = await tokenResponse.json();
+        const tokenData = JSON.parse(response.body);
 
         // Update the session with new tokens
         session.access_token = tokenData.access_token;
