@@ -571,7 +571,6 @@ function displayActiveSession(session) {
         expiryText += " 🔄 Auto-refreshing...";
         expiryEl.className = "color-warning";
       } else if (autoRefreshEnabled) {
-        expiryText += " 🔄";
         expiryEl.className = "";
       } else {
         expiryEl.className = "";
