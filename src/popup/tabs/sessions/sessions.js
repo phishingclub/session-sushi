@@ -137,7 +137,7 @@ async function getGraphToken() {
   }
 
   getGraphTokenBtn.disabled = true;
-  getGraphTokenBtn.textContent = "⏳ Getting Token...";
+  getGraphTokenBtn.textContent = "⏳ Authorizing...";
 
   try {
     const clientId =
@@ -221,7 +221,6 @@ async function getGraphToken() {
     console.error("Error getting Graph token:", error);
 
     let errorMsg = error.message;
-    let troubleshooting = "";
 
     if (error.message.includes("AADSTS65002")) {
       errorMsg = "This client requires special authentication flow";
@@ -244,7 +243,7 @@ async function getGraphToken() {
     showToast(`Failed to get Graph token: ${errorMsg}`, "error");
   } finally {
     getGraphTokenBtn.disabled = false;
-    getGraphTokenBtn.textContent = "🔑 Get New Token";
+    getGraphTokenBtn.textContent = "🔑 Authorize";
   }
 }
 
