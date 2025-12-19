@@ -486,8 +486,11 @@ function displayActiveSession(session) {
     newToggleBtn.textContent = `${scopeCount} Scope${scopeCount !== 1 ? "s" : ""}`;
 
     newToggleBtn.addEventListener("click", () => {
-      if (scopesDisplay.classList.contains("hidden")) {
-        scopesDisplay.classList.remove("hidden");
+      if (
+        scopesDisplay.style.display === "none" ||
+        scopesDisplay.style.display === ""
+      ) {
+        scopesDisplay.style.display = "block";
         newToggleBtn.textContent = "Hide Scopes";
 
         scopesDisplay.innerHTML = "";
@@ -507,7 +510,7 @@ function displayActiveSession(session) {
           scopesDisplay.appendChild(noScopesDiv);
         }
       } else {
-        scopesDisplay.classList.add("hidden");
+        scopesDisplay.style.display = "none";
         newToggleBtn.textContent = `${scopeCount} Scope${scopeCount !== 1 ? "s" : ""}`;
       }
     });
