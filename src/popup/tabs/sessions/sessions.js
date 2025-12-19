@@ -31,14 +31,6 @@ const M365_PRESETS = {
     token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     description: "Microsoft Teams (FOCI)",
   },
-  "graph-explorer": {
-    clientId: "de8bc8b5-d9f9-48b1-a8ad-b748da725064",
-    redirectUri: "https://developer.microsoft.com/en-us/graph/graph-explorer",
-    scope: "https://graph.microsoft.com/.default offline_access",
-    auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
-    token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-    description: "Graph Explorer",
-  },
   intune: {
     clientId: "9ba1a5c7-f17a-4de9-a1f1-6178c8d51223",
     redirectUri:
@@ -48,95 +40,13 @@ const M365_PRESETS = {
     token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     description: "Intune (FOCI)",
   },
-  "graph-powershell-explicit": {
-    clientId: "14d82eec-204b-4c2f-b7e8-296a70dab67e",
-    redirectUri: "https://login.microsoftonline.com/common/oauth2/nativeclient",
-    scope: [
-      "https://graph.microsoft.com/User.Read",
-      "https://graph.microsoft.com/User.ReadWrite",
-      "https://graph.microsoft.com/User.ReadBasic.All",
-      "https://graph.microsoft.com/User.Read.All",
-      "https://graph.microsoft.com/User.ReadWrite.All",
-      "https://graph.microsoft.com/Directory.Read.All",
-      "https://graph.microsoft.com/Directory.ReadWrite.All",
-      "https://graph.microsoft.com/Directory.AccessAsUser.All",
-
-      "https://graph.microsoft.com/Mail.Read",
-      "https://graph.microsoft.com/Mail.ReadWrite",
-      "https://graph.microsoft.com/Mail.Send",
-      "https://graph.microsoft.com/Mail.Send.Shared",
-      "https://graph.microsoft.com/MailboxSettings.Read",
-      "https://graph.microsoft.com/MailboxSettings.ReadWrite",
-
-      "https://graph.microsoft.com/Calendars.Read",
-      "https://graph.microsoft.com/Calendars.ReadWrite",
-      "https://graph.microsoft.com/Calendars.Read.Shared",
-      "https://graph.microsoft.com/Calendars.ReadWrite.Shared",
-
-      "https://graph.microsoft.com/Contacts.Read",
-      "https://graph.microsoft.com/Contacts.ReadWrite",
-
-      "https://graph.microsoft.com/Files.Read",
-      "https://graph.microsoft.com/Files.ReadWrite",
-      "https://graph.microsoft.com/Files.Read.All",
-      "https://graph.microsoft.com/Files.ReadWrite.All",
-      "https://graph.microsoft.com/Sites.Read.All",
-      "https://graph.microsoft.com/Sites.ReadWrite.All",
-      "https://graph.microsoft.com/Sites.Manage.All",
-      "https://graph.microsoft.com/Sites.FullControl.All",
-
-      "https://graph.microsoft.com/Group.Read.All",
-      "https://graph.microsoft.com/Group.ReadWrite.All",
-      "https://graph.microsoft.com/GroupMember.Read.All",
-      "https://graph.microsoft.com/GroupMember.ReadWrite.All",
-      "https://graph.microsoft.com/Team.ReadBasic.All",
-      "https://graph.microsoft.com/TeamSettings.Read.All",
-      "https://graph.microsoft.com/TeamSettings.ReadWrite.All",
-
-      "https://graph.microsoft.com/Channel.ReadBasic.All",
-      "https://graph.microsoft.com/ChannelSettings.Read.All",
-      "https://graph.microsoft.com/ChannelSettings.ReadWrite.All",
-      "https://graph.microsoft.com/ChannelMessage.Send",
-      "https://graph.microsoft.com/ChannelMember.Read.All",
-      "https://graph.microsoft.com/ChannelMember.ReadWrite.All",
-
-      "https://graph.microsoft.com/Chat.Read",
-      "https://graph.microsoft.com/Chat.ReadWrite",
-      "https://graph.microsoft.com/ChatMessage.Read",
-      "https://graph.microsoft.com/ChannelMessage.Read.All",
-
-      "https://graph.microsoft.com/Notes.Read",
-      "https://graph.microsoft.com/Notes.ReadWrite",
-      "https://graph.microsoft.com/Notes.Read.All",
-      "https://graph.microsoft.com/Notes.ReadWrite.All",
-
-      "https://graph.microsoft.com/Tasks.Read",
-      "https://graph.microsoft.com/Tasks.ReadWrite",
-      "https://graph.microsoft.com/Tasks.Read.Shared",
-      "https://graph.microsoft.com/Tasks.ReadWrite.Shared",
-
-      "https://graph.microsoft.com/People.Read",
-      "https://graph.microsoft.com/People.Read.All",
-      "https://graph.microsoft.com/OrgContact.Read.All",
-
-      "https://graph.microsoft.com/Presence.Read",
-      "https://graph.microsoft.com/Presence.Read.All",
-      "https://graph.microsoft.com/Presence.ReadWrite",
-
-      "https://graph.microsoft.com/Device.Read.All",
-      "https://graph.microsoft.com/Device.ReadWrite.All",
-
-      "https://graph.microsoft.com/AccessReview.Read.All",
-      "https://graph.microsoft.com/AccessReview.ReadWrite.All",
-
-      "offline_access",
-      "openid",
-      "profile",
-      "email",
-    ].join(" "),
+  "graph-explorer": {
+    clientId: "de8bc8b5-d9f9-48b1-a8ad-b748da725064",
+    redirectUri: "https://developer.microsoft.com/en-us/graph/graph-explorer",
+    scope: "https://graph.microsoft.com/.default offline_access",
     auth_url: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     token_url: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
-    description: "Graph PowerShell - Explicit Scopes (FOCI)",
+    description: "Graph Explorer",
   },
 };
 
