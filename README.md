@@ -22,13 +22,7 @@
 - Session import/export
 
 ### M365 Data Browsers
-- **Grapth** - Execute Graph API queries and useful quick action queries
-- **Mailbox** - Browse folders, read emails, send emails, search messages
-- **OneDrive** - Navigate folders, search files, view file metadata
-- **SharePoint** - Access sites and documents
-- **Teams** - View teams and channels
-- **Calendar** - Access calendar events
-- **Directory** - Query users and groups
+Graph, User, Directory, Mailbox, Calendar, OneDrive, SharePoint and Teams.
 
 ## Usage
 
@@ -42,7 +36,7 @@ Preferly open a incognito/private window to fully isolate the sessions.
 
 Download for [Edge](https://microsoftedge.microsoft.com/addons/detail/session-sushi/bbaaafoehpllebaidnjbggniedbhdeok)
 
-**Crhome is waiting for verification**
+**Chrome is waiting for verification**
 
 ### Manual Installation
 
