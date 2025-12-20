@@ -93,7 +93,7 @@ async function loadDirectoryType(type) {
         "https://graph.microsoft.com/v1.0/groups?$top=100&$select=id,displayName,mail,description,groupTypes,securityEnabled&$orderby=displayName";
     } else if (type === "devices") {
       url =
-        "https://graph.microsoft.com/v1.0/devices?$top=100&$select=id,displayName,operatingSystem,operatingSystemVersion,trustType,accountEnabled&$orderby=displayName";
+        "https://graph.microsoft.com/v1.0/devices?$top=100&$select=id,displayName,operatingSystem,operatingSystemVersion,trustType,accountEnabled";
     } else if (type === "applications") {
       url =
         "https://graph.microsoft.com/v1.0/applications?$top=100&$select=id,appId,displayName,createdDateTime,signInAudience";
