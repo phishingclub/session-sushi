@@ -138,21 +138,10 @@ async function renderUserProfile() {
       const img = document.createElement("img");
       img.src = imageUrl;
       img.style.cssText =
-        "max-width: 200px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1)";
+        "max-width: 100px; max-height: 100px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1)";
       img.alt = "Profile Photo";
 
-      const downloadBtn = document.createElement("button");
-      downloadBtn.className = "btn btn-sm btn-secondary";
-      downloadBtn.textContent = "Download Photo";
-      downloadBtn.addEventListener("click", () => {
-        const a = document.createElement("a");
-        a.href = imageUrl;
-        a.download = "profile-photo.jpg";
-        a.click();
-      });
-
       photoCard.appendChild(img);
-      photoCard.appendChild(downloadBtn);
       container.appendChild(photoCard);
     }
   } catch (error) {
