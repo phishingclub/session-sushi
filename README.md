@@ -37,9 +37,12 @@ Preferly open a incognito/private window to fully isolate the sessions.
 
 ## Installation
 
+
 ### Browser Extension Stores
 
-**Waiting for verification - Do not download from any extensions stores!**
+Download for [Edge](https://microsoftedge.microsoft.com/addons/detail/session-sushi/bbaaafoehpllebaidnjbggniedbhdeok)
+
+**Crhome is waiting for verification**
 
 ### Manual Installation
 
