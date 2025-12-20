@@ -100,6 +100,8 @@ const M365_PRESETS = {
 
 const DEFAULT_PRESET = "ms-teams";
 
+let isRefreshing = false;
+
 function populatePresetDropdown() {
   const presetSelector = document.getElementById("presetSelector");
   if (!presetSelector) return;
@@ -388,10 +390,16 @@ async function checkCompletedAuth() {
 }
 
 async function refreshActiveM365Session() {
+  if (isRefreshing) {
+    return;
+  }
+
   if (!activeM365Session || !activeM365Session.refresh_token) {
     showToast("No active session to refresh");
     return;
   }
+
+  isRefreshing = true;
 
   const refreshBtn = document.getElementById("refreshActiveSession");
   if (refreshBtn) {
@@ -476,6 +484,7 @@ async function refreshActiveM365Session() {
       refreshBtn.disabled = false;
       refreshBtn.textContent = "🔄 Refresh";
     }
+    isRefreshing = false;
   }
 }
 
@@ -659,11 +668,10 @@ function displayActiveSession(session) {
   // Update session status bar
   updateSessionStatusBar(session);
 
-  // Start auto-refresh if globally enabled
-  loadAutoRefreshSetting();
-
-  // Also check immediately if session needs refresh
-  checkAndAutoRefresh();
+  // Start auto-refresh if globally enabled (but not when manually loading a session)
+  if (!window._loadingSession) {
+    loadAutoRefreshSetting();
+  }
 }
 
 function updateSessionStatusBar(session) {
@@ -1043,12 +1051,16 @@ function renderM365Sessions() {
   });
 }
 
-function loadM365Session(index) {
+async function loadM365Session(index) {
   activeM365Session = m365Sessions[index];
   m365TokenData = activeM365Session;
 
-  chrome.storage.local.set({ [TOKEN_STORAGE_KEY]: m365TokenData });
+  await chrome.storage.local.set({ [TOKEN_STORAGE_KEY]: m365TokenData });
+
+  // Prevent auto-refresh from starting when manually loading a session
+  window._loadingSession = true;
   displayActiveSession(activeM365Session);
+  window._loadingSession = false;
 
   if (!window._restoringSession) {
     showToast(`✓ Loaded session: ${activeM365Session.name}`);
@@ -1544,6 +1556,15 @@ function stopAutoRefreshTimer() {
 }
 
 async function checkAndAutoRefresh() {
+  if (isRefreshing) {
+    return;
+  }
+
+  // Don't auto-refresh if we're in the middle of loading a session
+  if (window._loadingSession) {
+    return;
+  }
+
   // Check if auto-refresh is globally enabled
   const result = await chrome.storage.local.get([AUTO_REFRESH_STORAGE_KEY]);
   const autoRefreshEnabled = result[AUTO_REFRESH_STORAGE_KEY] === true;
@@ -1580,6 +1601,7 @@ async function checkAndAutoRefresh() {
     // Auto-refresh if less than 5 minutes remaining OR already expired
     // The refresh token can get a new access token regardless of how long the access token has been expired
     if (remainingMinutes < 5) {
+      isRefreshing = true;
       try {
         const clientId =
           session.client_id || "1b730954-1685-4b74-9bfd-dac224a7b894";
@@ -1640,6 +1662,8 @@ async function checkAndAutoRefresh() {
           error,
         );
         // Continue trying other sessions even if one fails
+      } finally {
+        isRefreshing = false;
       }
     }
   }
