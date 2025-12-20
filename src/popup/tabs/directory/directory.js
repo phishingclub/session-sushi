@@ -69,6 +69,11 @@ async function loadDirectoryType(type) {
     typeLabel.textContent = labels[type] || "";
   }
 
+  const inviteGuestBtn = document.getElementById("inviteGuestBtn");
+  if (inviteGuestBtn) {
+    inviteGuestBtn.style.display = type === "users" ? "block" : "none";
+  }
+
   const searchInput = document.getElementById("directorySearch");
   if (searchInput) {
     searchInput.value = "";
@@ -648,12 +653,19 @@ function setupDirectoryListeners() {
   const refreshBtn = document.getElementById("refreshDirectoryBtn");
   const searchInput = document.getElementById("directorySearch");
   const typesList = document.getElementById("directoryTypesList");
+  const inviteGuestBtn = document.getElementById("inviteGuestBtn");
 
   if (refreshBtn) {
     refreshBtn.addEventListener("click", async () => {
       if (currentDirectoryType) {
         await loadDirectoryType(currentDirectoryType);
       }
+    });
+  }
+
+  if (inviteGuestBtn) {
+    inviteGuestBtn.addEventListener("click", () => {
+      showInviteGuestModal();
     });
   }
 
@@ -694,6 +706,376 @@ function setupDirectoryListeners() {
       }
     });
   }
+}
+
+function showInviteGuestModal() {
+  const modal = document.createElement("div");
+  modal.className = "modal modal-show";
+
+  const modalContent = document.createElement("div");
+  modalContent.className = "modal-content max-width-600";
+
+  const modalHeader = document.createElement("div");
+  modalHeader.className = "modal-header";
+
+  const title = document.createElement("h2");
+  title.textContent = "Invite Guest User";
+  modalHeader.appendChild(title);
+
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "modal-close";
+  closeBtn.textContent = "×";
+  closeBtn.addEventListener("click", () => modal.remove());
+  modalHeader.appendChild(closeBtn);
+
+  modalContent.appendChild(modalHeader);
+
+  const modalBody = document.createElement("div");
+  modalBody.className = "modal-body max-height-500 overflow-y-auto";
+
+  const form = document.createElement("div");
+  form.className = "form-container";
+
+  const emailGroup = document.createElement("div");
+  emailGroup.className = "form-group";
+  const emailLabel = document.createElement("label");
+  emailLabel.textContent = "Email Address:";
+  emailLabel.className = "form-label";
+  const emailInput = document.createElement("input");
+  emailInput.type = "email";
+  emailInput.id = "guestEmail";
+  emailInput.placeholder = "guest@external.com";
+  emailInput.className = "form-input";
+  emailInput.style.background = "var(--input-bg)";
+  emailInput.style.color = "var(--text-color)";
+  emailGroup.appendChild(emailLabel);
+  emailGroup.appendChild(emailInput);
+  form.appendChild(emailGroup);
+
+  const nameGroup = document.createElement("div");
+  nameGroup.className = "form-group";
+  const nameLabel = document.createElement("label");
+  nameLabel.textContent = "Display Name:";
+  nameLabel.className = "form-label";
+  const nameInput = document.createElement("input");
+  nameInput.type = "text";
+  nameInput.id = "guestDisplayName";
+  nameInput.placeholder = "Guest User Name";
+  nameInput.className = "form-input";
+  nameInput.style.background = "var(--input-bg)";
+  nameInput.style.color = "var(--text-color)";
+  nameGroup.appendChild(nameLabel);
+  nameGroup.appendChild(nameInput);
+  form.appendChild(nameGroup);
+
+  const redirectGroup = document.createElement("div");
+  redirectGroup.className = "form-group";
+  const redirectLabel = document.createElement("label");
+  redirectLabel.textContent = "Redirect URL:";
+  redirectLabel.className = "form-label";
+  const redirectInput = document.createElement("input");
+  redirectInput.type = "url";
+  redirectInput.id = "guestRedirectUrl";
+  redirectInput.placeholder = "https://portal.office.com";
+  redirectInput.value = "https://portal.office.com";
+  redirectInput.className = "form-input";
+  redirectInput.style.background = "var(--input-bg)";
+  redirectInput.style.color = "var(--text-color)";
+  redirectGroup.appendChild(redirectLabel);
+  redirectGroup.appendChild(redirectInput);
+  form.appendChild(redirectGroup);
+
+  const messageGroup = document.createElement("div");
+  messageGroup.className = "form-group";
+  const messageLabel = document.createElement("label");
+  messageLabel.textContent = "Custom Message:";
+  messageLabel.className = "form-label";
+  const messageTextarea = document.createElement("textarea");
+  messageTextarea.id = "guestMessage";
+  messageTextarea.className = "textarea";
+  messageTextarea.rows = 3;
+  messageTextarea.placeholder =
+    "You have been invited to access our organization...";
+  messageTextarea.style.width = "100%";
+  messageTextarea.style.padding = "8px 12px";
+  messageTextarea.style.border = "1px solid var(--border-color)";
+  messageTextarea.style.borderRadius = "6px";
+  messageTextarea.style.fontSize = "13px";
+  messageTextarea.style.fontFamily = "inherit";
+  messageTextarea.style.resize = "vertical";
+  messageTextarea.style.background = "var(--input-bg)";
+  messageTextarea.style.color = "var(--text-color)";
+  messageGroup.appendChild(messageLabel);
+  messageGroup.appendChild(messageTextarea);
+  form.appendChild(messageGroup);
+
+  const sendEmailGroup = document.createElement("div");
+  sendEmailGroup.className = "form-group";
+  sendEmailGroup.style.marginBottom = "0";
+  const sendEmailLabel = document.createElement("label");
+  sendEmailLabel.style.display = "flex";
+  sendEmailLabel.style.alignItems = "center";
+  sendEmailLabel.style.gap = "8px";
+  const sendEmailCheckbox = document.createElement("input");
+  sendEmailCheckbox.type = "checkbox";
+  sendEmailCheckbox.id = "sendInvitationEmail";
+  sendEmailCheckbox.checked = true;
+  const sendEmailText = document.createElement("span");
+  sendEmailText.textContent = "Send email notification to guest";
+  sendEmailLabel.appendChild(sendEmailCheckbox);
+  sendEmailLabel.appendChild(sendEmailText);
+  sendEmailGroup.appendChild(sendEmailLabel);
+  form.appendChild(sendEmailGroup);
+
+  modalBody.appendChild(form);
+  modalContent.appendChild(modalBody);
+
+  const modalFooter = document.createElement("div");
+  modalFooter.className = "modal-footer";
+  modalFooter.style.padding = "16px 20px";
+  modalFooter.style.borderTop = "1px solid var(--border-color)";
+  modalFooter.style.display = "flex";
+  modalFooter.style.justifyContent = "flex-end";
+  modalFooter.style.gap = "10px";
+  modalFooter.style.background = "var(--bg-secondary)";
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.className = "btn btn-danger-outline";
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.addEventListener("click", () => modal.remove());
+  modalFooter.appendChild(cancelBtn);
+
+  const inviteBtn = document.createElement("button");
+  inviteBtn.className = "btn btn-primary";
+  inviteBtn.textContent = "Create Invitation";
+  inviteBtn.addEventListener("click", () => sendGuestInvitation(modal));
+  modalFooter.appendChild(inviteBtn);
+
+  modalContent.appendChild(modalFooter);
+  modal.appendChild(modalContent);
+
+  const handleEscape = (e) => {
+    if (e.key === "Escape") {
+      modal.remove();
+      document.removeEventListener("keydown", handleEscape);
+    }
+  };
+  document.addEventListener("keydown", handleEscape);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+
+  document.body.appendChild(modal);
+}
+
+async function sendGuestInvitation(modal) {
+  if (!activeM365Session || !activeM365Session.access_token) {
+    showToast("No active session");
+    return;
+  }
+
+  const email = document.getElementById("guestEmail").value.trim();
+  const displayName = document.getElementById("guestDisplayName").value.trim();
+  const redirectUrl = document.getElementById("guestRedirectUrl").value.trim();
+  const message = document.getElementById("guestMessage").value.trim();
+  const sendEmail = document.getElementById("sendInvitationEmail").checked;
+
+  if (!email) {
+    showToast("Please enter an email address");
+    return;
+  }
+
+  try {
+    showToast("Sending invitation...");
+
+    const invitationData = {
+      invitedUserEmailAddress: email,
+      inviteRedirectUrl: redirectUrl || "https://portal.office.com",
+      sendInvitationMessage: sendEmail,
+    };
+
+    if (displayName) {
+      invitationData.invitedUserDisplayName = displayName;
+    }
+
+    if (message && sendEmail) {
+      invitationData.invitedUserMessageInfo = {
+        customizedMessageBody: message,
+      };
+    }
+
+    const response = await fetch(
+      "https://graph.microsoft.com/v1.0/invitations",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${activeM365Session.access_token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(invitationData),
+      },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error?.message || "Failed to send invitation");
+    }
+
+    modal.remove();
+    showToast("✅ Invitation sent successfully");
+    showInvitationSuccessModal(data);
+
+    if (currentDirectoryType === "users") {
+      await loadDirectoryType("users");
+    }
+  } catch (error) {
+    console.error("Error sending invitation:", error);
+    showToast(error.message || "Failed to send invitation", "error");
+  }
+}
+
+function showInvitationSuccessModal(invitationData) {
+  const modal = document.createElement("div");
+  modal.className = "modal modal-show";
+
+  const modalContent = document.createElement("div");
+  modalContent.className = "modal-content max-width-600";
+
+  const modalHeader = document.createElement("div");
+  modalHeader.className = "modal-header";
+
+  const title = document.createElement("h2");
+  title.textContent = "Invitation Details";
+  modalHeader.appendChild(title);
+
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "modal-close";
+  closeBtn.textContent = "×";
+  closeBtn.addEventListener("click", () => modal.remove());
+  modalHeader.appendChild(closeBtn);
+
+  modalContent.appendChild(modalHeader);
+
+  const modalBody = document.createElement("div");
+  modalBody.className = "modal-body max-height-500 overflow-y-auto";
+
+  const successMessage = document.createElement("div");
+  successMessage.style.cssText =
+    "margin-bottom: 20px; padding: 12px; background: var(--bg-secondary); border-radius: 6px; font-size: 14px;";
+  successMessage.textContent = `✅ Guest invitation sent to ${invitationData.invitedUserEmailAddress}`;
+  modalBody.appendChild(successMessage);
+
+  const detailsContainer = document.createElement("div");
+  detailsContainer.style.cssText =
+    "display: flex; flex-direction: column; gap: 15px;";
+
+  if (invitationData.inviteRedeemUrl) {
+    const urlField = document.createElement("div");
+    urlField.style.cssText =
+      "background: var(--bg-secondary); padding: 12px; border-radius: 6px;";
+
+    const urlLabel = document.createElement("div");
+    urlLabel.style.cssText =
+      "font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; font-weight: 600;";
+    urlLabel.textContent = "Invitation Redeem URL";
+
+    const urlValue = document.createElement("div");
+    urlValue.style.cssText =
+      "font-size: 13px; word-break: break-all; margin-bottom: 8px;";
+    urlValue.textContent = invitationData.inviteRedeemUrl;
+
+    const copyUrlBtn = document.createElement("button");
+    copyUrlBtn.className = "btn btn-small btn-secondary btn-compact";
+    copyUrlBtn.textContent = "📋 Copy URL";
+    copyUrlBtn.onclick = async () => {
+      await copyToClipboard(invitationData.inviteRedeemUrl);
+      showToast("Invitation URL copied to clipboard");
+    };
+
+    urlField.appendChild(urlLabel);
+    urlField.appendChild(urlValue);
+    urlField.appendChild(copyUrlBtn);
+    detailsContainer.appendChild(urlField);
+  }
+
+  if (invitationData.invitedUser?.id) {
+    const idField = document.createElement("div");
+    idField.style.cssText =
+      "background: var(--bg-secondary); padding: 12px; border-radius: 6px;";
+
+    const idLabel = document.createElement("div");
+    idLabel.style.cssText =
+      "font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; font-weight: 600;";
+    idLabel.textContent = "Guest User ID";
+
+    const idValue = document.createElement("div");
+    idValue.style.cssText = "font-size: 13px; word-break: break-all;";
+    idValue.textContent = invitationData.invitedUser.id;
+
+    idField.appendChild(idLabel);
+    idField.appendChild(idValue);
+    detailsContainer.appendChild(idField);
+  }
+
+  if (invitationData.status) {
+    const statusField = document.createElement("div");
+    statusField.style.cssText =
+      "background: var(--bg-secondary); padding: 12px; border-radius: 6px;";
+
+    const statusLabel = document.createElement("div");
+    statusLabel.style.cssText =
+      "font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; font-weight: 600;";
+    statusLabel.textContent = "Status";
+
+    const statusValue = document.createElement("div");
+    statusValue.style.cssText = "font-size: 13px;";
+    statusValue.textContent = invitationData.status;
+
+    statusField.appendChild(statusLabel);
+    statusField.appendChild(statusValue);
+    detailsContainer.appendChild(statusField);
+  }
+
+  modalBody.appendChild(detailsContainer);
+  modalContent.appendChild(modalBody);
+
+  const modalFooter = document.createElement("div");
+  modalFooter.className = "modal-footer";
+  modalFooter.style.padding = "16px 20px";
+  modalFooter.style.borderTop = "1px solid var(--border-color)";
+  modalFooter.style.display = "flex";
+  modalFooter.style.justifyContent = "flex-end";
+  modalFooter.style.gap = "10px";
+  modalFooter.style.background = "var(--bg-secondary)";
+
+  const closeFooterBtn = document.createElement("button");
+  closeFooterBtn.className = "btn btn-primary";
+  closeFooterBtn.textContent = "Close";
+  closeFooterBtn.addEventListener("click", () => modal.remove());
+  modalFooter.appendChild(closeFooterBtn);
+
+  modalContent.appendChild(modalFooter);
+  modal.appendChild(modalContent);
+
+  const handleEscape = (e) => {
+    if (e.key === "Escape") {
+      modal.remove();
+      document.removeEventListener("keydown", handleEscape);
+    }
+  };
+  document.addEventListener("keydown", handleEscape);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+
+  document.body.appendChild(modal);
 }
 
 function setupDirectoryItemListeners() {
