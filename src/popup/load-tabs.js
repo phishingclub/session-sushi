@@ -20,6 +20,7 @@ async function loadAllTabs() {
     loadTabHTML("cookies", "cookies-tab"),
     loadTabHTML("sessions", "sessions-tab"),
     loadTabHTML("graph", "graph-tab"),
+    loadTabHTML("user", "user-tab"),
     loadTabHTML("calendar", "calendar-tab"),
     loadTabHTML("sharepoint", "sharepoint-tab"),
     loadTabHTML("teams", "teams-tab"),

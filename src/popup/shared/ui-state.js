@@ -70,6 +70,10 @@ function switchTab(tabName) {
     initializeOneDrive();
   }
 
+  if (tabName === "user") {
+    initializeUser();
+  }
+
   if (tabName === "directory") {
     initializeDirectory();
   }

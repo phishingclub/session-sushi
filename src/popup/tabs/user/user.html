@@ -1,0 +1,119 @@
+<div class="tab-content" id="user-tab">
+    <div class="mailbox-info-bar">
+        <span style="font-weight: 600">👤 User Management</span>
+        <div style="display: flex; gap: 8px">
+            <button class="btn btn-sm" id="refreshUserBtn" title="Refresh">
+                🔄
+            </button>
+        </div>
+    </div>
+
+    <div style="display: flex; height: 100%; overflow: hidden">
+        <!-- Sidebar with user management sections -->
+        <div
+            style="
+                width: 200px;
+                border-right: 1px solid var(--border-color);
+                background: var(--bg-secondary);
+                display: flex;
+                flex-direction: column;
+            "
+        >
+            <div style="padding: 15px">
+                <div
+                    style="
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: var(--text-secondary);
+                        margin-bottom: 10px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    "
+                >
+                    Management
+                </div>
+                <div
+                    id="userSectionsList"
+                    style="display: flex; flex-direction: column; gap: 4px"
+                >
+                    <button
+                        class="user-section-btn active"
+                        data-section="profile"
+                    >
+                        Profile
+                    </button>
+                    <button
+                        class="user-section-btn"
+                        data-section="authentication"
+                    >
+                        Authentication
+                    </button>
+                    <button class="user-section-btn" data-section="permissions">
+                        Permissions
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content area -->
+        <div
+            style="
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            "
+        >
+            <div style="padding: 15px; flex: 1; overflow-y: auto">
+                <!-- User Profile Section -->
+                <div
+                    id="userProfileSection"
+                    class="user-section"
+                    style="display: block"
+                >
+                    <div id="userProfileContainer">
+                        <div class="mailbox-empty">No active session</div>
+                    </div>
+                </div>
+
+                <!-- Authentication Section -->
+                <div
+                    id="userAuthenticationSection"
+                    class="user-section"
+                    style="display: none"
+                >
+                    <div style="margin-bottom: 20px">
+                        <h3 style="margin: 0 0 10px 0; font-size: 16px">
+                            Authentication Settings
+                        </h3>
+                    </div>
+
+                    <div id="authenticationContainer">
+                        <div class="loading-indicator">
+                            Loading authentication settings...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Permissions Section -->
+                <div
+                    id="userPermissionsSection"
+                    class="user-section"
+                    style="display: none"
+                >
+                    <div style="margin-bottom: 20px">
+                        <h3 style="margin: 0 0 10px 0; font-size: 16px">
+                            User Permissions & Roles
+                        </h3>
+                    </div>
+
+                    <div id="permissionsContainer">
+                        <div class="loading-indicator">
+                            Loading permissions...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

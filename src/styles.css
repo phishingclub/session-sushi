@@ -2014,6 +2014,37 @@ textarea:disabled {
     font-weight: 600;
 }
 
+/* User Management Section Buttons */
+.user-section-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 13px;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-section-btn:hover {
+    background: var(--bg-tertiary);
+}
+
+.user-section-btn.active {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.user-section {
+    display: none;
+}
+
 /* Mailbox List - Message List */
 .mailbox-list {
     background: var(--bg-color);

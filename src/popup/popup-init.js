@@ -102,21 +102,25 @@ function setupEventListeners() {
     }
     if (e.altKey && e.key === "4") {
       e.preventDefault();
-      switchTab("directory");
+      switchTab("user");
     }
     if (e.altKey && e.key === "5") {
       e.preventDefault();
-      switchTab("mailbox");
+      switchTab("directory");
     }
     if (e.altKey && e.key === "6") {
       e.preventDefault();
-      switchTab("calendar");
+      switchTab("mailbox");
     }
     if (e.altKey && e.key === "7") {
       e.preventDefault();
-      switchTab("onedrive");
+      switchTab("calendar");
     }
     if (e.altKey && e.key === "8") {
+      e.preventDefault();
+      switchTab("onedrive");
+    }
+    if (e.altKey && e.key === "9") {
       e.preventDefault();
       switchTab("sharepoint");
     }
@@ -415,6 +419,7 @@ function setupEventListeners() {
   setupComposeEmailListeners();
   setupMessageDetailListeners();
   setupOneDriveListeners();
+  setupUserListeners();
   setupDirectoryListeners();
   setupCalendarListeners();
   setupContactsListeners();
