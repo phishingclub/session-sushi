@@ -1,7 +1,7 @@
 let pendingAuthFlow = null;
 let extensionWindowId = null;
 
-// Remove Origin header from token requests to avoid chrome-extension:// origin issues
+// Remove Origin header from extension-initiated token requests to avoid chrome-extension:// origin issues
 chrome.declarativeNetRequest.updateDynamicRules({
   removeRuleIds: [1],
   addRules: [
@@ -15,6 +15,7 @@ chrome.declarativeNetRequest.updateDynamicRules({
       condition: {
         urlFilter: "login.microsoftonline.com/*/oauth2/*/token",
         resourceTypes: ["xmlhttprequest"],
+        initiatorDomains: [chrome.runtime.id],
       },
     },
   ],
