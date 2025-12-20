@@ -1,6 +1,11 @@
 let currentUserSection = "profile";
 let currentUserProfile = null;
 let mfaMethods = [];
+let userTasks = {
+  planner: [],
+  todo: [],
+};
+let currentTaskFilter = "all";
 
 async function initializeUser() {
   if (!activeM365Session || !activeM365Session.access_token) {
@@ -18,6 +23,7 @@ function showUserNoSession() {
     "mfaMethodsContainer",
     "authenticationContainer",
     "permissionsContainer",
+    "tasksContainer",
   ];
   sections.forEach((sectionId) => {
     const container = document.getElementById(sectionId);
@@ -96,6 +102,9 @@ async function loadUserSection(section) {
       break;
     case "permissions":
       await loadUserPermissions();
+      break;
+    case "tasks":
+      await loadUserTasks();
       break;
   }
 }
@@ -493,6 +502,444 @@ async function loadUserPermissions() {
   }
 }
 
+async function loadUserTasks() {
+  const container = document.getElementById("tasksContainer");
+  if (!container) return;
+
+  container.textContent = "";
+  const loadingDiv = document.createElement("div");
+  loadingDiv.className = "loading-indicator";
+  loadingDiv.textContent = "Loading tasks...";
+  container.appendChild(loadingDiv);
+
+  userTasks = {
+    planner: [],
+    todo: [],
+  };
+
+  await Promise.allSettled([loadPlannerTasks(), loadTodoTasks()]);
+
+  renderUserTasks();
+}
+
+async function loadPlannerTasks() {
+  try {
+    const url = "https://graph.microsoft.com/v1.0/me/planner/tasks";
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${activeM365Session.access_token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      userTasks.planner = data.value || [];
+    }
+  } catch (error) {
+    console.error("Error loading Planner tasks:", error);
+  }
+}
+
+async function loadTodoTasks() {
+  try {
+    const listsUrl = "https://graph.microsoft.com/v1.0/me/todo/lists";
+    const listsResponse = await fetch(listsUrl, {
+      headers: {
+        Authorization: `Bearer ${activeM365Session.access_token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!listsResponse.ok) return;
+
+    const listsData = await listsResponse.json();
+    const lists = listsData.value || [];
+
+    for (const list of lists) {
+      try {
+        const tasksUrl = `https://graph.microsoft.com/v1.0/me/todo/lists/${list.id}/tasks`;
+        const tasksResponse = await fetch(tasksUrl, {
+          headers: {
+            Authorization: `Bearer ${activeM365Session.access_token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (tasksResponse.ok) {
+          const tasksData = await tasksResponse.json();
+          const tasks = tasksData.value || [];
+          tasks.forEach((task) => {
+            task.listName = list.displayName;
+            task.listId = list.id;
+          });
+          userTasks.todo.push(...tasks);
+        }
+      } catch (error) {
+        console.error(`Error loading tasks for list ${list.id}:`, error);
+      }
+    }
+  } catch (error) {
+    console.error("Error loading To-Do tasks:", error);
+  }
+}
+
+function renderUserTasks() {
+  const container = document.getElementById("tasksContainer");
+  if (!container) return;
+
+  container.textContent = "";
+
+  let allTasks = [];
+
+  if (currentTaskFilter === "all" || currentTaskFilter === "planner") {
+    userTasks.planner.forEach((task) => {
+      allTasks.push({
+        type: "planner",
+        task: task,
+        date: task.dueDateTime || task.createdDateTime,
+      });
+    });
+  }
+
+  if (currentTaskFilter === "all" || currentTaskFilter === "todo") {
+    userTasks.todo.forEach((task) => {
+      allTasks.push({
+        type: "todo",
+        task: task,
+        date: task.dueDateTime || task.createdDateTime,
+      });
+    });
+  }
+
+  const statsBar = document.getElementById("tasksStatsBar");
+  const statsSpan = document.getElementById("tasksStats");
+
+  if (statsBar && statsSpan) {
+    if (allTasks.length > 0) {
+      let statsText = `${allTasks.length} task${allTasks.length !== 1 ? "s" : ""}`;
+
+      if (currentTaskFilter === "all") {
+        statsText += ` (${userTasks.planner.length} Planner, ${userTasks.todo.length} To-Do)`;
+      }
+
+      statsSpan.textContent = statsText;
+      statsBar.style.display = "block";
+    } else {
+      statsBar.style.display = "none";
+    }
+  }
+
+  if (allTasks.length === 0) {
+    const emptyDiv = document.createElement("div");
+    emptyDiv.className = "mailbox-empty";
+    emptyDiv.textContent = "No tasks found";
+    container.appendChild(emptyDiv);
+    return;
+  }
+
+  allTasks.sort((a, b) => {
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return new Date(a.date) - new Date(b.date);
+  });
+
+  const itemsContainer = document.createElement("div");
+  itemsContainer.className = "onedrive-items-container";
+
+  allTasks.forEach((item) => {
+    const taskElement = createTaskElement(item.task, item.type);
+    itemsContainer.appendChild(taskElement);
+  });
+
+  container.appendChild(itemsContainer);
+}
+
+function createTaskElement(task, type) {
+  const taskDiv = document.createElement("div");
+  taskDiv.className = "onedrive-item";
+
+  const iconDiv = document.createElement("div");
+  iconDiv.className = "onedrive-item-icon";
+  const typeIcon = type === "planner" ? "📋" : "✓";
+  iconDiv.textContent = typeIcon;
+
+  const detailsDiv = document.createElement("div");
+  detailsDiv.className = "onedrive-item-details";
+
+  const nameDiv = document.createElement("div");
+  nameDiv.className = "onedrive-item-name";
+  nameDiv.textContent = task.title || task.subject || "Untitled";
+
+  const metaParts = [];
+
+  let statusText = "";
+  if (type === "planner") {
+    const percent = task.percentComplete || 0;
+    statusText = `${percent}% complete`;
+  } else if (type === "todo") {
+    statusText = task.status === "completed" ? "✓ Completed" : "○ Not started";
+  }
+  metaParts.push(statusText);
+
+  if (task.importance === "high" || task.priority === 1) {
+    metaParts.push("🔴 High priority");
+  }
+
+  if (task.dueDateTime) {
+    const dueDate = new Date(task.dueDateTime.dateTime || task.dueDateTime);
+    if (!isNaN(dueDate.getTime())) {
+      const now = new Date();
+      const isOverdue =
+        dueDate < now &&
+        (task.percentComplete || 0) < 100 &&
+        task.status !== "completed";
+      metaParts.push(
+        `Due: ${dueDate.toLocaleDateString()}${isOverdue ? " (overdue)" : ""}`,
+      );
+    }
+  }
+
+  if (type === "todo" && task.listName) {
+    metaParts.push(`List: ${task.listName}`);
+  }
+
+  const metaDiv = document.createElement("div");
+  metaDiv.className = "onedrive-item-meta";
+  metaDiv.textContent = metaParts.join(" • ");
+
+  detailsDiv.appendChild(nameDiv);
+  detailsDiv.appendChild(metaDiv);
+
+  const actionsDiv = document.createElement("div");
+  actionsDiv.className = "onedrive-item-actions";
+
+  const detailsBtn = document.createElement("button");
+  detailsBtn.className = "btn btn-small btn-secondary btn-compact";
+  detailsBtn.textContent = "ℹ️ Details";
+  detailsBtn.onclick = () => showTaskDetails(task, type);
+  actionsDiv.appendChild(detailsBtn);
+
+  taskDiv.appendChild(iconDiv);
+  taskDiv.appendChild(detailsDiv);
+  taskDiv.appendChild(actionsDiv);
+
+  return taskDiv;
+}
+
+function copyTaskDetails(task, type) {
+  const title = task.title || task.subject || "Untitled";
+  let details = `Task: ${title}\n`;
+  details += `Type: ${type}\n`;
+
+  if (task.percentComplete !== undefined) {
+    details += `Progress: ${task.percentComplete}%\n`;
+  }
+
+  if (task.status) {
+    details += `Status: ${task.status}\n`;
+  }
+
+  if (task.importance) {
+    details += `Importance: ${task.importance}\n`;
+  }
+
+  if (task.priority) {
+    details += `Priority: ${task.priority}\n`;
+  }
+
+  if (task.dueDateTime) {
+    const dueDate = new Date(task.dueDateTime.dateTime || task.dueDateTime);
+    if (!isNaN(dueDate.getTime())) {
+      details += `Due: ${dueDate.toLocaleString()}\n`;
+    }
+  }
+
+  if (task.startDateTime) {
+    const startDate = new Date(
+      task.startDateTime.dateTime || task.startDateTime,
+    );
+    if (!isNaN(startDate.getTime())) {
+      details += `Start: ${startDate.toLocaleString()}\n`;
+    }
+  }
+
+  if (task.createdDateTime) {
+    const createdDate = new Date(task.createdDateTime);
+    if (!isNaN(createdDate.getTime())) {
+      details += `Created: ${createdDate.toLocaleString()}\n`;
+    }
+  }
+
+  if (task.listName) {
+    details += `List: ${task.listName}\n`;
+  }
+
+  if (task.categories && task.categories.length > 0) {
+    details += `Categories: ${task.categories.join(", ")}\n`;
+  }
+
+  copyToClipboard(details);
+  showToast("Task details copied");
+}
+
+function showTaskDetails(task, type) {
+  const modal = document.createElement("div");
+  modal.className = "modal modal-show";
+
+  const modalContent = document.createElement("div");
+  modalContent.className = "modal-content max-width-700";
+
+  const modalHeader = document.createElement("div");
+  modalHeader.className = "modal-header";
+
+  const title = document.createElement("h2");
+  title.textContent = task.title || task.subject || "Task Details";
+  modalHeader.appendChild(title);
+
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "modal-close";
+  closeBtn.innerHTML = "&times;";
+  closeBtn.onclick = () => {
+    modal.classList.remove("modal-show");
+    setTimeout(() => document.body.removeChild(modal), 300);
+  };
+  modalHeader.appendChild(closeBtn);
+
+  const modalBody = document.createElement("div");
+  modalBody.className = "modal-body";
+
+  const detailsContainer = document.createElement("div");
+  detailsContainer.style.cssText =
+    "display: flex; flex-direction: column; gap: 15px;";
+
+  const fields = [];
+
+  fields.push({ label: "Type", value: type });
+
+  if (task.id) {
+    fields.push({ label: "ID", value: task.id });
+  }
+
+  if (task.percentComplete !== undefined) {
+    fields.push({ label: "Progress", value: `${task.percentComplete}%` });
+  }
+
+  if (task.status) {
+    fields.push({ label: "Status", value: task.status });
+  }
+
+  if (task.importance) {
+    fields.push({ label: "Importance", value: task.importance });
+  }
+
+  if (task.priority !== undefined) {
+    fields.push({ label: "Priority", value: task.priority });
+  }
+
+  if (task.dueDateTime) {
+    const dueDate = new Date(task.dueDateTime.dateTime || task.dueDateTime);
+    if (!isNaN(dueDate.getTime())) {
+      fields.push({
+        label: "Due Date",
+        value: dueDate.toLocaleString(),
+      });
+    }
+  }
+
+  if (task.startDateTime) {
+    const startDate = new Date(
+      task.startDateTime.dateTime || task.startDateTime,
+    );
+    if (!isNaN(startDate.getTime())) {
+      fields.push({
+        label: "Start Date",
+        value: startDate.toLocaleString(),
+      });
+    }
+  }
+
+  if (task.createdDateTime) {
+    const createdDate = new Date(task.createdDateTime);
+    if (!isNaN(createdDate.getTime())) {
+      fields.push({
+        label: "Created",
+        value: createdDate.toLocaleString(),
+      });
+    }
+  }
+
+  if (task.lastModifiedDateTime) {
+    const modifiedDate = new Date(task.lastModifiedDateTime);
+    if (!isNaN(modifiedDate.getTime())) {
+      fields.push({
+        label: "Last Modified",
+        value: modifiedDate.toLocaleString(),
+      });
+    }
+  }
+
+  if (task.listName) {
+    fields.push({ label: "List", value: task.listName });
+  }
+
+  if (task.listId) {
+    fields.push({ label: "List ID", value: task.listId });
+  }
+
+  if (task.bucketId) {
+    fields.push({ label: "Bucket ID", value: task.bucketId });
+  }
+
+  if (task.planId) {
+    fields.push({ label: "Plan ID", value: task.planId });
+  }
+
+  if (task.categories && task.categories.length > 0) {
+    fields.push({ label: "Categories", value: task.categories.join(", ") });
+  }
+
+  if (task.assignments && Object.keys(task.assignments).length > 0) {
+    fields.push({
+      label: "Assignments",
+      value: `${Object.keys(task.assignments).length} user(s)`,
+    });
+  }
+
+  fields.forEach((field) => {
+    const fieldDiv = document.createElement("div");
+    fieldDiv.style.cssText =
+      "background: var(--bg-secondary); padding: 12px; border-radius: 6px;";
+
+    const labelDiv = document.createElement("div");
+    labelDiv.style.cssText =
+      "font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; font-weight: 600;";
+    labelDiv.textContent = field.label;
+
+    const valueDiv = document.createElement("div");
+    valueDiv.style.cssText = "font-size: 14px; word-break: break-all;";
+    valueDiv.textContent = field.value;
+
+    fieldDiv.appendChild(labelDiv);
+    fieldDiv.appendChild(valueDiv);
+    detailsContainer.appendChild(fieldDiv);
+  });
+
+  modalBody.appendChild(detailsContainer);
+  modalContent.appendChild(modalHeader);
+  modalContent.appendChild(modalBody);
+  modal.appendChild(modalContent);
+  document.body.appendChild(modal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.remove("modal-show");
+      setTimeout(() => document.body.removeChild(modal), 300);
+    }
+  });
+}
+
 function setupUserListeners() {
   const refreshBtn = document.getElementById("refreshUserBtn");
   if (refreshBtn) {
@@ -508,6 +955,23 @@ function setupUserListeners() {
     btn.addEventListener("click", () => {
       const section = btn.dataset.section;
       loadUserSection(section);
+    });
+  });
+
+  const refreshTasksBtn = document.getElementById("refreshTasksBtn");
+  if (refreshTasksBtn) {
+    refreshTasksBtn.addEventListener("click", async () => {
+      await loadUserTasks();
+    });
+  }
+
+  const taskTypeBtns = document.querySelectorAll(".task-type-btn");
+  taskTypeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentTaskFilter = btn.dataset.type;
+      taskTypeBtns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderUserTasks();
     });
   });
 }

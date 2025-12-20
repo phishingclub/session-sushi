@@ -51,6 +51,9 @@
                     <button class="user-section-btn" data-section="permissions">
                         Permissions
                     </button>
+                    <button class="user-section-btn" data-section="tasks">
+                        Tasks
+                    </button>
                 </div>
             </div>
         </div>
@@ -111,6 +114,64 @@
                         <div class="loading-indicator">
                             Loading permissions...
                         </div>
+                    </div>
+                </div>
+
+                <!-- Tasks Section -->
+                <div
+                    id="userTasksSection"
+                    class="user-section"
+                    style="display: none"
+                >
+                    <!-- Filter buttons -->
+                    <div style="margin-bottom: 15px">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                            <button
+                                class="btn btn-small btn-secondary btn-medium task-type-btn active"
+                                data-type="all"
+                            >
+                                All Tasks
+                            </button>
+                            <button
+                                class="btn btn-small btn-secondary btn-medium task-type-btn"
+                                data-type="planner"
+                            >
+                                📋 Planner
+                            </button>
+                            <button
+                                class="btn btn-small btn-secondary btn-medium task-type-btn"
+                                data-type="todo"
+                            >
+                                ✓ To-Do
+                            </button>
+                            <button
+                                class="btn btn-small btn-secondary btn-medium"
+                                id="refreshTasksBtn"
+                                title="Refresh Tasks"
+                            >
+                                🔄
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stats bar -->
+                    <div
+                        id="tasksStatsBar"
+                        style="
+                            margin-bottom: 15px;
+                            padding: 8px 12px;
+                            background: var(--bg-secondary);
+                            border-radius: 4px;
+                            font-size: 13px;
+                            color: var(--text-secondary);
+                            display: none;
+                        "
+                    >
+                        <span id="tasksStats"></span>
+                    </div>
+
+                    <div id="tasksContainer">
+                        <div class="loading-indicator">Loading tasks...</div>
                     </div>
                 </div>
             </div>
