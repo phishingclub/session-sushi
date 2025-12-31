@@ -36,12 +36,11 @@ Preferly open a incognito/private window to fully isolate the sessions.
 
 Download for [Edge](https://microsoftedge.microsoft.com/addons/detail/session-sushi/bbaaafoehpllebaidnjbggniedbhdeok)
 
-**Chrome is waiting for verification**
+Download for [Chrome](https://chromewebstore.google.com/detail/session-sushi/mlfopacnocgoemdlknapgfpdjcjmefgja)
 
 ### Manual Installation
 
-A manual installation, where you sideload the extension is the most secure way you can use this 
-extension as it will NOT auto update.
+The most secure way you can use an extension is by sideloading it manually, this way it does not auto update.
 
 **Option 1: Clone with Git**
 
