@@ -36,7 +36,7 @@ Preferly open a incognito/private window to fully isolate the sessions.
 
 Download for [Edge](https://microsoftedge.microsoft.com/addons/detail/session-sushi/bbaaafoehpllebaidnjbggniedbhdeok)
 
-Download for [Chrome](https://chromewebstore.google.com/detail/session-sushi/mlfopacnocgoemdlknapgfpdjcjmefgja)
+Download for [Chrome](https://chromewebstore.google.com/detail/session-sushi/mlfopacnocgoemdlknapgfpdjcjmefgj)
 
 ### Manual Installation
 
