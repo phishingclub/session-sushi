@@ -1,0 +1,119 @@
+#settings-tab .padding-20 {
+    padding: 20px;
+}
+
+#settings-tab .grid-2col-settings {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+#settings-tab .card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+#settings-tab .section-title {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+#settings-tab .proxy-status-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#settings-tab .proxy-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+#settings-tab .proxy-badge-off {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+#settings-tab .proxy-badge-on {
+    background-color: rgba(34, 197, 94, 0.15);
+    border: 1px solid #22c55e;
+    color: #22c55e;
+}
+
+#settings-tab .label-block {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+#settings-tab .label-hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    opacity: 0.75;
+}
+
+#settings-tab .input-full {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+#settings-tab .input-full:focus {
+    outline: none;
+    border-color: var(--cta-blue);
+    box-shadow: 0 0 0 3px rgba(68, 94, 204, 0.1);
+}
+
+#settings-tab .text-mono {
+    font-family: monospace;
+}
+
+#settings-tab .text-sm {
+    font-size: 12px;
+}
+
+#settings-tab .flex-gap {
+    display: flex;
+    gap: 8px;
+}
+
+#settings-tab .mb-12 {
+    margin-bottom: 12px;
+}
+
+#settings-tab .mb-16 {
+    margin-bottom: 16px;
+}
+
+#settings-tab .settings-note {
+    margin-top: 16px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.75;
+    line-height: 1.5;
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+}
+
+@media (max-width: 1200px) {
+    #settings-tab .grid-2col-settings {
+        grid-template-columns: 1fr;
+    }
+}

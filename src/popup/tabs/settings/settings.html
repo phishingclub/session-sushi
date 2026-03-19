@@ -1,0 +1,103 @@
+<div class="padding-20">
+    <div class="grid-2col-settings">
+        <div class="card">
+            <h3 class="section-title">Proxy</h3>
+
+            <div class="info-box-compact">
+                <span class="info-box-label"
+                    >All browser traffic is routed through the proxy.</span
+                >
+            </div>
+
+            <div class="form-field mb-16">
+                <label class="label-block">Proxy Status</label>
+                <div class="proxy-status-row">
+                    <span
+                        id="proxyStatusBadge"
+                        class="proxy-badge proxy-badge-off"
+                        >Off</span
+                    >
+                    <button
+                        class="btn btn-danger-outline btn-small"
+                        id="clearProxyBtn"
+                    >
+                        Clear Proxy
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-field mb-12">
+                <label class="label-block">Host</label>
+                <input
+                    type="text"
+                    id="proxyHost"
+                    placeholder="127.0.0.1"
+                    class="input-full text-mono"
+                />
+            </div>
+
+            <div class="form-field mb-12">
+                <label class="label-block">Port</label>
+                <input
+                    type="text"
+                    id="proxyPort"
+                    placeholder="1080"
+                    class="input-full text-mono"
+                />
+            </div>
+
+            <div class="flex-gap">
+                <button class="btn btn-primary" id="applyProxyBtn">
+                    Apply Proxy
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="section-title">User Agent</h3>
+
+            <div class="info-box-compact">
+                <span class="info-box-label"
+                    >All browser traffic is affected by the user agent
+                    override.</span
+                >
+            </div>
+
+            <div class="form-field mb-12">
+                <label class="label-block">Status</label>
+                <div class="proxy-status-row">
+                    <span id="uaStatusBadge" class="proxy-badge proxy-badge-off"
+                        >Off</span
+                    >
+                    <button
+                        class="btn btn-danger-outline btn-small"
+                        id="clearUABtn"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-field mb-16">
+                <label class="label-block"
+                    >Custom User Agent
+                    <span class="label-hint"
+                        >(leave empty to use browser default)</span
+                    ></label
+                >
+                <input
+                    type="text"
+                    id="userAgentInput"
+                    placeholder="Mozilla/5.0 ..."
+                    class="input-full text-mono"
+                />
+            </div>
+
+            <div class="flex-gap">
+                <button class="btn btn-primary" id="applyUABtn">
+                    Apply User Agent
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

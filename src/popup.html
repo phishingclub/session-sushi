@@ -6,6 +6,7 @@
         <title>Session Sushi</title>
         <link rel="stylesheet" href="styles.css" />
         <link rel="stylesheet" href="onedrive-styles.css" />
+        <link rel="stylesheet" href="popup/tabs/settings/settings.css" />
     </head>
     <body>
         <div class="container">
@@ -43,6 +44,7 @@
                             SharePoint
                         </button>
                         <button class="tab-btn" data-tab="teams">Teams</button>
+                        <button class="tab-btn" data-tab="settings">Settings</button>
                     </div>
                     <div class="header-actions">
                         <button class="btn btn-primary" id="headerImport">
@@ -87,6 +89,7 @@
                 <div class="tab-content" id="directory-tab"></div>
                 <div class="tab-content" id="mailbox-tab"></div>
                 <div class="tab-content" id="onedrive-tab"></div>
+                <div class="tab-content" id="settings-tab"></div>
             </div>
         </div>
 
@@ -821,6 +824,7 @@
         <script src="popup/tabs/calendar/calendar.js"></script>
         <script src="popup/tabs/sharepoint/sharepoint.js"></script>
         <script src="popup/tabs/teams/teams.js"></script>
+        <script src="popup/tabs/settings/settings.js"></script>
         <script src="popup/popup-init.js"></script>
     </body>
 </html>

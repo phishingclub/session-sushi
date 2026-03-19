@@ -10,7 +10,8 @@
     "downloads",
     "windows",
     "webRequest",
-    "declarativeNetRequest"
+    "declarativeNetRequest",
+    "proxy"
   ],
   "incognito": "split",
   "host_permissions": ["<all_urls>"],

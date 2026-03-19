@@ -1,6 +1,69 @@
 let pendingAuthFlow = null;
 let extensionWindowId = null;
 
+const SETTINGS_STORAGE_KEY = "session_sushi_settings";
+
+// Restore persisted settings on service worker startup
+chrome.storage.local.get([SETTINGS_STORAGE_KEY]).then((result) => {
+  const settings = result[SETTINGS_STORAGE_KEY] || {};
+
+  if (settings.userAgent) {
+    chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: [2],
+      addRules: [
+        {
+          id: 2,
+          priority: 1,
+          action: {
+            type: "modifyHeaders",
+            requestHeaders: [
+              {
+                header: "User-Agent",
+                operation: "set",
+                value: settings.userAgent,
+              },
+            ],
+          },
+          condition: {
+            urlFilter: "*",
+            resourceTypes: [
+              "main_frame",
+              "sub_frame",
+              "xmlhttprequest",
+              "script",
+              "stylesheet",
+              "image",
+              "font",
+              "object",
+              "media",
+              "websocket",
+              "other",
+            ],
+          },
+        },
+      ],
+    });
+  }
+
+  if (settings.proxyHost && settings.proxyPort) {
+    const port = parseInt(settings.proxyPort, 10);
+
+    chrome.proxy.settings.set({
+      value: {
+        mode: "fixed_servers",
+        rules: {
+          singleProxy: {
+            scheme: "socks5",
+            host: settings.proxyHost,
+            port,
+          },
+        },
+      },
+      scope: "regular",
+    });
+  }
+});
+
 // Remove Origin header from extension-initiated token requests to avoid chrome-extension:// origin issues
 chrome.declarativeNetRequest.updateDynamicRules({
   removeRuleIds: [1],

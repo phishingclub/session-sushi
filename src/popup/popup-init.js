@@ -13,11 +13,13 @@ async function initialize() {
 // Called by load-tabs.js after all tab HTML is loaded
 async function initializeApp() {
   setupEventListeners();
+  setupSettingsListeners();
 
   await loadAllCookies();
   await loadSavedTokens();
   await loadM365Sessions();
   await restoreUIState();
+  await initializeSettings();
 
   populatePresetDropdown();
   const presetSelector = document.getElementById("presetSelector");
