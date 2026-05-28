@@ -1,6 +1,17 @@
 
 # Changelog
 
+## [0.4.0] - 2026-05-28
+- Added Tools tab with Redeem Authorization Code
+- Updated header and tab navigation UI
+- Minor style fixes
+
+## [0.3.0] - 2026-03-19
+- Added Settings tab
+- Added SOCKS5 proxy support
+- Added custom User Agent override
+- Removed backdrop filter for performance in VMs
+
 ## [0.2.0] - 2025-12-20
 - Added user tab
 - Added invite user
