@@ -902,9 +902,11 @@ tr:hover {
 }
 
 .form-group input[type="text"],
+.form-group input[type="password"],
 .form-group input[type="datetime-local"],
 .form-group select,
 input[type="text"],
+input[type="password"],
 select {
     width: 100%;
     padding: 8px 12px;
@@ -919,6 +921,7 @@ select {
 .form-group input:focus,
 .form-group select:focus,
 input[type="text"]:focus,
+input[type="password"]:focus,
 select:focus {
     outline: none;
     border-color: var(--cta-blue);
@@ -1474,6 +1477,10 @@ textarea:disabled {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+.justify-end {
+    justify-content: flex-end;
 }
 
 .flex-gap-small {
