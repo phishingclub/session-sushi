@@ -72,6 +72,25 @@ function setupEventListeners() {
     themeToggleBtn.addEventListener("click", toggleTheme);
   }
 
+  const tabsEl = document.querySelector(".tabs");
+  if (tabsEl) {
+    tabsEl.addEventListener("scroll", updateTabsScroll, { passive: true });
+    updateTabsScroll();
+  }
+
+  const tabScrollLeft = document.getElementById("tabScrollLeft");
+  const tabScrollRight = document.getElementById("tabScrollRight");
+  if (tabScrollLeft && tabsEl) {
+    tabScrollLeft.addEventListener("click", () => {
+      tabsEl.scrollBy({ left: -160, behavior: "smooth" });
+    });
+  }
+  if (tabScrollRight && tabsEl) {
+    tabScrollRight.addEventListener("click", () => {
+      tabsEl.scrollBy({ left: 160, behavior: "smooth" });
+    });
+  }
+
   document.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.addEventListener("click", () => switchTab(btn.dataset.tab));
   });

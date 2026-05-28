@@ -114,20 +114,28 @@ body {
 }
 
 /* ============================================
-   HEADER & THEME TOGGLE
+   HEADER & NAVIGATION
    ============================================ */
 
 header {
     background: var(--header-bg);
     color: var(--header-text);
-    padding: 12px 20px 0;
+    padding: 0 16px 0 0;
     box-shadow: var(--shadow);
-    min-height: 56px;
     flex-shrink: 0;
 }
 
+.header-layout {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 52px;
+}
+
 .logo {
-    align-self: baseline;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
 }
 
 .logo:hover {
@@ -135,99 +143,176 @@ header {
     transition: 1s;
 }
 
-.header-layout {
-    display: flex;
-    align-items: flex-end;
-    gap: 12px;
-    position: relative;
+/* Scroll arrow buttons */
+.tab-scroll-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.55);
+    width: 26px;
+    min-width: 26px;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+    padding: 0;
+    font-family: inherit;
 }
+
+.tab-scroll-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.tab-scroll-btn[hidden] {
+    display: none;
+}
+
+/* Tab strip wrapper */
+.tabs-wrapper {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.tabs-wrapper::before,
+.tabs-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 36px;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.18s;
+}
+
+.tabs-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--header-bg) 20%, transparent);
+}
+
+.tabs-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--header-bg) 20%, transparent);
+}
+
+.tabs-wrapper.can-scroll-left::before { opacity: 1; }
+.tabs-wrapper.can-scroll-right::after { opacity: 1; }
 
 .tabs {
     display: flex;
     gap: 2px;
-    align-items: flex-end;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    width: 100%;
 }
 
+.tabs::-webkit-scrollbar { display: none; }
+
 .tab-btn {
-    background: rgba(255, 255, 255, 0.08);
+    background: transparent;
     border: none;
     border-bottom: 3px solid transparent;
-    color: rgba(255, 255, 255, 0.7);
-    padding: 10px 20px;
-    font-size: 14px;
+    color: rgba(255, 255, 255, 0.62);
+    padding: 8px 16px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-family: inherit;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
 }
 
 .tab-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.09);
     color: rgba(255, 255, 255, 0.95);
-    border-bottom-color: rgba(255, 255, 255, 0.3);
+    border-bottom-color: rgba(255, 255, 255, 0.25);
 }
 
 .tab-btn.active {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.12);
     color: #ffffff;
     border-bottom-color: var(--cta-blue);
 }
 
+/* Right-side controls */
 .header-actions {
     display: flex;
-    gap: 8px;
-    margin-left: auto;
+    gap: 6px;
     align-items: center;
-    padding-bottom: 12px;
+    flex-shrink: 0;
+    padding-left: 10px;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    margin-left: 4px;
 }
 
-/* Theme Toggle Button */
+.header-icon-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 15px;
+    justify-content: center;
+}
+
 #themeToggle {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid transparent;
-    color: rgba(255, 255, 255, 0.9);
-    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    color: rgba(255, 255, 255, 0.88);
+    padding: 0;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
-    transition: all 0.2s;
-    line-height: 1;
-    width: 36px;
-    height: 36px;
+    transition: background 0.15s;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
+    flex-shrink: 0;
     box-sizing: border-box;
 }
 
 #themeToggle:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.18);
 }
 
 .btn-popout {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid transparent;
-    color: rgba(255, 255, 255, 0.7);
-    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    color: rgba(255, 255, 255, 0.75);
+    padding: 0;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
-    transition: all 0.2s;
-    line-height: 1;
-    width: 36px;
-    height: 36px;
+    transition: background 0.15s, color 0.15s;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
     box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .btn-popout:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.95);
 }
 
 /* ============================================

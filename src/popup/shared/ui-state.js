@@ -36,10 +36,32 @@ async function restoreUIState() {
   }
 }
 
+function updateTabsScroll() {
+  const tabs = document.querySelector(".tabs");
+  const wrapper = document.querySelector(".tabs-wrapper");
+  const leftBtn = document.getElementById("tabScrollLeft");
+  const rightBtn = document.getElementById("tabScrollRight");
+  if (!tabs || !wrapper) return;
+
+  const canLeft = tabs.scrollLeft > 1;
+  const canRight = tabs.scrollLeft + tabs.clientWidth < tabs.scrollWidth - 1;
+
+  wrapper.classList.toggle("can-scroll-left", canLeft);
+  wrapper.classList.toggle("can-scroll-right", canRight);
+  if (leftBtn) leftBtn.hidden = !canLeft;
+  if (rightBtn) rightBtn.hidden = !canRight;
+}
+
 function switchTab(tabName) {
   document.querySelectorAll(".tab-btn").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.tab === tabName);
   });
+
+  const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+  if (activeBtn) {
+    activeBtn.scrollIntoView({ inline: "nearest", block: "nearest", behavior: "smooth" });
+    setTimeout(updateTabsScroll, 320);
+  }
 
   document.querySelectorAll(".tab-content").forEach((content) => {
     const isActive = content.id === `${tabName}-tab`;

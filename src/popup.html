@@ -19,51 +19,30 @@
 
             <header>
                 <div class="header-layout">
-                    <div class="tabs">
-                        <button class="tab-btn active" data-tab="cookies">
-                            Cookies
-                        </button>
-                        <button class="tab-btn" data-tab="sessions">
-                            Sessions
-                        </button>
-                        <button class="tab-btn" data-tab="graph">Graph</button>
-                        <button class="tab-btn" data-tab="user">User</button>
-                        <button class="tab-btn" data-tab="directory">
-                            Directory
-                        </button>
-                        <button class="tab-btn" data-tab="mailbox">
-                            Mailbox
-                        </button>
-                        <button class="tab-btn" data-tab="calendar">
-                            Calendar
-                        </button>
-                        <button class="tab-btn" data-tab="onedrive">
-                            OneDrive
-                        </button>
-                        <button class="tab-btn" data-tab="sharepoint">
-                            SharePoint
-                        </button>
-                        <button class="tab-btn" data-tab="teams">Teams</button>
-                        <button class="tab-btn" data-tab="settings">Settings</button>
-                        <button class="tab-btn" data-tab="tools">OAuth</button>
+                    <button class="tab-scroll-btn" id="tabScrollLeft" aria-label="Scroll tabs left" hidden>&#8249;</button>
+                    <div class="tabs-wrapper">
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="cookies">Cookies</button>
+                            <button class="tab-btn" data-tab="sessions">Sessions</button>
+                            <button class="tab-btn" data-tab="graph">Graph</button>
+                            <button class="tab-btn" data-tab="user">User</button>
+                            <button class="tab-btn" data-tab="directory">Directory</button>
+                            <button class="tab-btn" data-tab="mailbox">Mailbox</button>
+                            <button class="tab-btn" data-tab="calendar">Calendar</button>
+                            <button class="tab-btn" data-tab="onedrive">OneDrive</button>
+                            <button class="tab-btn" data-tab="sharepoint">SharePoint</button>
+                            <button class="tab-btn" data-tab="teams">Teams</button>
+                            <button class="tab-btn" data-tab="settings">Settings</button>
+                            <button class="tab-btn" data-tab="tools">OAuth</button>
+                        </div>
                     </div>
+                    <button class="tab-scroll-btn" id="tabScrollRight" aria-label="Scroll tabs right" hidden>&#8250;</button>
                     <div class="header-actions">
-                        <button class="btn btn-primary" id="headerImport">
-                            📥 Import
-                        </button>
-                        <button class="btn btn-primary" id="headerExport">
-                            📤 Export
-                        </button>
-                        <button
-                            class="btn btn-danger-outline"
-                            id="clearAllCookies"
-                        >
-                            🗑️ Clear
-                        </button>
+                        <button class="btn btn-primary header-icon-btn" id="headerImport" title="Import">📥</button>
+                        <button class="btn btn-primary header-icon-btn" id="headerExport" title="Export">📤</button>
+                        <button class="btn btn-danger-outline header-icon-btn" id="clearAllCookies" title="Clear">🗑️</button>
                     </div>
-                    <button id="themeToggle" title="Toggle dark/light mode">
-                        🌙
-                    </button>
+                    <button id="themeToggle" title="Toggle dark/light mode">🌙</button>
                     <a
                         href="https://phishing.club"
                         target="_blank"
@@ -73,7 +52,7 @@
                         <img
                             src="../icons/icon128.png"
                             alt="Session Sushi logo"
-                            width="36"
+                            width="34"
                         />
                     </a>
                 </div>
