@@ -427,6 +427,7 @@ function setupEventListeners() {
   setupContactsListeners();
   setupSharePointListeners();
   setupTeamsListeners();
+  setupToolsListeners();
 
   const refreshMailboxBtn = document.getElementById("refreshMailbox");
   if (refreshMailboxBtn) {

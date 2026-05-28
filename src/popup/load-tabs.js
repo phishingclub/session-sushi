@@ -28,6 +28,7 @@ async function loadAllTabs() {
     loadTabHTML("mailbox", "mailbox-tab"),
     loadTabHTML("onedrive", "onedrive-tab"),
     loadTabHTML("settings", "settings-tab"),
+    loadTabHTML("tools", "tools-tab"),
   ]);
 }
 

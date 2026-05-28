@@ -1,0 +1,109 @@
+<div class="padding-20">
+    <div class="grid-3col">
+        <div class="card card-min-height">
+            <h3 class="section-title">Auth Code Exchange</h3>
+            <div class="form-section">
+                <div class="form-field-small">
+                    <label class="label-small">Authorization Code:</label>
+                    <input
+                        type="text"
+                        id="toolsAuthCodeInput"
+                        placeholder="Paste authorization code"
+                        class="input-full text-mono text-sm"
+                        autocomplete="off"
+                        spellcheck="false"
+                    />
+                </div>
+                <div class="form-field-small">
+                    <label class="label-small">Token URL:</label>
+                    <input
+                        type="text"
+                        id="toolsTokenUrlInput"
+                        value="https://login.microsoftonline.com/common/oauth2/v2.0/token"
+                        placeholder="Token endpoint URL"
+                        class="input-full text-mono text-sm"
+                        spellcheck="false"
+                    />
+                </div>
+                <div class="form-field-small">
+                    <label class="label-small">Client ID:</label>
+                    <input
+                        type="text"
+                        id="toolsClientIdInput"
+                        placeholder="Application Client ID"
+                        class="input-full text-mono text-sm"
+                        autocomplete="off"
+                        spellcheck="false"
+                    />
+                </div>
+                <div class="form-field-small">
+                    <label class="label-small">Redirect URI:</label>
+                    <input
+                        type="text"
+                        id="toolsRedirectUriInput"
+                        value="https://login.microsoftonline.com/common/oauth2/nativeclient"
+                        placeholder="Redirect URI"
+                        class="input-full text-mono text-sm"
+                        spellcheck="false"
+                    />
+                </div>
+                <div class="form-field-small">
+                    <label class="label-small">Scope (optional):</label>
+                    <input
+                        type="text"
+                        id="toolsScopeInput"
+                        value="https://graph.microsoft.com/.default offline_access"
+                        placeholder="Space-separated scopes"
+                        class="input-full text-mono text-sm"
+                        spellcheck="false"
+                    />
+                </div>
+                <div class="form-field-small">
+                    <label class="label-small">Code Verifier (PKCE, optional):</label>
+                    <input
+                        type="text"
+                        id="toolsCodeVerifierInput"
+                        placeholder="code_verifier used in auth request"
+                        class="input-full text-mono text-sm"
+                        autocomplete="off"
+                        spellcheck="false"
+                    />
+                </div>
+                <div class="form-field-last">
+                    <label class="label-small">Client Secret (optional):</label>
+                    <input
+                        type="password"
+                        id="toolsClientSecretInput"
+                        placeholder="Client secret (confidential apps)"
+                        class="input-full text-mono text-sm"
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
+            <div class="flex-gap">
+                <button class="btn btn-primary" id="toolsExchangeBtn">
+                    🔑 Exchange Code
+                </button>
+            </div>
+        </div>
+
+        <div class="card" style="grid-column: span 2;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                <h3 class="section-title" style="margin: 0;">Response</h3>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-secondary btn-small" id="toolsCopyResponseBtn" disabled>📋 Copy</button>
+                    <button class="btn btn-primary btn-small" id="toolsImportSessionBtn" disabled>📥 Import as Session</button>
+                </div>
+            </div>
+            <div id="toolsStatusMsg" style="margin-bottom: 8px; font-size: 13px; min-height: 18px;"></div>
+            <textarea
+                id="toolsResponseArea"
+                readonly
+                rows="22"
+                placeholder="Token endpoint response will appear here..."
+                style="width: 100%; resize: vertical;"
+                spellcheck="false"
+            ></textarea>
+        </div>
+    </div>
+</div>
