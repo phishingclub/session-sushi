@@ -1,6 +1,6 @@
 {
   "name": "session-sushi",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "Cookie management, M365 OAuth tokens, and Graph API interaction for red teamers",
   "main": "background.js",
   "scripts": {

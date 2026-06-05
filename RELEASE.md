@@ -1,5 +1,8 @@
 
 # Changelog
+## [0.5.0] - 2026-06-05
+- Added decoder to tools
+- Fix bug when exchanging after importing from authorization token
 
 ## [0.4.0] - 2026-05-28
 - Added Tools tab with Redeem Authorization Code
