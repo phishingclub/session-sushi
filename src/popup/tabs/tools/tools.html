@@ -106,4 +106,41 @@
             ></textarea>
         </div>
     </div>
+
+    <div class="card" style="margin-top: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <h3 class="section-title" style="margin: 0;">Decode Token</h3>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary btn-small" id="toolsDecodeLoadAccessBtn">📥 Load Access Token</button>
+                <button class="btn btn-secondary btn-small" id="toolsDecodeCopyBtn" disabled>📋 Copy</button>
+                <button class="btn btn-secondary btn-small" id="toolsClearDecodeBtn">✖ Clear</button>
+            </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 16px;">
+            <div>
+                <label class="label-small">Token:</label>
+                <textarea
+                    id="toolsDecodeInput"
+                    rows="6"
+                    placeholder="Paste access token, refresh token or ID token..."
+                    style="width: 100%; resize: vertical;"
+                    spellcheck="false"
+                ></textarea>
+                <div style="margin-top: 8px;">
+                    <button class="btn btn-primary" id="toolsDecodeBtn">🔍 Decode</button>
+                </div>
+            </div>
+            <div>
+                <div id="toolsDecodeStatus" style="font-size: 13px; min-height: 18px; margin-bottom: 8px;"></div>
+                <textarea
+                    id="toolsDecodeOutput"
+                    readonly
+                    rows="14"
+                    placeholder="Decoded claims will appear here..."
+                    style="width: 100%; resize: vertical;"
+                    spellcheck="false"
+                ></textarea>
+            </div>
+        </div>
+    </div>
 </div>
